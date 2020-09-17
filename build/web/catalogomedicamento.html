@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form class="col s12" action="catalogomedicamento.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Información del Catálogo de Medicamentos
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s6">
+                                <select id="proveedor" name="proveedor" required="" aria-required="true">
+                                </select>
+                                <label for="proveedor">Proveedor</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input type="text" class="campoVacio" readonly style="border-bottom-color: white;"/>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="codigo" id="codigo" type="text" 
+                                       maxlength="25" required="" aria-required="true"
+                                       class="validate campoLetrasNumeros campoMayusculas">
+                                <label for="codigo" id="lblCodigo">Serie del medicamento</label>
+                                <span id="codigoHelper"></span>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="nombre" id="nombre" type="text" 
+                                       maxlength="100" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label for="nombre" id="lblNombre">Nombre del medicamento</label>
+                                <span id="nombreHelper"></span>
+                            </div> 
+
+                            <div class="col s6" id="divCantidad"></div>
+                            <div class="col s6" id="divCongelado"></div>
+
+                            <div class="input-field col s12">
+                                <textarea name="descripcion" id="descripcion" 
+                                          maxlength="500" required="" aria-required="true"
+                                          class="materialize-textarea validate campoLetrasEspacios"></textarea>
+                                <label for="descripcion" id="lblDescripcion">Descripción del medicamento</label>
+                            </div>
+
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit" style="visibility: hidden;">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Variables globales.
+                var codigoInicial;
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga el registro del medicamento en la página web.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "cargaRegistro.do",
+                    data: {name: "GETMDCINF"},
+                    success: function (data, status) {
+                        var informacionCatalogoMedicamento = JSON.parse(data.toString());
+                        adecuarElementos(informacionCatalogoMedicamento.modo);
+                        codigoInicial = informacionCatalogoMedicamento.codigo;
+
+                        // Asigna los valores a los campos.
+                        $('#codigo').val(informacionCatalogoMedicamento.codigo);
+                        $('#nombre').val(informacionCatalogoMedicamento.nombre);
+                        $('#descripcion').val(informacionCatalogoMedicamento.descripcion);
+                        
+                        if(informacionCatalogoMedicamento.codigo !== ""
+                                && informacionCatalogoMedicamento.cantidad > 0){
+                            $('#divCantidad').addClass('input-field').html(
+                                "<input name='cantidad' id='cantidad' type='text'" +
+                                "       maxlength='100' class='campoVacio'" +
+                                "       value='" + informacionCatalogoMedicamento.cantidad + "'" +
+                                "       readonly='readonly'/>" +
+                                "<label for='cantidad' class='active'>Cantidad en existencia</label>"
+                            );
+                    
+                            $('#divCongelado').addClass('input-field').html(
+                                "<input name='unidadesCongeladas' id='unidadesCongeladas' type='text'" +
+                                "       maxlength='100' class='campoVacio'" +
+                                "       value='" + informacionCatalogoMedicamento.unidadesCongeladas + "'" +
+                                "       readonly='readonly'/>" +
+                                "<label for='unidadesCongeladas' class='active'>Unidades congeladas</label>"
+                            );
+                        }
+                        
+                        // Indica si el suministro médico es cuantificable.
+                        if (String(informacionCatalogoMedicamento.codigo).length > 0){
+                            $('#lblCodigo').addClass('active');
+                            $('#codigo').attr('readonly', 'readonly');
+                        } else $('#lblCodigo').removeClass('active');
+                        
+                        if (String(informacionCatalogoMedicamento.nombre).length > 0)
+                            $('#lblNombre').addClass('active');
+                        else $('#lblNombre').removeClass('active');
+                        
+                        if (String(informacionCatalogoMedicamento.descripcion).length > 0)
+                            $('#lblDescripcion').addClass('active');
+                        else $('#lblDescripcion').removeClass('active');
+                        
+                        // Aigna opciones a los elementos SELECT.
+                        $('#proveedor').html(informacionCatalogoMedicamento.selectProveedor);
+                        $('select').trigger('contentChanged');
+
+                        // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                        if (informacionCatalogoMedicamento.error){
+                            $('#lblCodigo').removeClass('active');
+                            $('#lblNombre').removeClass('active');
+                            $('#lblDescripcion').removeClass('active');
+                            
+                            if(String(informacionCatalogoMedicamento.mensaje).length > 0)
+                                myAlert(informacionCatalogoMedicamento.mensaje);
+                        }
+                    }
+                });
+
+
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Valida los campos antes de someter el formulario.
+                $('#btnSubmit').on('click', function (event) {
+                    // Valida que el numero de serie proporcionado no existe ya, excepto
+                    // para el mismo registro.
+                    if ($('#codigo').val() !== codigoInicial)
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: {service: "VLDMDCCDE",
+                                   code: $('#codigo').val()},
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if (respuesta.error) {
+                                    $('#codigoHelper').attr('data-error', respuesta.mensaje);
+                                    $('#codigoHelper').addClass('helper-text');
+                                    $('#nombreHelper').addClass('helper-text');
+                                    $('#codigo').removeClass('valid').addClass('invalid');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                });
+
+
+                // Regresa al lobby de catálogo de suministro médico.
+                $('#btnCancelar').on('click', function (event) {
+                    if (confirm("¿Desea regresar al lobby del catálogo de medicamentos?"))
+                        window.location.replace("lobbycatalogomedicamentos.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

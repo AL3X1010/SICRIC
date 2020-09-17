@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+        <style>
+            .inactiveLink {
+                color: #000000;
+                pointer-events: none;
+                text-decoration: none;
+                opacity: 0.4;
+            }
+            
+            .activeLink{
+                pointer-events: none;
+                text-decoration: none;
+                color: #ef5350;
+            }
+            
+            .resaltar:hover{
+                background-color: lightgray;
+            }
+            
+            th {
+                background: white;
+                position: sticky;
+                top: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- Dropdown structures -->
+        <ul id="drpdwnOrganizacion" class="dropdown-content">
+            <li id="ddoliEmp"><a href="empresau.html">Modificar perfil de la empresa</a></li>
+            <li id="ddoliLobDep"><a href="lobbydepartamentosu.html">Crear o modificar departamentos</a></li>
+            <li id="ddoliLobPue" class="active"><a href="#">Crear o modificar puestos de trabajo</a></li>
+        </ul>
+
+        <ul id="drpdwnEmpleado" class="dropdown-content">
+            <li id="ddeliEmp"><a href="empleadou.html?parm=0" id="nuevoEmpleado">Crear empleado</a></li>
+            <li id="ddeliLobEmp"><a href="lobbyempleadosu.html">Modificar información de empleado</a></li>
+        </ul>
+
+        <ul id="drpdwnCandidato" class="dropdown-content">
+            <li id="ddcliCan"><a href="candidatou.html?parm=0" id="nuevoCandidato">Crear candidato</a></li>
+            <li id="ddcliLobCan"><a href="lobbycandidatosu.html">Modificar información de candidato</a></li>
+            <li id="ddcliLobPru"><a href="lobbypruebas.html">Ver resultado de pruebas</a></li>
+        </ul>
+
+        <ul id="drpdwnPlanilla" class="dropdown-content">
+            <li id="ddpliHojPla"><a href="hojaplanillau.html">Cálculo de planilla</a></li>
+            <li id="ddpliLobBen"><a href="lobbybeneficiosu.html">Crear o modificar beneficios sociales</a></li>
+            <li id="ddpliLobDed"><a href="lobbydeduccionesu.html">Crear o modificar compromisos legales</a></li>
+        </ul>
+
+        <ul id="drpdwnReportes" class="dropdown-content">
+            <li id="ddrliLobRepX"><a href="lobbyreportes.html">Reportes de empleados</a></li>
+            <li id="ddrliLobRepY"><a href="lobbyreportes.html">Reportes de candidatos</a></li>
+            <li id="ddrliLobRepZ"><a href="lobbyreportes.html">Reporte de salarios, deducciones y beneficios</a></li>
+            <li id="ddrliLobRep"><a href="lobbyreportes.html">Reportes varios</a></li>
+        </ul>
+
+        <ul id="drpdwnPruebas" class="dropdown-content">
+            <li><a href="pruebacleaver.html">Prueba Cleaver</a></li>
+            <li><a href="pruebabfq.html">Prueba 5 Grandes</a></li>
+            <li><a href="pruebaraven.html">Prueba Raven</a></li>
+        </ul>
+
+        <ul id="drpdwnMiscelaneos" class="dropdown-content">
+            <li style="border-bottom:solid #c9c9c9 1px;"><a href="#!">Crear o modificar calendario de días festivos</a></li>
+            <li><a href="#!">Bitácora del sistema</a></li>
+        </ul>
+        
+        
+        
+        <ul id="drpdwnmblOrganizacion" class="dropdown-content">
+            <li style="white-space:nowrap" id="ddmoliEmp"><a href="empresau.html">Modificar perfil de la empresa</a></li>
+            <li style="white-space:nowrap" id="ddmoliLobDep"><a href="lobbydepartamentosu.html">Crear o modificar departamentos</a></li>
+            <li style="white-space:nowrap" id="ddmoliLobPue" class="active"><a href="#">Crear o modificar puestos de trabajo</a></li>
+        </ul>
+
+        <ul id="drpdwnmblEmpleado" class="dropdown-content">
+            <li style="white-space:nowrap" id="ddmeliEmp"><a href="empleadou.html?parm=0" id="nuevoEmpleado">Crear empleado</a></li>
+            <li style="white-space:nowrap" id="ddmeliLobEmp"><a href="lobbyempleadosu.html">Modificar información de empleado</a></li>
+        </ul>
+
+        <ul id="drpdwnmblCandidato" class="dropdown-content">
+            <li style="white-space:nowrap" id="ddmcliCan"><a href="candidatou.html?parm=0" id="nuevoCandidato">Crear candidato</a></li>
+            <li style="white-space:nowrap" id="ddmcliLobCan"><a href="lobbycandidatosu.html">Modificar información de candidato</a></li>
+            <li style="white-space:nowrap" id="ddmcliLobPru"><a href="lobbypruebas.html">Ver resultado de pruebas</a></li>
+        </ul>
+
+        <ul id="drpdwnmblPlanilla" class="dropdown-content">
+            <li style="white-space:nowrap" id="ddmpliHojPla"><a href="hojaplanillau.html">Cálculo de planilla</a></li>
+            <li style="white-space:nowrap" id="ddmpliLobBen"><a href="lobbybeneficiosu.html">Crear o modificar beneficios sociales</a></li>
+            <li style="white-space:nowrap" id="ddmpliLobDed"><a href="lobbydeduccionesu.html">Crear o modificar compromisos legales</a></li>
+        </ul>
+
+        <ul id="drpdwnmblReportes" class="dropdown-content">
+            <li style="white-space:nowrap" id="ddmrliLobRepX"><a href="lobbyreportes.html">Reportes de empleados</a></li>
+            <li style="white-space:nowrap" id="ddmrliLobRepY"><a href="lobbyreportes.html">Reportes de candidatos</a></li>
+            <li style="white-space:nowrap" id="ddmrliLobRepZ"><a href="lobbyreportes.html">Reporte de salarios, deducciones y beneficios</a></li>
+            <li style="white-space:nowrap" id="ddmrliLobRep"><a href="lobbyreportes.html">Reportes varios</a></li>
+        </ul>
+
+        <ul id="drpdwnmblPruebas" class="dropdown-content">
+            <li style="white-space:nowrap"><a href="pruebacleaver.html">Prueba Cleaver</a></li>
+            <li style="white-space:nowrap"><a href="pruebabfq.html">Prueba 5 Grandes</a></li>
+            <li style="white-space:nowrap"><a href="pruebaraven.html">Prueba Raven</a></li>
+        </ul>
+
+        <ul id="drpdwnmblMiscelaneos" class="dropdown-content">
+            <li style="border-bottom:solid #c9c9c9 1px; white-space: nowrap"><a href="#!">Crear o modificar calendario de días festivos</a></li>
+            <li style="white-space:nowrap"><a href="#!">Bitácora del sistema</a></li>
+        </ul>
+
+        <div class="navbar-fixed">
+            <nav id="navbarApp">
+                <div class="nav-wrapper">    
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="#" id="salir"><i class="material-icons right">power_settings_new</i>Salir</a></li>
+                    </ul>
+                    </div>
+            </nav>
+        </div>
+        
+        <ul class="sidenav" id="mobile-demo">
+            <li id="ddmOrganizacion"><a class="dropdown-trigger" href="#!" data-target="drpdwnmblOrganizacion"><i class="material-icons left">business</i>Organización<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li id="ddmEmpleado"><a class="dropdown-trigger" href="#!" data-target="drpdwnmblEmpleado"><i class="material-icons left">assignment_ind</i>Empleado<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li id="ddmCandidato"><a class="dropdown-trigger" href="#!" data-target="drpdwnmblCandidato"><i class="material-icons left">person_pin</i>Candidato<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li id="ddmPlanilla"><a class="dropdown-trigger" href="#!" data-target="drpdwnmblPlanilla"><i class="material-icons left">monetization_on</i>Planilla<i class="material-icons right">arrow_drop_down</i></a></li>
+            <!--li><a class="dropdown-trigger" href="#!" data-target="drpdwnmblMiscelaneos"><i class="material-icons left">view_module</i>Misceláneos<i class="material-icons right">arrow_drop_down</i></a></li-->
+            <li id="ddmReportes"><a class="dropdown-trigger" href="#!" data-target="drpdwnmblReportes"><i class="material-icons left">content_paste</i>Reportería<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li id="ddmPruebas"><a class="dropdown-trigger" href="#!" data-target="drpdwnmblPruebas"><i class="material-icons left">content_paste</i>Pruebas<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li>&nbsp;</li>
+            <li><a href="#" id="salir"><i class="material-icons">power_settings_new</i>Salir</a></li>
+        </ul>
+
+        <div class="container">
+            <div class="row" id="listaUsuarios"></div>
+        </div>
+
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Obtiene mensajes de retroalimentación para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                // Carga la lista de usuarios en la página web.
+                $.ajax({
+                    method: "post",
+                    url: "cargarLista.do",
+                    data: {name: "GETDPTL"},
+                    success: function (data, status) {
+                        var listaUsuarios = JSON.parse(data.toString());
+                        if(typeof listaUsuarios.length === 'undefined'){
+                            if(listaUsuarios.error)
+                                myAlert(listaUsuarios.mensaje);
+                        } else {
+                            var nuevoContenido =
+                                    "<h5 class='center'>Usuarios del sistema" +
+                                        "<a href='usuario.html' class='usuarioNuevo'>" +
+                                           "<i class='material-icons right'>" +
+                                               "add_circle_outline" +
+                                           "</i>" +
+                                        "</a>" +
+                                    "</h5><hr/>" +
+                                    "<table id='myTable2'>" +
+                                        "<thead>" +
+                                            "<tr>" +
+                                                "<th onclick='sortTable(0)' style='cursor:pointer' id='nombreCol'>Nombre<i></th>" +
+                                                "<th>Descripción</th>" +
+                                                "<th onclick='sortTable(2)' style='cursor:pointer' id='activoCol' class='center'>Activo</th>" +
+                                                "<th class='center'>Ver</th>" +
+                                                "<th class='center'>Editar</th>" +
+                                            "</tr>" +
+                                        "</thead>" +
+                                        "<tbody>";
+
+                            for( var indice = 1; indice < listaUsuarios.length; indice++ ){
+                                if( listaUsuarios[indice].codigo < 1){
+                                    nuevoContenido =
+                                        "<h5 class='center'>Usuarios de la empresa" +
+                                            "<a href='usuario.html' class='usuarioNuevo'>" +
+                                               "<i class='material-icons right'>" +
+                                                   "add_circle_outline" +
+                                               "</i>" +
+                                            "</a>" +
+                                        "</h5><hr/>" +
+                                        "<div class='col s12 center'>" +
+                                            "<p>" +
+                                                "*** Antes debe crear un usuario ***" +
+                                            "</p>" +
+                                        "</div>";
+                                    break;
+                                } else {
+                                    var contenidoTemporal =
+                                        "<tr style='border: none;' class='resaltar'>" +
+                                            "<td style='padding-top: 1%; padding-bottom: 1%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>" + listaUsuarios[indice].nombre + "</td>" +
+                                            "<td style='padding-top: 1%; padding-bottom: 1%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>" + listaUsuarios[indice].descripcion + "</td>" +
+                                            "<td class='center' style='padding-top: 1%; padding-bottom: 1%;'>" +
+                                                "<i class='material-icons'>$#icono#$</i></a>" +
+                                            "</td>" +
+                                            "<td class='center' style='padding-top: 1%; padding-bottom: 1%;'><a href='usuario.html' class='usuarioExistente' " +
+                                                        "data-codigo='" + listaUsuarios[indice].codigo +  "' " +
+                                                        "data-modo='mod-v'>" +
+                                                    "<i class='material-icons'>visibility</i></a>" +
+                                            "</td>" +
+                                            "<td class='center' style='padding-top: 1%; padding-bottom: 1%;'><a href='usuario.html' class='usuarioExistente' " +
+                                                        "data-codigo='" + listaUsuarios[indice].codigo +  "' " +
+                                                        "data-modo='mod-e'>" +
+                                                    "<i class='material-icons'>edit</i></a>" +
+                                            "</td>" +
+                                        "</tr>";
+                    
+                                    if(listaUsuarios[indice].activo)
+                                        nuevoContenido += contenidoTemporal.replace('$#icono#$', 'check_box');
+                                    else
+                                        nuevoContenido += contenidoTemporal.replace('$#icono#$', 'check_box_outline_blank');
+                                }
+                            }
+
+                            $('#listaUsuarios').html(nuevoContenido + "</tbody></table>");
+                        }
+                    }
+                });
+                
+                
+                $(document.body).on('click', 'a', function(e){
+                    if($(this).hasClass('usuarioExistente')){
+                        establecerCodigo( document.location.href.match(/[^\/]+$/)[0],
+                                          $(this).data('codigo'),
+                                          $(this).data('modo') );
+                    } else if($(this).hasClass('usuarioNuevo')){
+                        establecerCodigo( document.location.href.match(/[^\/]+$/)[0] );
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

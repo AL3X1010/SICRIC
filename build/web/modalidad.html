@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8">
+
+    <style>
+        div.elementoSeleccionable:hover{
+            border-color: black;
+            border-width: 2px;
+            border-style: dashed;
+        }
+
+        div.elementoSeleccionado:hover{
+            background-color: #fff3e0;
+        }
+
+        #divElementos{
+            width: 100%;
+            height: 200px;
+            border-color: black;
+            border-width: 2px;
+            border-style: dashed;
+        }
+
+        #opciones{
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="userNavBar"></div>
+    <div>
+        <div class="row">
+            <div class="col s6 offset-s1">
+                <form action="modalidad.do" method="post" autocomplete="off">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%; margin-bottom: 0%">
+                            <h4 class="center">
+                                Información de la modalidad
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s6">
+                                <input name="nombre" id="nombre" type="text" 
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios"/>
+                                <label id="lblNombre" for="nombre">Nombre de la modalidad</label>
+                                <span id="nombreHelper"></span>
+                            </div>
+
+                            <div class="col s12" id='divElementos'></div>
+                            
+                            <input name="modalidad" id="modalidad" type="text" class="campoVacio" hidden="hidden">
+                            
+                            <div class="col s12">
+                                <input type="text" style="border-bottom: none;" disabled />
+                            </div>
+
+                            <div class="input-field col s12" style="margin-top: -0%; margin-bottom: 0%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right"
+                                        type="submit" id="btnSubmit" name="btnSubmit">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col s3 offset-s1" id='opciones'>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card gray">
+                            <div class="card-content">
+                                <div class='row'>
+                                    <h6 class="center">Elementos básicos</h6><hr/>
+                                    <div class='col s12 elementoSeleccionable' id='areaYtiempo'>
+                                        Área: ____________&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Tiempo: ________
+                                    </div>
+                                    <div class="col s12 elementoSeleccionable" style="margin-top: 5%;" id='comentarioAbierto'>
+                                        Etiqueta: Abierto
+                                    </div>
+                                </div>
+                                <br/>
+
+                                <div class='row elementoSeleccionable' style="margin-top: -4%;" id='seleccionUnica'>
+                                    <h6 class="center">Selección única</h6><hr/>
+                                    <p>
+                                        Etiqueta editable:
+                                        <label>
+                                            <input name='seleccionUnica' type="radio"/>
+                                            <span>Opc. 1</span>
+                                        </label>
+
+                                        <label>
+                                            <input name='seleccionUnica' type="radio"/>
+                                            <span>Opc. 2</span>
+                                        </label>
+                                    </p>
+                                </div>
+                                <br/>
+
+                                <div class='row elementoSeleccionable' style="margin-top: -4%;" id='seleccionMultiple'>
+                                    <h6 class="center">Selección múltiple</h6><hr/>
+                                    <p>
+                                        Etiqueta editable:
+                                        <label>
+                                            <input name='seleccionMultiple' type="checkbox" class='filled-in'/>
+                                            <span>Opc. 1</span>
+                                        </label>
+
+                                        <label>
+                                            <input name='seleccionMultiple' type="checkbox" class='filled-in'/>
+                                            <span>Opc. 2</span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <!-- Interface de usuario de JQuery necesario para el Drag And Drop-->
+    <script src="materialize/js/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Variables globales.
+            var numeroElementosAYT = 0;
+            var alturaInicial = 150;
+            var nombreInicial = "";
+            var consecutivoIds = -1;
+            
+
+            // Verifica si existe sesión actual, en caso de no existir
+            // redirige a index.html.
+            verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+            // Verifica si existen mensajes de retroalimentacion para el usuario.
+            obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+            
+            
+            // Carga el registro de la modalidad en la página web.
+            $.ajax({
+                method: "post",
+                async: false,
+                url: "cargaRegistro.do",
+                data: {name: "GETMODINF"},
+                success: function (data, status) {
+                    var informacionModalidad = JSON.parse(caracteresEspeciales(data.toString()));
+                    adecuarElementos(informacionModalidad.modo);
+                    nombreInicial = informacionModalidad.nombre;
+                    
+                    // Asigna los valores a los campos.
+                    $('#nombre').val(informacionModalidad.nombre);
+                    $('#divElementos').html(informacionModalidad.elementos);
+                    
+                    if(String(informacionModalidad.nombre).length > 0)
+                        $('#lblNombre').addClass('active');
+                    
+                    // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                    if (informacionModalidad.error)
+                        myAlert(informacionModalidad.mensaje);
+                    else{
+                        eval(informacionModalidad.jquery);
+                        $('#divElementos').css('height', 'auto');
+                        
+                        if(informacionModalidad.modo === 'mod-v'){
+                            $('#divElementos').css({'pointer-events': 'none',
+                                                    'opacity': '0.9'});
+                        } else {
+                            var alturaFinal = parseInt($('#divElementos').css('height').replace('px', '')) + 125;
+                            $('#divElementos').css('height', alturaFinal + 'px');
+                        }
+                    }
+                }
+            });
+            
+        
+            // Dar propiedad de arrastre a los elementos con la clase ElementoSeleccionable.
+            $('.elementoSeleccionable').draggable({
+                containment: 'document',
+                cursor: 'move',
+                helper: myHelper
+            });
+
+            // Función para propiedad HELPER de elemento seleccionable (define lo que se muestra
+            // mientras se arrastra el elemento).
+            function myHelper(event){
+                var contenidoHTML = "";
+                var codigoElemento = $(this).attr("id");
+
+                if(codigoElemento === 'areaYtiempo'){
+                    contenidoHTML =
+                    "<div class='row' style='border-color: black; border-width: 2px; border-style: dashed; padding-top: 1.5%;'>" +
+                    "   <div class='col s6'><label>Área:__________</label></div>" +
+                    "   <div class='col s6'><label>Tiempo:________</label></div>" +
+                    "</div>";
+                } else if(codigoElemento === 'comentarioAbierto'){
+                    contenidoHTML =
+                    "<div class='row' style='border-color: black; border-width: 2px; border-style: dashed; padding-top: 1.5%;'>" +
+                    "   <div class='col s6'><label>Etiqueta:</label></div>" +
+                    "   <div class='col s12'>" +
+                    "      <label>Abierto...</label>" +
+                    "   </div>" +
+                    "</div>";
+                } else if(codigoElemento === 'seleccionUnica'){
+                    contenidoHTML =
+                    "<div class='row' style='border-color: black; border-width: 2px; border-style: dashed; padding-top: 1.5%;'>" +
+                    "   <label>Etiqueta editable:</label>" +
+                    "   <label>" +
+                    "      <input name='seleccionUnica' type='radio' checked='checked' disabled='disabled'/>" +
+                    "      <span>Opc. 1</span>" +
+                    "   </label>" +
+                    "   <label>" +
+                    "      <input name='seleccionUnica' type='radio' disabled='disabled'/>" +
+                    "      <span>Opc. 2</span>" +
+                    "   </label>" +
+                    "</div>";
+                } else if(codigoElemento === 'seleccionMultiple'){
+                    contenidoHTML =
+                    "<div class='row' style='border-color: black; border-width: 2px; border-style: dashed; padding-top: 1.5%;'>" +
+                    "   <label>Etiqueta editable:</label>" +
+                    "   <label>" +
+                    "      <input name='seleccionUnica' type='checkbox' class='filled-in' checked='checked' disabled='disabled'/>" +
+                    "      <span>Opc. 1</span>" +
+                    "   </label>" +
+                    "   <label>" +
+                    "      <input name='seleccionUnica' type='checkbox' class='filled-in' checked='checked' disabled='disabled'/>" +
+                    "      <span>Opc. 2</span>" +
+                    "   </label>" +
+                    "</div>";
+                }
+
+                return contenidoHTML;
+            }
+
+
+            // Dar propiedad de recibir elementos al div que contendrá los valores.
+            $('#divElementos').droppable({
+                accept: '.elementoSeleccionable',
+                hoverClass: 'hovered',
+                drop: handleDropEvent
+            });
+
+            // Función para prodiedad DROP de elemento que recibirá los elementos arrastables,
+            // define que ocurrirá cuando se suelte el elemento.
+            function handleDropEvent( event, ui ) {
+                var draggable = ui.draggable;
+                var contenidoHTML = "";
+                var codigoElemento = draggable.attr('id');
+
+                if(codigoElemento === 'areaYtiempo' && numeroElementosAYT < 1){
+                    numeroElementosAYT++;
+                    contenidoHTML =
+                    "<div class='row elementoSeleccionado' data-tipo='areaYtiempo'>" +
+                    "   <div class='col s6'>" +
+                    "     Área:" +
+                    "     <div class='input-field inline'>" +
+                    "       <input type='text' class='validate campoLetrasEspacios center' disabled value='M u e s t r a'>"+
+                    "     </div>" +
+                    "   </div>" +
+                    "   <div class='col s5'>" +
+                    "     Tiempo:" +
+                    "     <div class='input-field inline'>" +
+                    "       <input type='text' class='validate campoEntero center' disabled value='M u e s t r a'>" +
+                    "     </div>" +
+                    "   </div>" +
+                    "   <div class='col s1 center'>" +
+                    "     <i class='material-icons btnEliminar' style='padding-top: 100%; cursor: pointer; color: red;'>delete</i>" +
+                    "   </div>" +
+                    "</div>";
+                } else if(codigoElemento === 'comentarioAbierto'){
+                    contenidoHTML =
+                    "<div class='row elementoSeleccionado' data-tipo='comentarioAbierto'>" +
+                    "   <div class='input-field col s6'>" +
+                    "       <input type='text' class='validate campoLetrasEspacios'required='' aria-required='true' maxlength='50' id='inp" + consecutivoIds + "'>" +
+                    "       <label for='inp" + consecutivoIds-- + "'>Etiqueta</label>" +
+                    "   </div>" +
+                    "   <div class='input-field col s4 offset-s1'>" +
+                    "     <div class='input-field' style='font-weight: bold;'>" +
+                    "        <label>Tipo: Abierto</label>" +
+                    "     </div>" +
+                    "   </div>" +
+                    "   <div class='input-field col s1 center'>" +
+                    "     <i class='material-icons btnEliminar' style='padding-top: 100%; cursor: pointer; color: red;'>delete</i>" +
+                    "   </div>" +
+                    "   <div class='col s12 input-field' style='margin-top: -5%;'>" +
+                    "      <textarea class='materialize-textarea' disabled></textarea>" +
+                    "      <label>Este campo será llenado por el fisioterapeuta cuando defina el plan de rehabilitación.</label>" +
+                    "   </div>" +
+                    "</div>";
+                } else if(codigoElemento === 'seleccionUnica'){
+                    contenidoHTML =
+                    "<div class='row elementoSeleccionado' data-tipo='seleccionUnica'>" +
+                    "   <div class='input-field col s6'>" +
+                    "       <input type='text' class='validate campoLetrasEspacios'required='' aria-required='true' maxlength='50' id='inp" + consecutivoIds + "'>" +
+                    "       <label for='inp" + consecutivoIds-- + "'>Etiqueta</label>" +
+                    "   </div>" +
+                    "   <div class='col s4 offset-s1'>" +
+                    "     <div class='input-field' style='font-weight: bold;'>" +
+                    "        <label>Tipo: Selección Única</label>" +
+                    "     </div>" +
+                    "   </div>" +
+                    "   <div class='col s1 center'>" +
+                    "     <i class='material-icons btnEliminar' style='padding-top: 100%; cursor: pointer; color: red;'>delete</i>" +
+                    "   </div>" +
+                    "   <div class='col s12' style='margin-top: -5%;'>" +
+                    "      <div class='chips chipsAlt'></div>" +
+                    "   </div>" +
+                    "</div>";
+                } else if(codigoElemento === 'seleccionMultiple'){
+                    contenidoHTML =
+                    "<div class='row elementoSeleccionado' data-tipo='seleccionMultiple'>" +
+                    "   <div class='input-field col s6'>" +
+                    "       <input type='text' class='validate campoLetrasEspacios'required='' aria-required='true' maxlength='50' id='inp" + consecutivoIds + "'>" +
+                    "       <label for='inp" + consecutivoIds-- + "'>Etiqueta</label>" +
+                    "   </div>" +
+                    "   <div class='col s4 offset-s1'>" +
+                    "     <div class='input-field' style='font-weight: bold;'>" +
+                    "        <label>Tipo: Selección Múltiple</label>" +
+                    "     </div>" +
+                    "   </div>" +
+                    "   <div class='col s1 center'>" +
+                    "     <i class='material-icons btnEliminar' style='padding-top: 100%; cursor: pointer; color: red;'>delete</i>" +
+                    "   </div>" +
+                    "   <div class='col s12' style='margin-top: -5%;'>" +
+                    "      <div class='chips chipsAlt'></div>" +
+                    "   </div>" +
+                    "</div>";
+                } else
+                    return;
+
+
+                // if(contenidoHTML.trim().length > 0){
+                    $(this).append(contenidoHTML);
+                    $('.chipsAlt').chips();
+                    $(this).height($(this).height() + alturaInicial);
+                    $(this).find('.chipsAlt').each(function(){
+                        $(this).removeClass('chipsAlt');
+                    });
+
+                    // if($(this).height() < alturaInicial)
+                    //     $(this).height($('#divElementos .row').height() + alturaInicial);
+                    // else
+                    //     $(this).height($(this).height() + (alturaInicial/2));
+                // }
+            }
+
+
+            // Construye el XML a partir de los valores ingresados por el usuario
+            // para enviarlo al servidor.
+            $('#btnSubmit').on('click', function(event){
+                // Valida que el nombre asigando a la modalidad no lo tenga otra existente.
+                if( $('#nombre').val() !== nombreInicial )
+                    $.ajax({
+                        method: "post",
+                        async: false,
+                        url: "validar.do",
+                        data: { service: "VLDMODNAM",
+                                name: $('#nombre').val() },
+                        success: function (data, status) {
+                            var respuesta = JSON.parse(data.toString());
+                            
+                            if(respuesta.error){
+                                $('#nombreHelper').attr('data-error', respuesta.mensaje);
+                                $('#nombreHelper').addClass('helper-text');
+                                $('#nombre').removeClass('valid').addClass('invalid');
+                                event.preventDefault();
+                                return false;
+                            }
+                        }
+                    });
+                
+                
+                // Valida que se haya seleccionado al menos una modalidad,
+                // si es así construye XML con selección.
+                var xmlOutput = "<elementos>";
+                var xmlLongitudInicial = xmlOutput.length;
+                var correlativoElemento = 1;
+
+                // Recorre todas las modalidades para armar XML que enviará al servidor.
+                $("#divElementos div.elementoSeleccionado").each(function(){
+                    var elementoSeleccionado = $(this);
+
+                    // Campos de muestra, no debe ser llenados por el usuario.
+                    if(elementoSeleccionado.data('tipo') === 'areaYtiempo'){
+                        xmlOutput +=
+                            "<elemento tipo='AYT' valor='' correlativo='" + correlativoElemento++ + "'>" +
+                            "   <opcion valor='' subtipo='AREA' correlativo='0'/>" +
+                            "   <opcion valor='' subtipo='TIEMPO' correlativo='0'/>" +
+                            "</elemento>";
+                        return;
+                    } else if(elementoSeleccionado.data('tipo') === 'comentarioAbierto'){
+                        elementoSeleccionado.find('div input').each(function(){
+                            xmlOutput +=
+                            "<elemento tipo='CAB' valor='" +
+                                    $(this).val().replace('\'', '').replace('"', '') +
+                                    "' correlativo='" + correlativoElemento++ + "'>" +
+                            "   <opcion valor='' subtipo='ABIERTO' correlativo='0'/>" +
+                            "</elemento>";
+                        });
+                    } else if(elementoSeleccionado.data('tipo') === 'seleccionUnica'){
+                        var primeraPasada = true;
+                        var correlativoOpcion = 1;
+
+                        // Recupera el valor de la eqiqueta que tendrá el grupo de opciones.
+                        elementoSeleccionado.find('div input').each(function(){
+                            if(primeraPasada){
+                                primeraPasada = false;
+                                xmlOutput +=
+                                    "<elemento tipo='SUN' valor='" +
+                                        $(this).val().replace('\'', '').replace('"', '') +
+                                        "' correlativo='" + correlativoElemento++ + "'>";
+                            }
+                        });
+
+                        var cantidadOpciones = 0;
+                        elementoSeleccionado.find('div .chip').each(function(){
+                            cantidadOpciones++;
+                            var texto = $(this).text().trim().substr(0, $(this).text().trim().length - 5);
+                            xmlOutput +=
+                                "<opcion valor='" + texto.replace('\'', '').replace('"', '') +
+                                    "' subtipo='' correlativo='" + correlativoOpcion++ + "'/>";
+                        });
+
+                        if(cantidadOpciones < 2){
+                            alert("Debe proporcional dos, o más, opciones para selección única.");
+                            event.preventDefault();
+                            return false;
+                        }
+
+                        xmlOutput += "</elemento>";
+                    } else if(elementoSeleccionado.data('tipo') === 'seleccionMultiple'){
+                        var primeraPasada = true;
+                        var correlativoOpcion = 1;
+
+                        // Recupera el valor de la eqiqueta que tendrá el grupo de opciones.
+                        elementoSeleccionado.find('div input').each(function(){
+                            if(primeraPasada){
+                                primeraPasada = false;
+                                xmlOutput +=
+                                    "<elemento tipo='SMU' valor='" + $(this).val().replace('\'', '').replace('"', '') + "' correlativo='" + correlativoElemento++ + "'>";
+                            }
+                        });
+
+                        var cantidadOpciones = 0;
+                        elementoSeleccionado.find('div .chip').each(function(){
+                            cantidadOpciones++;
+                            var texto = $(this).text().trim().substr(0, $(this).text().trim().length - 5);
+                            xmlOutput +=
+                                "<opcion valor='" + texto.replace('\'', '').replace('"', '') + "' subtipo='' correlativo='" + correlativoOpcion++ + "'/>";
+                        });
+
+                        if(cantidadOpciones < 2){
+                            alert("Debe proporcional dos, o más, opciones para selección múltiple.");
+                            event.preventDefault();
+                            return false;
+                        }
+
+                        xmlOutput += "</elemento>";
+                    }
+                });
+
+                if( xmlLongitudInicial === xmlOutput.length ){
+                    alert('Defina al menos un elemento para esta modalidad.');
+                    event.preventDefault();
+                } else if( confirm("Está a punto de enviar sus cambios, ¿desea continuar?") ) {
+                    xmlOutput += "</elementos>";
+                    $('#modalidad').val(xmlOutput);
+                }
+            });
+
+
+            // Elimina la fila que corresponde al botón ELIMINAR que se haya presionado.
+            $(document.body).on("click", ".btnEliminar", function(e){
+                var alturaEliminada = $(this).closest('.row').height();
+                if($(this).closest('.row').data('tipo') === 'areaYtiempo')
+                    numeroElementosAYT--;
+
+                $(this).closest('.row').remove();
+                $('#divElementos').height($('#divElementos').height() - alturaEliminada);
+            });
+
+
+            // Regresa al lobby de modalidades.
+            $('#btnCancelar').on('click', function(event){
+                if(confirm("¿Desea regresar al lobby de modalidades?"))
+                    window.location.replace("lobbymodalidades.html");
+
+                event.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>

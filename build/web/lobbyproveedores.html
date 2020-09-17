@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+        <style>
+            .inactiveLink {
+                color: #000000;
+                pointer-events: none;
+                text-decoration: none;
+                opacity: 0.4;
+            }
+
+            .activeLink{
+                pointer-events: none;
+                text-decoration: none;
+                color: #ef5350;
+            }
+
+            .resaltar:hover{
+                background-color: lightgray;
+            }
+
+            th {
+                background: white;
+                position: sticky;
+                top: 0;
+            }
+
+            #preloader {
+                position: absolute;
+                top :0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row" id="listaProveedores">
+                <div class="preloader-wrapper big active" id="preloader">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-yellow">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga la lista de proveedores en la página web.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "cargarLista.do",
+                    data: {name: "GETPVDL"},
+                    success: function (data, status) {
+                        var listaProveedores = JSON.parse(data.toString());
+                        
+                        $('#listaProveedores').html(listaProveedores.elementosHTML);
+                        if (listaProveedores.error)
+                            myAlert(listaProveedores.mensaje);
+                    }
+                });
+                
+                
+                // Obtiene mensajes de retroalimentación para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+
+                
+                // Llama a función que establece el código de empleado para definir
+                // si se crea un nuevo registro o se actualiza uno existente.
+                $(document.body).on('click', 'a', function (e) {
+                    if($(this).hasClass('proveedorExistente')) {
+                        establecerCodigo( document.location.href.match(/[^\/]+$/)[0],
+                                          $(this).data('codigo'),
+                                          $(this).data('modo'));
+                    } else if($(this).hasClass('proveedorNuevo')) {
+                        establecerCodigo(document.location.href.match(/[^\/]+$/)[0]);
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

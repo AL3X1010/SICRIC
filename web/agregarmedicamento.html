@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div class="container">     
+            <div class="row">
+                <form class="col s12" action="inventariofarmacia.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" id="divInventarioFarmacia" style="margin-top: -3%">
+                            <h4 class="center">Información del Medicamento</h4>
+                            <hr/>
+                        <div class="row">
+                                                        
+                            <div class="input-field col s6">
+                                <input name="codigoSerie" id="codigoSerie" type="text" 
+                                       maxlength="20" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label id="lblCodigoSerie" for="codigoSerie">Serie</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="codigoLote" id="codigoLote" type="text" 
+                                       maxlength="20" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label id="lblCodigoLote" for="codigoLote">Lote</label>
+                            </div>
+                            
+                            
+                            <div class="input-field col s6">
+                                <input name="nombre" id="nombre" type="text" 
+                                       maxlength="100" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label id="lblNombre" for="nombre">Nombre del medicamento</label>
+                            </div> 
+                            
+                            <div class="input-field col s4">
+                            <input id="cantidadInicial" name="cantidadInicial" type="number"
+                                   min="00000000" max="99999999" required=""
+                                   aria-required="true" class="validate" />
+                            <label for="cantidadInicial" id="lblCantidadInicial">Cantidad ingresada</label>
+                            </div>
+                            
+                                                                
+                           <div class="input-field col s12">
+                                <textarea name="descripcion" id="descripcion" 
+                                          maxlength="300" required="" aria-required="true"
+                                          class="materialize-textarea validate
+                                          campoLetrasEspacios"></textarea>
+                                <label id="lblDescripcion" for="descripcion">Descripcion del medicamento</label>
+                            </div>
+                            
+                            <div class="input-field col s3">
+                                <select id="proveedor" name="proveedor" required="" aria-required="true">
+                                    <option value="aqaq" selected>Droguería Francelia</option>
+                                </select>
+                                <label for="proveedor">Proveedor</label>
+                            </div>
+                            
+                            <div class="input-field col s4">
+                            <input id="costoLote" name="costoLote" type="number"
+                                   min="00000000" max="99999999" required=""
+                                   aria-required="true" class="validate" />
+                            <label for="costoLote" id="lblcostoLote">costo total del lote</label>
+                            </div>
+                            
+                            <div class="input-field col s4">
+                            <input id="fechaIngreso" name="fechaIngreso" type="text"
+                                   class="validate datepicker campoVacio"
+                                   required="" aria-required="true" />
+                            <label for="fechaIngreso" id="lblFechaIngreso">Fecha de ingreso</label>
+                            </div>
+                            
+                            <div class="input-field col s4">
+                            <input id="fechaIngreso" name="fechaIngreso" type="text"
+                                   class="validate datepicker campoVacio"
+                                   required="" aria-required="true" />
+                            <label for="fechaIngreso" id="lblFechaIngreso">Fecha de vencimiento</label>
+                            </div>
+                            
+                        
+                            <div class="switch input-field col s5">
+                                <label>
+                                    No Cuantificable
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo">
+                                    <span class="lever"></span>
+                                    Cuantificable
+                                </label>
+                            </div>  
+                            <div class="input-field col s1"></div> 
+                        </div>
+                            <div class="input-field col s12">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" name="btnSubmit" id="btnSubmit">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Carga el registro del inventario de farmacia en la pagina web.
+                $.ajax({
+                    method: "post",
+                    url: "cargaRegistro.do",
+                    data: {name: "GETIFAINF"},
+                    success: function (data, status) {
+                        console.log(data.toString());
+                        var informacionInventarioFarmacia = JSON.parse(data.toString());
+
+                        if (!informacionInventarioFarmacia.error){
+                            if(informacionInventarioFarmacia.codigo > 0){
+                                $('#codigoSerie').val(informacionInventarioFarmacia.codigoSerie);
+                                $('#lblCodigoSerie').addClass('active');
+                                $('#codigoLote').val(informacionInventarioFarmacia.codigoLote);
+                                $('#lblCodigoLote').addClass('active');
+                                $('#fechaVencimiento').val(informacionInventarioFarmacia.fechaVencimiento);
+                                $('#lblFechaVencimiento').addClass('active');
+                                $('#nombre').val(informacionInventarioFarmacia.nombre);
+                                $('#lblNombre').addClass('active');
+                                $('#descripcion').val(informacionInventarioFarmacia.descripcion);
+                                $('#lblDescripcion').addClass('active');
+                                $('#cantidadInicial').val(informacionInventarioFarmacia.cantidadInicial);
+                                $('#lblCantidadInicial').addClass('active');
+                                $('#cantidadExistencial').val(informacionInventarioFarmacia.cantidadExistencial);
+                                $('#lblCantidadExistencial').addClass('active');
+                                $('#fechaIngreso').val(informacionInventarioFarmacia.fechaIngreso);
+                                $('#lblFechaIngreso').addClass('active');
+                                $('#costoLote').val(informacionInventarioFarmacia.costoLote);
+                                $('#lblCostoLote').addClass('active');
+                               
+                            } else {
+                                $('#codigoSerie').val('');
+                                $('#lblCodigoSerie').removeClass('active');
+                                $('#codigoLote').val('');
+                                $('#lblCodigoLote').removeClass('active');
+                                $('#fechaVencimiento').val('');
+                                $('#lblFechaVencimiento').removeClass('active');
+                                $('#nombre').val('');
+                                $('#lblNombre').removeClass('active');
+                                $('#descripcion').val('');
+                                $('#lblDescripcion').removeClass('active');
+                                $('#cantidadInicial').val('');
+                                $('#lblCantidadInicial').removeClass('active');
+                                $('#cantidadExistencial').val('');
+                                $('#lblCantidadExistencial').removeClass('active');
+                                $('#fechaIngreso').val('');
+                                $('#lblFechaIngreso').removeClass('active');
+                                $('#costoLote').val('');
+                                $('#lblCostoLote').removeClass('active');
+                            }
+
+                            if (informacionInventarioFarmacia.activo === true)
+                                $('#cbxActivo').attr('checked', 'true');
+                            else
+                                $('#cbxActivo').removeAttr('checked');
+                        } else {
+                            $('#codigoSerie').val('');
+                                $('#lblCodigoSerie').removeClass('active');
+                                $('#codigoLote').val('');
+                                $('#lblCodigoLote').removeClass('active');
+                                $('#fechaVencimiento').val('');
+                                $('#lblFechaVencimiento').removeClass('active');
+                                $('#nombre').val('');
+                                $('#lblNombre').removeClass('active');
+                                $('#descripcion').val('');
+                                $('#lblDescripcion').removeClass('active');
+                                $('#cantidadInicial').val('');
+                                $('#lblCantidadInicial').removeClass('active');
+                                $('#cantidadExistencial').val('');
+                                $('#lblCantidadExistencial').removeClass('active');
+                                $('#fechaIngreso').val('');
+                                $('#lblFechaIngreso').removeClass('active');
+                                $('#costoLote').val('');
+                                $('#lblCostoLote').removeClass('active');
+                                $('#cbxActivo').attr('checked', 'true');
+
+                            myAlert(informacionInventarioFarmacia.mensaje);
+                        }
+                        $('#proveedor').html(informacionInventarioFarmacia.selectProveedor);
+                        $('select').trigger('contentChanged');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

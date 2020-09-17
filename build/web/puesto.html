@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container" style="margin-top: -0.3%">
+            <div class="row">
+                <form class="col s12" action="puesto.do" method="post" autocomplete="off">
+                    <div class="card-panel" id="divPuesto">
+                        <div class="row" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Información del puesto de trabajo
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+                            
+                            <div class="switch input-field col s12">
+                                <label>
+                                    Inactivo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo">
+                                    <span class="lever"></span>
+                                    Activo
+                                </label>
+                            </div>
+
+                            <div class="input-field col s12"></div> 
+
+                            <div class="input-field col s6">
+                                <input name="nombre" id="nombre" type="text" 
+                                       maxlength="100" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label id="lblNombre" for="nombre">Nombre del Puesto</label>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <select id="departamento" name="departamento"></select>
+                                <label for="departamento">Departamento</label>
+                            </div>
+
+                            <div class="input-field col s12">
+                                <textarea name="descripcion" id="descripcion" 
+                                          maxlength="300" required="" aria-required="true"
+                                          class="materialize-textarea campoLetrasEspacios"></textarea>
+                                <label id="lblDescripcion" for="descripcion">Descripción (opcional)</label>
+                            </div>
+                            
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2.5%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right"
+                                        id="btnContinuar">
+                                    Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>    
+                    
+                    <div class="card-panel" id="divDescPuesto">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">Perfil del puesto de trabajo</h4>
+                            <hr/>
+                            
+                            <div class="input-field col s6 m4" id="divDepartamento">
+                                <select id="departamento2" name="departamento2" disabled="disabled"></select>
+                                <label for="departamento2">Departamento</label>
+                            </div>
+
+                            <div class="input-field col s6 m4" id="divNombrePuesto">
+                                <input id="puesto" type="text" readonly required="" aria-required="true">
+                                <label id="lblPuesto" for="puesto">Nombre del Puesto</label>
+                            </div>
+                            
+                            <div class="input-field col s6 m4" id="divPuestoJefe">
+                                <select id='puestoJefe' name='puestoJefe'></select>
+                                <label for='puestoJefe'>Puesto del jefe</label>
+                            </div>
+                            
+                            <div class="col s2 center" style="margin-top: 2.8%;" >
+                                Edad requerida:
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input required="" aria-required="true" id="edadMinima"
+                                    name="edadMinima" type="number" min="14" max="69"/>
+                                <label for="edadMinima" id="lblEdadMinima">mínima</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input required="" aria-required="true" id="edadMaxima"
+                                    name="edadMaxima" type="number" min="15" max="80"/>
+                                <label for="edadMaxima" id="lblEdadMaxima">máxima</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select id="genero" name="genero"></select>
+                                <label for="genero">Género</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select id="estadoCivil" name="estadoCivil"></select>
+                                <label for="estadoCivil">Estado civil</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <h6>Cualidades y habilidades</h6>
+                            <div class="col s12">
+                                <div class="chips chips-autocomplete chips-autocomplete-CYH"
+                                    id="divCYH"></div>
+                            </div>
+
+                            <input type="hidden" id="inputCYH" name="inputCYH" value=""/>
+                        </div>
+
+                        <div class="row" id="divRACAll">
+                            <h6>Requisitos académicos y complementarios</h6>
+                            
+                            <div class="input-field col s2">
+                                <select id="nivelAcademico">
+                                    <option value="" selected disabled>Seleccione</option>
+                                    <option value="S">Secundaria</option>
+                                    <option value="PR">Pregrado univ.</option>
+                                    <option value="PO">Posgrado univ.</option>
+                                    <option value="D">Doctorado</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-field col s3">
+                                <input type="text" id="plantillaRAC" class="autocomplete">
+                                <label for="plantillaRAC">Requisito formal</label>
+                            </div>
+
+                            <div class="input-field col s1">
+                                <a id="masRAC" class="btn-floating pulse"><i class="material-icons">add</i></a>
+                            </div>
+                            
+                            <div class="input-field col s5">
+                                <input type="text" class="validate" id="plantillaRAC2">
+                                <label for="plantillaRAC2" id="lblPlantillaRAC2">Requisito académico informal</label>
+                            </div>
+                            
+                            <div class="input-field col s1">
+                                <a id="masRAC2" class="btn-floating pulse"><i class="material-icons">add</i></a>
+                            </div>
+                            
+                            <input type="hidden" id="inputRAC" name="inputRAC" value=""/>
+                        </div>
+                        
+                        <div class="row">
+                            <h6>Conocimientos básicos</h6>
+                            <div class="col s12">
+                                <div class="chips chips-autocomplete chips-autocomplete-CB" id="divCB"></div>
+                            </div>
+
+                            <input type="hidden" id="inputCB" name="inputCB" value=""/>
+                        </div>
+
+                        <div class="row">
+                            <h6>Experiencia requerida</h6>
+
+                            <div class="input-field col s6">
+                                <select id="experiencia" name="experiencia">
+                                </select>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input type="text" class="validate" id="notaExperiencia"
+                                       name="notaExperiencia"/>
+                                <label for="notaExperiencia" id="lblNotaExperiencia">
+                                    Lo que guste agregar...</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <h6>Objetivo del puesto</h6>
+
+                            <div class="input-field col s12">
+                                <input type="text" class="validate" id="objetivo" name="objetivo">
+                                <label for="objetivo" id="lblObjetivo">Lo que guste agregar...</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="divARPAll">
+                            <h6>Principales actividades y responsabilidades del puesto</h6>
+
+                            <div class="input-field col s11">
+                                <textarea id="plantillaARP" class="materialize-textarea" data-length="250"></textarea>
+                            </div>
+
+                            <div class="input-field col s1">
+                                <a id="masARP" class="btn-floating pulse"><i class="material-icons">add</i></a>
+                            </div>
+
+                            <input type="hidden" id="inputARP" name="inputARP" value=""/>
+                        </div>
+
+
+                        <div class="row">
+                            <h6>Autoridad</h6>
+
+                            <div class="input-field col s12">
+                                <input type="text" class="validate" id="autoridad" name="autoridad">
+                                <label for="autoridad" id="lblAutoridad">Lo que guste agregar...</label>
+                            </div>
+                        </div>
+
+                        <div class="row" id="divPuestoRespaldo">
+                            <h6>Respaldo del puesto</h6>
+
+                            <div class="input-field col s6">
+                                <select id="puestoRespaldo" name="puestoRespaldo"></select>
+                                <label for="puestoRespaldo">En caso de ausencia es sustituido por...</label>
+                            </div>
+                        </div>
+                        
+                        <div class="row" style="margin-bottom: -2%">
+                            <div class="input-field col s12" style="margin-top: -2.7%;">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnRegresar">
+                                    Regresar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" id="btnContinuar2">
+                                    Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-panel" id="divSalario">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">Salario del puesto de trabajo</h4>
+                            <hr/>
+                        
+                            <div class="input-field col s12 m6">
+                                <select id="tipoSalario" name="tipoSalario">
+                                    <option value="T" selected>Salario bruto</option>
+                                    <option value="O">Por unidad de obra</option>
+                                    <option value="P">Por participación en utilidades, ventas o cobros </option>
+                                </select>
+                                <label>Seleccione el tipo de salario</label>
+                            </div>
+
+                            <div class="switch input-field col m6">
+                                <input type="text" style="border-bottom: 1px solid white" disabled />
+                            </div>
+
+                            <div id="salBruto">
+                                <div class="input-field col s4">
+                                    <input id="salarioBase" name="salarioBase"
+                                           type="text" class="validate campoDecimal"
+                                           maxlength="14" required="" aria-required="true" />
+                                    <label for="salarioBase" id="lblSalarioBase">Salario base</label>
+                                </div>
+
+                                <div class="input-field col s8">
+                                    <p>
+                                        <label>
+                                            <input class="rbtFrecuenciaM rbtFrecuencia"
+                                                   type="radio" id="rbtTiempoMes"
+                                                   name="rbtTiempo" value="M" />
+                                            <span>Mensual</span>
+                                        </label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label>
+                                            <input class="rbtFrecuenciaQ rbtFrecuencia"
+                                                   type="radio" 
+                                                   id="rbtTiempoQuincena"
+                                                   name="rbtTiempo"
+                                                   value="Q" />
+                                            <span>Quincenal</span>
+                                        </label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label>
+                                            <input class="rbtFrecuenciaD rbtFrecuencia"
+                                                   type="radio" id="rbtTiempoDia" name="rbtTiempo" value="D" />
+                                            <span>Día</span>
+                                        </label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label>
+                                            <input class="rbtFrecuenciaH rbtFrecuencia" type="radio" id="rbtTiempoHora" name="rbtTiempo" value="H" />
+                                            <span>Hora</span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div id="salPorUniObr">
+                                <div class="input-field col s4 m3">
+                                    <input id="salarioUniObr" name="salarioUniObr"
+                                           type="text" class="validate campoDecimal"
+                                           maxlength="14" />
+                                    <label for="salarioUniObr" id="lblSalarioUniObr">Salario por unidad</label>
+                                </div>
+
+                                <div class="input-field col s4 m3">
+                                    <input id="sueloUniObr" name="sueloUniObr"
+                                           type="text" class="validate campoEntero"
+                                           maxlength="11" />
+                                    <label for="sueloUniObr" id="lblSueloUniObr">Suelo en unidades</label>
+                                </div>
+
+                                <div class="input-field col s4 m3">
+                                    <input id="techoUniObr" name="techoUniObr"
+                                           type="text" class="validate campoEntero"
+                                           maxlength="11" />
+                                    <label for="techoUniObr" id="lblTechoUniObr">Techo en unidades</label>
+                                </div>
+                            </div>
+
+                            <div id="salPar">
+                                <div class="input-field col s4 m3">
+                                    <input id="participacion" name="participacion"
+                                           type="text" class="validate campoDecimal"
+                                           maxlength="6" />
+                                    <label for="participacion" id="lblParticipacion">Participacion en %</label>
+                                </div>
+
+                                <div class="input-field col s4 m3">
+                                    <input id="sueloParticipacion" name="sueloParticipacion"
+                                           type="text" class="validate campoDecimal"
+                                           maxlength="14" />
+                                    <label for="sueloParticipacion" id="lblSueloParticipacion">Suelo en monto</label>
+                                </div>
+
+                                <div class="input-field col s4 m3">
+                                    <input id="techoParticipacion" name="techoParticipacion"
+                                           type="text" class="validate campoDecimal"
+                                           maxlength="14" />
+                                    <label for="techoParticipacion" id="lblTechoParticipacion">Techo en monto</label>
+                                </div>
+                            </div>
+                            
+                            <div class="input-field col s12" style="margin-top: -0.2%; margin-bottom: -2.5%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnRegresar2">
+                                    Regresar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        name="btnSubmit" id="btnSubmit">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+        </div>        
+
+        
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Campos de salario con valores iniciales.
+                var tipoSalarioInicial = "T";
+                var participacionInicial = 0;
+                var salarioUnitarioInicial = 0;
+                var sueloInicial = 0;
+                var techoInicial = 0;
+                
+                // Muestra primera pantalla para crear puesto de trabajo y
+                // oculta segunda pantalla de la descripción del puesto de trabajo.
+                $('#divDescPuesto').hide();
+                $('#btnRegresar').hide();
+                $('#btnContinuar2').hide();
+                $('#divSalario').hide();
+                $('#salPorUniObr').hide();
+                $('#salPar').hide();
+                $('#btnRegresar2').hide();
+                $('#btnSubmit').hide();
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+
+                // Carga el registro del puesto de trabajo en la página web.
+                $.ajax({
+                    method: "post",
+                    url: "cargaRegistro.do",
+                    data: {name: "GETJOBINF"},
+                    success: function (data, status) {
+                        var respuesta = JSON.parse(data.toString());
+                        var informacionPuesto = respuesta[1];
+                        adecuarElementos(respuesta[0].modo);
+                        $('#departamento2').attr('disabled', 'disabled');
+                        $('#puesto').attr('disabled', 'disabled');
+                        
+                        if (!informacionPuesto.error) {
+                            $('#nombre').val(informacionPuesto.nombre);
+                            $('#puesto').val(informacionPuesto.nombre);
+                            $('#lblNombre').addClass('active');
+                            $('#lblPuesto').addClass('active');
+                            $('#descripcion').val(informacionPuesto.descripcion);
+                            $('#lblDescripcion').addClass('active');
+                            $('#edadMinima').val(informacionPuesto.edadMinima);
+                            $('#lblEdadMinima').addClass('active');
+                            $('#edadMaxima').val(informacionPuesto.edadMaxima);
+                            $('#lblEdadMaxima').addClass('active');
+                            $('#notaExperiencia').val(informacionPuesto.notaExperiencia);
+                            $('#lblNotaExperiencia').addClass('active');
+                            $('#objetivo').val(informacionPuesto.objetivo);
+                            $('#lblObjetivo').addClass('active');
+                            $('#autoridad').val(informacionPuesto.autoridad);
+                            $('#lblAutoridad').addClass('active');
+                            
+                            if (informacionPuesto.codigo === 0) {
+                                $('#lblNombre').removeClass('active');
+                                $('#lblDescripcion').removeClass('active');
+                                $('#lblNotaExperiencia').removeClass('active');
+                                $('#lblObjetivo').removeClass('active');
+                                $('#lblAutoridad').removeClass('active');
+                            }
+
+                            // Marca como activo o inactivo el puesto de trabajo.
+                            if (informacionPuesto.activo)
+                                $('#cbxActivo').attr('checked', 'true');
+                            else $('#cbxActivo').removeAttr('checked');
+
+                            // Muestra o esconde SELECT del puesto del jefe.
+                            if(!informacionPuesto.flagSelectJefe){
+                                $('#divDepartamento').removeClass("m4");
+                                $('#divNombrePuesto').removeClass("m4");
+                                $('#divPuestoJefe').hide();
+                            } else {
+                                $('#divDepartamento').addClass("m4");
+                                $('#divNombrePuesto').addClass("m4");
+                                $('#divPuestoJefe').show();
+                            }
+                            
+                            // Muestra u oculta SELECT del puesto de respaldo.
+                            if(!informacionPuesto.flagSelectRespaldo)
+                                $('#divPuestoRespaldo').hide();
+                            else $('#divPuestoRespaldo').show();
+                            
+                            $('#salarioBase').val(informacionPuesto.salarioBase.toFixed(2));
+                            $('#lblSalarioBase').addClass('active');
+                            $('.rbtFrecuencia' + informacionPuesto.frecuencia).prop('checked', true);
+                            tipoSalarioInicial = informacionPuesto.codigo2;
+                            
+                            // Valores para los distintos tipos de salario.
+                            if (informacionPuesto.codigo2 === "T") {
+                                $('#salPorUniObr').hide();
+                                $('#salPar').hide();
+
+                                $('#salarioUniObr').val('0.00');
+                                $("#salarioUniObr").removeAttr("required");
+                                $("#salarioUniObr").removeAttr("aria-required");
+                                $('#sueloUniObr').val('0');
+                                $("#sueloUniObr").removeAttr("required");
+                                $("#sueloUniObr").removeAttr("aria-required");
+                                $('#techoUniObr').val('0');
+                                $("#techoUniObr").removeAttr("required");
+                                $("#techoUniObr").removeAttr("aria-required");
+                                
+                                $('#participacion').val('0.000');
+                                $("#participacion").removeAttr("required");
+                                $("#participacion").removeAttr("aria-required");
+                                $('#sueloParticipacion').val('0.00');
+                                $("#sueloParticipacion").removeAttr("required");
+                                $("#sueloParticipacion").removeAttr("aria-required");
+                                $('#techoParticipacion').val('0.00');
+                                $("#techoParticipacion").removeAttr("required");
+                                $("#techoParticipacion").removeAttr("aria-required");
+                            } else if (informacionPuesto.codigo2 === "O") {
+                                salarioUnitarioInicial = informacionPuesto.salarioObra;
+                                sueloInicial = informacionPuesto.suelo;
+                                techoInicial = informacionPuesto.techo;
+                                $('#salPorUniObr').show();
+                                $('#salPar').hide();
+
+                                $('#salarioUniObr').val(informacionPuesto.salarioObra.toFixed(2));
+                                $("#salarioUniObr").attr("required", "");
+                                $("#salarioUniObr").attr("aria-required", "true");
+                                $('#lblSalarioUniObr').addClass('active');
+                                $('#sueloUniObr').val(informacionPuesto.suelo.toFixed(0));
+                                $("#sueloUniObr").attr("required", "");
+                                $("#sueloUniObr").attr("aria-required", "true");
+                                $('#lblSueloUniObr').addClass('active');
+                                $('#techoUniObr').val(informacionPuesto.techo.toFixed(0));
+                                $("#techoUniObr").attr("required", "");
+                                $("#techoUniObr").attr("aria-required", "true");
+                                $('#lblTechoUniObr').addClass('active');
+                                
+                                $('#participacion').val('0.000');
+                                $("#participacion").removeAttr("required");
+                                $("#participacion").removeAttr("aria-required");
+                                $('#sueloParticipacion').val('0.00');
+                                $("#sueloParticipacion").removeAttr("required");
+                                $("#sueloParticipacion").removeAttr("aria-required");
+                                $('#techoParticipacion').val('0.00');
+                                $("#techoParticipacion").removeAttr("required");
+                                $("#techoParticipacion").removeAttr("aria-required");
+                            } else if (informacionPuesto.codigo2 === "P") {
+                                participacionInicial = informacionPuesto.participacion;
+                                sueloInicial = informacionPuesto.suelo;
+                                techoInicial = informacionPuesto.techo;
+                                $('#salPar').show();
+                                $('#salPorUniObr').hide();
+
+                                $('#participacion').val(informacionPuesto.participacion.toFixed(3));
+                                $("#participacion").attr("required", "");
+                                $("#participacion").attr("aria-required", "true");
+                                $('#lblParticipacion').addClass('active');
+                                $('#sueloParticipacion').val(informacionPuesto.suelo.toFixed(2));
+                                $("#sueloParticipacion").attr("required", "");
+                                $("#sueloParticipacion").attr("aria-required", "true");
+                                $('#lblSueloParticipacion').addClass('active');
+                                $('#techoParticipacion').val(informacionPuesto.techo.toFixed(2));
+                                $("#techoParticipacion").attr("required", "");
+                                $("#techoParticipacion").attr("aria-required", "true");
+                                $('#lblTechoParticipacion').addClass('active');
+
+                                $('#salarioUniObr').val('0.00');
+                                $("#salarioUniObr").removeAttr("required");
+                                $("#salarioUniObr").removeAttr("aria-required");
+                                $('#sueloUniObr').val('0');
+                                $("#sueloUniObr").removeAttr("required");
+                                $("#sueloUniObr").removeAttr("aria-required");
+                                $('#techoUniObr').val('0');
+                                $("#techoUniObr").removeAttr("required");
+                                $("#techoUniObr").removeAttr("aria-required");
+                            }
+                            $('#tipoSalario').val(informacionPuesto.codigo2);
+                            
+                            // Información de los SELECTs del formulario de puesto de trabajo.
+                            $('#departamento').html(informacionPuesto.selectDepartamento);
+                            $('#departamento2').html(informacionPuesto.selectDepartamento);
+                            $('#puestoJefe').html(informacionPuesto.selectPuestoJefe);
+                            $('#genero').html(informacionPuesto.selectGenero);
+                            $('#estadoCivil').html(informacionPuesto.selectEstadoCivil);
+                            $('#experiencia').html(informacionPuesto.selectExperiencia);
+                            $('#puestoRespaldo').html(informacionPuesto.selectPuestoRespaldo);
+                            $('select').trigger('contentChanged');
+                        } else {
+                            $('#nombre').val('');
+                            $('#lblNombre').removeClass('active');
+                            $('#descripcion').val('');
+                            $('#lblDescripcion').removeClass('active');
+                            $('#cbxActivo').attr('checked', 'true');
+                            $('#salarioBase').val('1.00');
+                            $('#rbtTiempoMes').attr('checked', 'true');
+                            $('#lblSalarioBase').addClass('active');
+                            $('#departamento').hide();
+
+                            myAlert(informacionPuesto.mensaje);
+                        }
+                    }
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Inicializa contador de caracteres para la caja de texto de la descripción.
+                $('input#input_text, textarea#descripcion').characterCounter();
+                $('input#input_text, textarea#plantillaARP').characterCounter();
+                
+                
+                // ************** Funcionalidad perfil del puesto
+                $('.chips-autocomplete-CB').chips({
+                    autocompleteOptions: {
+                        data: {
+                            'Apple': null,
+                            'Microsoft': null,
+                            'Google': null
+                        },
+                        limit: Infinity,
+                        minLength: 1
+                    }
+                });
+
+                $('.chips-autocomplete-CYH').chips({
+                    autocompleteOptions: {
+                        data: {
+                            'Apple': null,
+                            'Microsoft': null,
+                            'Google': null
+                        },
+                        limit: Infinity,
+                        minLength: 1
+                    }
+                });
+                
+                // Elimina la cualidad o habilidad.
+                $(document.body).on('click', '#divCYH .chip .close', function(){
+                    $(this).closest('div').remove();
+                });
+                
+                
+                // Crea elemento de la lista de requisitos académicos.
+                var DIV_RAC = '<div class="divRAC">' +
+                              '   <div class="input-field col s5 inpRAC">' +
+                              '      <input type="text" value="$#valorIngresado#$" data-tipo="$#tipo#$" disabled>' +
+                              '   </div>' +
+
+                              '   <div class="input-field col s1">' +
+                              '      <a class="btn-floating pulse btnRAC" style="background-color: #F44336"><i class="material-icons">clear</i></a>' +
+                              '   </div>' +
+                              '</div>';
+                      
+                $(document.body).on('click', '#masRAC', function(){
+                    if($('#nivelAcademico').children('option:selected').val().trim() !== ''
+                            && $('#plantillaRAC').val().trim().length > 0 ){
+                        var nuevoElemento = DIV_RAC.replace('$#valorIngresado#$', $('#plantillaRAC').val().trim());
+                        nuevoElemento = nuevoElemento.replace('$#tipo#$', 'F');
+                        $('#plantillaRAC').val('');
+                        $('#divRACAll').append(nuevoElemento);
+                        
+                        $('#nivelAcademico').val('');
+                        $('select').trigger('contentChanged');
+                    }
+                });
+                
+                // Crea elemento de la lista de requisitos académicos.
+                $(document.body).on('click', '#masRAC2', function(){
+                    if($('#plantillaRAC2').val().trim().length > 0 ){
+                        var nuevoElemento = DIV_RAC.replace('$#valorIngresado#$', $('#plantillaRAC2').val().trim());
+                        nuevoElemento = nuevoElemento.replace('$#tipo#$', 'I');
+                        $('#plantillaRAC2').val('');
+                        $('#divRACAll').append(nuevoElemento);
+                    }
+                });
+                
+                // Elimina elemento de la lista de requisitos académicos.
+                $(document.body).on("click", ".btnRAC", function () {
+                    $(this).closest('.divRAC').remove();
+                });
+                
+                
+                // Elimina el conocimiento básico.
+                $(document.body).on('click', '#divCB .chip .close', function(){
+                    $(this).closest('div').remove();
+                });
+                
+                
+                // Crea elemento de la lista de actividades y responsabilidades.
+                var DIV_ARP = '<div class="divARP">' +
+                              '   <div class="input-field col s11 inpARP">' +
+                              '      <textarea class="materialize-textarea" disabled>$#valorIngresado#$</textarea>' +
+                              '   </div>' +
+
+                              '   <div class="input-field col s1">' +
+                              '      <a class="btn-floating pulse btnARP" style="background-color: #F44336"><i class="material-icons">clear</i></a>' +
+                              '   </div>' +
+                              '</div>';                      
+                
+                $(document.body).on('click', '#masARP', function(){
+                    if($('#plantillaARP').val().trim().length > 0){
+                        var nuevoElemento = DIV_ARP.replace('$#valorIngresado#$', $('#plantillaARP').val().trim());
+                        $('#plantillaARP').val('');
+                        $('#divARPAll').append(nuevoElemento);
+                        M.textareaAutoResize($('#divARPAll textarea:last-child'));
+                    }
+                });
+                
+                
+                // Elimina elemento de la lista de actividades y responsabilidades.
+                $(document.body).on("click", ".btnARP", function () {
+                    $(this).closest('.divARP').remove();
+                });
+                
+                
+                // Envía información ingresada por el usuario.
+                $(document.body).on('click', '#btnSubmit', function(e){
+                    var xmlARP = "<elementosARP>";
+                    var xmlCB = "<elementosCB>";
+                    var xmlCYH = "<elementosCYH>";
+                    var xmlRAC = "<elementosRAC>";
+                    var existeARP = false;
+                    var existeCB = false;
+                    var existeCYH = false;
+                    var existeRAC = false;
+                    
+                    $('#divCYH .chip').each(function(i, obj){
+                        var texto = $(this).text().trim().substr(0, $(this).text().trim().length - 5);
+                        xmlCYH += "<elemento valor='" + texto + "' />";
+                        existeCYH = true;
+                    });
+                    xmlCYH += "</elementosCYH>";
+                    $('#inputCYH').val(xmlCYH);
+                    
+                    
+                    $('#divCB .chip').each(function(i, obj){
+                        var texto = $(this).text().trim().substr(0, $(this).text().trim().length - 5);
+                        xmlCB += "<elemento valor='" + texto + "' />";
+                        existeCB = true;
+                    });
+                    xmlCB += "</elementosCB>";
+                    $('#inputCB').val(xmlCB);
+                    
+                    
+                    $('.divRAC .inpRAC input').each(function(){
+                        var texto = $(this).attr('value');
+                        var tipo = $(this).data('tipo');
+                        xmlRAC += "<elemento valor='" + texto + "' tipo='" + tipo + "' />";
+                        existeRAC = true;
+                    });
+                    xmlRAC += "</elementosRAC>";
+                    $('#inputRAC').val(xmlRAC);
+                    
+                    
+                    $('.divARP .inpARP textarea').each(function(){
+                        // var texto = $(this).val().trim().substr(0, $(this).text().trim().length - 5);
+                        var texto = $(this).text().trim();
+                        xmlARP += "<elemento valor='" + texto + "' />";
+                        existeARP = true;
+                    });
+                    xmlARP += "</elementosARP>";
+                    $('#inputARP').val(xmlARP);
+                    
+                    
+                    if(!existeARP || !existeCB || !existeCYH || !existeRAC){
+                        e.preventDefault();
+                        
+                        if(!existeARP){
+                            $('html,body').animate({
+                                scrollTop: $('#plantillaARP').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos una actividad o responsabilidad para el puesto.');
+                        } else if(!existeCB){
+                            $('html,body').animate({
+                                scrollTop: $('#divCB').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos un conocimiento básico requerido para el puesto.');
+                        } else if(!existeCYH){
+                            $('html,body').animate({
+                                scrollTop: $('#divCYH').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos una cualidad o habilidad para el puesto.');
+                        } else if(!existeRAC){
+                            $('html,body').animate({
+                                scrollTop: $('#plantillaRAC').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos un requisito academico o complementario para el puesto.');
+                        }
+                    }
+                    
+                    
+                    var tipoSalario = $('#tipoSalario').val();
+                    if( tipoSalario === "T" &&  $("#salarioBase").val().trim() !== "" ){
+                        var salario = parseFloat($("#salarioBase").val().trim());
+                        
+                        if( salario <= 0){
+                            e.preventDefault();
+                            alert("El salario base no puede ser 0.00");
+                        } else
+                            $('#form1').submit();
+                    } else if ( tipoSalario === "O" 
+                                    &&  $("#salarioBase").val().trim() !== ""
+                                    &&  $("#salarioUniObr").val().trim() !== ""
+                                    &&  $("#sueloUniObr").val().trim() !== ""
+                                    &&  $("#techoUniObr").val().trim() !== "" ){
+                        var salario = parseFloat($("#salarioBase").val().trim());
+                        var salarioPorUnidad = parseFloat($("#salarioUniObr").val().trim());
+                        var suelo = parseInt($("#sueloUniObr").val().trim());
+                        var techo = parseInt($("#techoUniObr").val().trim());
+                        
+                        if( !(salario > 0  &&  salarioPorUnidad > 0
+                                &&  suelo > 0  &&  techo > suelo) ){
+                            e.preventDefault();
+                            
+                            if(!(salario > 0))
+                                alert("El salario base no puede ser 0.00.");
+                            else if(!(salarioPorUnidad > 0))
+                                alert("El salario por unidad de obra no puede ser igual 0.00.");
+                            else if(!(suelo >= 0))
+                                alert("Las unidades de suelo deben ser mayores o iguales a 0.");
+                            else if(!(techo >= suelo))
+                                alert("Las unidades de techo deben ser superiores o iguales al suelo.");
+                        } else
+                            $('#form1').submit();
+                    } else if ( tipoSalario === "P" 
+                                    &&  $("#salarioBase").val().trim() !== ""
+                                    &&  $("#participacion").val().trim() !== ""
+                                    &&  $("#sueloParticipacion").val().trim() !== ""
+                                    &&  $("#techoParticipacion").val().trim() !== "" ){
+                        var salario = parseFloat($("#salarioBase").val().trim());
+                        var participacion = parseFloat($("#participacion").val().trim());
+                        var suelo = parseFloat($("#sueloParticipacion").val().trim());
+                        var techo = parseFloat($("#techoParticipacion").val().trim());
+                        
+                        if( !(salario > 0  &&  participacion > 0
+                                &&  suelo > 0  &&  techo > suelo) ){
+                            e.preventDefault();
+                            alert("3");
+                            
+                            if(!(salario > 0))
+                                alert("El salario base no puede ser 0.00.");
+                            else if(!(participacion > 0))
+                                alert("El porcentaje de participación no puede ser igual 0.00.");
+                            else if(!(suelo > 0))
+                                alert("El monto de suelo deben ser mayor a 0.00.");
+                            else if(!(techo > suelo))
+                                alert("El monto de techo deben ser superior al monto de suelo.");
+                        } else
+                            $('#form1').submit();
+                    }
+                });
+                
+                
+                // Muestra inputs para salario de acuerdo al tipo de salario seleccionado.
+                $('#tipoSalario').on('change', function () {
+                    $('#lblSalarioBase').addClass('active');
+
+                    if ($(this).val() === 'T') {
+                        $('#salPar').hide();
+                        $('#salPorUniObr').hide();
+                        
+                        if (tipoSalarioInicial !== 'O') {
+                            $('#salarioUniObr').val("0.00");
+                            $('#sueloUniObr').val("0");
+                            $('#techoUniObr').val("0");
+                        }
+
+                        if (tipoSalarioInicial !== 'P') {
+                            $('#participacion').val("0.000");
+                            $('#sueloParticipacion').val("0.00");
+                            $('#techoParticipacion').val("0.00");
+                        }
+                        
+                        
+                        $("#salarioUniObr").removeAttr("required");
+                        $("#sueloUniObr").removeAttr("required");
+                        $("#techoUniObr").removeAttr("required");
+                        $("#salarioUniObr").removeAttr("aria-required");
+                        $("#sueloUniObr").removeAttr("aria-required");
+                        $("#techoUniObr").removeAttr("aria-required");
+                        $("#participacion").removeAttr("required");
+                        $("#sueloParticipacion").removeAttr("required");
+                        $("#techoParticipacion").removeAttr("required");
+                        $("#participacion").removeAttr("aria-required");
+                        $("#sueloParticipacion").removeAttr("aria-required");
+                        $("#techoParticipacion").removeAttr("aria-required");
+                    } else if ($(this).val() === 'O') {
+                        $('#salPorUniObr').show();
+                        $('#salPar').hide();
+                        $('#lblSalarioUniObr').addClass('active');
+                        $('#lblSueloUniObr').addClass('active');
+                        $('#lblTechoUniObr').addClass('active');
+
+                        if (tipoSalarioInicial !== 'O') {
+                            $('#salarioUniObr').val("0.00");
+                            $('#sueloUniObr').val("0");
+                            $('#techoUniObr').val("0");
+                        } else {
+                            $('#salarioUniObr').val(salarioUnitarioInicial.toFixed(2));
+                            $('#sueloUniObr').val(sueloInicial.toFixed(0));
+                            $('#techoUniObr').val(techoInicial.toFixed(0));
+                        }
+
+
+                        if (tipoSalarioInicial !== 'P') {
+                            $('#participacion').val("0.000");
+                            $('#sueloParticipacion').val("0.00");
+                            $('#techoParticipacion').val("0.00");
+                        }
+                                                
+                        
+                        $("#salarioUniObr").attr("required", "");
+                        $("#sueloUniObr").attr("required", "");
+                        $("#techoUniObr").attr("required", "");
+                        $("#salarioUniObr").attr("aria-required", "true");
+                        $("#sueloUniObr").attr("aria-required", "true");
+                        $("#techoUniObr").attr("aria-required", "true");
+
+                        $("#participacion").removeAttr("required");
+                        $("#sueloParticipacion").removeAttr("required");
+                        $("#techoParticipacion").removeAttr("required");
+                        $("#participacion").removeAttr("aria-required");
+                        $("#sueloParticipacion").removeAttr("aria-required");
+                        $("#techoParticipacion").removeAttr("aria-required");
+                    } else if ($(this).val() === 'P') {
+                        $('#salPar').show();
+                        $('#salPorUniObr').hide();
+                        $('#lblParticipacion').addClass('active');
+                        $('#lblSueloParticipacion').addClass('active');
+                        $('#lblTechoParticipacion').addClass('active');
+
+                        if (tipoSalarioInicial !== 'P') {
+                            $('#participacion').val("0.000");
+                            $('#sueloParticipacion').val("0.00");
+                            $('#techoParticipacion').val("0.00");
+                        } else if (tipoSalarioInicial === 'P') {
+                            $('#participacion').val(participacionInicial.toFixed(3));
+                            $('#sueloParticipacion').val(sueloInicial.toFixed(2));
+                            $('#techoParticipacion').val(techoInicial.toFixed(2));
+                        }
+
+
+                        if (tipoSalarioInicial !== 'O') {
+                            $('#salarioUniObr').val("0.00");
+                            $('#sueloUniObr').val("0");
+                            $('#techoUniObr').val("0");
+                        }
+                        
+                        
+                        $("#participacion").attr("required", "");
+                        $("#sueloParticipacion").attr("required", "");
+                        $("#techoParticipacion").attr("required", "");
+                        $("#participacion").attr("aria-required", "true");
+                        $("#sueloParticipacion").attr("aria-required", "true");
+                        $("#techoParticipacion").attr("aria-required", "true");
+
+                        $("#salarioUniObr").removeAttr("required");
+                        $("#sueloUniObr").removeAttr("required");
+                        $("#techoUniObr").removeAttr("required");
+                        $("#salarioUniObr").removeAttr("aria-required");
+                        $("#sueloUniObr").removeAttr("aria-required");
+                        $("#techoUniObr").removeAttr("aria-required");
+                    }
+                });
+                
+                
+                // Funcionalidad del botón CONTINUAR.
+                $(document.body).on('click', '#btnContinuar', function(e){
+                    e.preventDefault();
+                    var nombre = $('#nombre').val().trim();
+                    
+                    if(nombre.length > 0){
+                        // Esconde pantalla del puesto de trabajo y muestra la pantalla
+                        // de la descripción del mismo.
+                        $('#divPuesto').hide();
+                        $('#btnCancelar').hide();
+                        $(this).hide();
+                        
+                        $('#puesto').val($('#nombre').val());
+                        $('#lblPuesto').addClass('active');
+                        $('#divDescPuesto').show();
+                        $('#btnRegresar').show();
+                        $('#btnContinuar2').show();
+                    } else if(nombre.length === 0)
+                        myAlert('Debe proporcionar un nombre para el puesto.');
+                });
+                
+                
+                // Funcionalidad del botón CONTINUAR2.
+                $(document.body).on('click', '#btnContinuar2', function(e){
+                    e.preventDefault();
+                    var existeARP = false;
+                    var existeCB = false;
+                    var existeCYH = false;
+                    var existeRAC = false;
+                    
+                    if($('#edadMinima').val().trim().length === 0){
+                        e.preventDefault();
+                        myAlert("Debe proporcionar la edad mínima de trabajo.");
+                    }
+                    
+                    if($('#edadMaxima').val().trim().length === 0){
+                        e.preventDefault();
+                        myAlert("Debe proporcionar la edad mínima de trabajo.");
+                    }
+                    
+                    var edadMinima = parseInt($('#edadMinima').val().trim());
+                    var edadMaxima = parseInt($('#edadMaxima').val().trim());
+                    
+                    $('#divCYH .chip').each(function(i, obj){
+                        existeCYH = true;
+                    });
+                    
+                    $('#divCB .chip').each(function(i, obj){
+                        existeCB = true;
+                    });
+                    
+                    
+                    $('.divRAC .inpRAC input').each(function(){
+                        existeRAC = true;
+                    });
+                    
+                    $('.divARP .inpARP textarea').each(function(){
+                        existeARP = true;
+                    });
+                    
+                    if(!existeARP || !existeCB || !existeCYH || !existeRAC || edadMinima > edadMaxima){
+                        e.preventDefault();
+                        
+                        if(!existeARP){
+                            $('html,body').animate({
+                                scrollTop: $('#plantillaARP').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos una actividad o responsabilidad para el puesto.');
+                        } else if(!existeCB){
+                            $('html,body').animate({
+                                scrollTop: $('#divCB').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos un conocimiento básico requerido para el puesto.');
+                        } else if(!existeCYH){
+                            $('html,body').animate({
+                                scrollTop: $('#divCYH').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos una cualidad o habilidad para el puesto.');
+                        } else if(!existeRAC){
+                            $('html,body').animate({
+                                scrollTop: $('#plantillaRAC').position() }, {
+                                duration: 'slow',
+                                easing: 'swing'
+                            });
+                            myAlert('Debe proporcionar al menos un requisito academico o complementario para el puesto.');
+                        } else if(edadMinima > edadMaxima){
+                            myAlert('La edad mínima requerida para el puesto de trabajo es mayor que la edad máxima.');
+                        } else if(edadMinima === edadMaxima){
+                            myAlert('La edad máxima requerida para el puesto de trabajo debe ser diferente a la edad mínima.');
+                        }
+                    } else {
+                        // Esconde pantalla de descripción del puesto de trabajo
+                        // y muestra la pantalla de salario.
+                        $('#divDescPuesto').hide();
+                        $('#btnRegresar').hide();
+                        $(this).hide();
+                        
+                        $('#divSalario').show();
+                        $('#btnRegresar2').show();
+                        $('#btnSubmit').show();
+                    }
+                });
+                
+                
+                // Funcionalidad del botón Cancelar.
+                $(document.body).on('change', '#departamento', function(){
+                    $('#departamento2').val($(this).val());
+                    $('select').trigger('contentChanged');
+                });
+                
+                
+                // Funcionalidad del botón Cancelar.
+                $(document.body).on('click', '#btnCancelar', function(e){
+                    e.preventDefault();
+                    
+                    if(confirm("¿Desea regresar al lobby de puestos de trabajo?"))
+                        window.location.replace("lobbypuestos.html");
+                });
+                
+                
+                // Funcionalidad del botón REGRESAR.
+                $(document.body).on('click', '#btnRegresar', function(e){
+                    e.preventDefault();
+                    
+                    // Esconde pantalla de descripción del puesto de trabajo y
+                    // muestra la pantalla principal del puesto.
+                    $('#divDescPuesto').hide();
+                    $('#btnContinuar2').hide();
+                    $(this).hide();
+                    $('#btnCancelar').show();
+                    $('#btnContinuar').show();
+                    $('#divPuesto').show();
+                });
+                
+                // Funcionalidad del botón REGRESAR2.
+                $(document.body).on('click', '#btnRegresar2', function(e){
+                    e.preventDefault();
+                    
+                    // Esconde pantalla de salario y muestra la pantalla de 
+                    // descripción del puesto de trabajo.
+                    $('#divSalario').hide();
+                    $('#btnSubmit').hide();
+                    $('#btnRegresar2').hide();
+                    $(this).hide();
+                    $('#btnRegresar').show();
+                    $('#btnContinuar2').show();
+                    $('#divDescPuesto').show();
+                });
+            });
+        </script>
+    </body>
+</html>

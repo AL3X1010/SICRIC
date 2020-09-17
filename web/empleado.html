@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form id="form1" class="col s12" method="post" action="empleado.do"
+                        autocomplete="off" enctype="multipart/form-data">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">
+                                Información del Empleado
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+                            
+                            <div class="input-field col s4">
+                                <select id='departamento' name='departamento'></select>
+                                <label for='departamento'>Departamento</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <select id='puesto' name='puesto'></select>
+                                <label for='puesto'>Puesto de trabajo</label>
+                            </div>
+
+                            <div class="switch input-field col s1">
+                                <input type="text" style="border-bottom: 1px solid white" disabled />
+                            </div>
+
+                            <div class="switch input-field col s3">
+                                <label>
+                                    Inactivo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo">
+                                    <span class="lever"></span>
+                                    Activo
+                                </label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="codigo" name="codigo" type="text" maxlength="15"
+                                       class="validate campoLetrasNumeros campoMayusculas"
+                                       required="" aria-required="true" />
+                                <label for="codigo" id="lblCodigo">Código de empleado</label>
+                                <span id="codigoHelper"></span>
+                            </div>
+
+                            <div class="input-field col s5">
+                                <input id="identidad" name="identidad" type="text"
+                                       maxlength="15" required="" aria-required="true"
+                                       class="validate campoLetrasNumeros campoMayusculas" />
+                                <label for="identidad" id="lblIdentidad">Identidad o pasaporte</label>
+                                <span id="identidadHelper"></span>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input id="fechaIngreso" name="fechaIngreso" type="text"
+                                       class="validate datepicker campoVacio"
+                                       required="" aria-required="true" />
+                                <label for="fechaIngreso" id="lblFechaIngreso">Fecha de ingreso</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="nombre" name="nombre" type="text" maxlength="50"
+                                       class="validate campoLetrasEspacios"
+                                       required="" aria-required="true" />
+                                <label for="nombre" id="lblNombre">Nombres</label>
+                            </div>
+
+                            <div class="input-field col s5">
+                                <input id="apellido" name="apellido"  type="text"
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios" />
+                                <label for="apellido" id="lblApellido">Apellidos</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input id="fechaNacimiento" name="fechaNacimiento"
+                                       type="text" class="validate datepicker campoVacio"
+                                       required="" aria-required="true" />
+                                <label for="fechaNacimiento" id="lblFechaNacimiento">Fecha de nacimiento</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select id="genero" name="genero" required="" aria-required="true">
+                                </select>
+                                <label for="genero">Género</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <select id="estadoCivil" name="estadoCivil"
+                                    required="" aria-required="true">
+                                </select>
+                                <label for="estadoCivil">Estado civil</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input id="telefono" name="telefono" type="text"
+                                        maxlength="8" class="validate campoEntero"
+                                       required="" aria-required="true" />
+                                <label for="telefono" id="lblTelefono">Teléfono</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="correoElectronico" name="correoElectronico"
+                                       type="email" maxlength="50"
+                                       class="validate" required="" aria-required="true" />
+                                <label for="correoElectronico" id="lblCorreoElectronico">Correo electrónico</label>
+                            </div>
+
+                            <div class="input-field col s7">
+                                <textarea id="direccion" name="direccion"
+                                          required="" aria-required="true" 
+                                          class="materialize-textarea validate"
+                                          maxlength="250" data-length="250"></textarea>
+                                <label for="direccion" id="lblDireccion">Dirección</label>
+                            </div>
+
+                            <div class="input-field col s5" style="margin-top: -0.3%">
+                                <div class="file-field input-field">
+                                    <div class="btn cyan waves-effect">
+                                        <span>Hoja de vida</span>
+                                        <input type="file" id="nombreArchivo" name="nombreArchivo" accept=".pdf"/>
+                                    </div>
+
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text"  id="nombreArchivoSeleccionado" name="nombreArchivoSeleccionado" readonly="readonly"/>
+                                        <!--a href="serviciosc.do?name=LGCNT">Descargar archivo</a-->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <input name="nombreArchivoInicial" id="nombreArchivoInicial" type="text" class="campoVacio" hidden="hidden"/>
+                            
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                id="btnCancelar">
+                                    Cancelar
+                                </button>
+                                
+                                <!-- Modal Trigger -->
+                                <button data-target="modal1"
+                                        class="btn cyan waves-effect waves-light right" id="btnContinuar">
+                                    <i class="material-icons right">arrow_forward</i>Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4>Salario del empleado</h4>
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                    <select id="tipoSalario" name="tipoSalario">
+                                        <option value="T" selected>Salario bruto</option>
+                                        <option value="O">Por unidad de obra</option>
+                                        <option value="P">Por participación en utilidades, ventas o cobros </option>
+                                    </select>
+                                    <label>Seleccione el tipo de salario</label>
+                                </div>
+
+                                <div class="switch input-field col m6">
+                                    <input type="text" style="border-bottom: 1px solid white" disabled />
+                                </div>
+
+                                <div id="salBruto">
+                                    <div class="input-field col s4">
+                                        <input id="salarioBase" name="salarioBase"
+                                               type="text" class="validate campoDecimal"
+                                               maxlength="14" required="" aria-required="true" />
+                                        <label for="salarioBase" id="lblSalarioBase">Salario base</label>
+                                    </div>
+
+                                    <div class="input-field col s8">
+                                        <p>
+                                            <label>
+                                                <input class="rbtFrecuenciaM rbtFrecuencia"
+                                                       type="radio" id="rbtTiempoMes"
+                                                       name="rbtTiempo" value="M" />
+                                                <span>Mensual</span>
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>
+                                                <input class="rbtFrecuenciaQ rbtFrecuencia"
+                                                       type="radio" 
+                                                       id="rbtTiempoQuincena"
+                                                       name="rbtTiempo"
+                                                       value="Q" />
+                                                <span>Quincenal</span>
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>
+                                                <input class="rbtFrecuenciaD rbtFrecuencia"
+                                                       type="radio" id="rbtTiempoDia" name="rbtTiempo" value="D" />
+                                                <span>Día</span>
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>
+                                                <input class="rbtFrecuenciaH rbtFrecuencia"
+                                                       type="radio"
+                                                       id="rbtTiempoHora"
+                                                       name="rbtTiempo"
+                                                       value="H" />
+                                                <span>Hora</span>
+                                            </label>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div id="salPorUniObr">
+                                    <div class="input-field col s4 m3">
+                                        <input id="salarioUniObr" name="salarioUniObr"
+                                               type="text" class="validate campoDecimal"
+                                               maxlength="14" />
+                                        <label for="salarioUniObr" id="lblSalarioUniObr">Salario por unidad</label>
+                                    </div>
+
+                                    <div class="input-field col s4 m3">
+                                        <input id="sueloUniObr" name="sueloUniObr"
+                                               type="text" class="validate campoEntero"
+                                               maxlength="11" />
+                                        <label for="sueloUniObr" id="lblSueloUniObr">Suelo en unidades</label>
+                                    </div>
+
+                                    <div class="input-field col s4 m3">
+                                        <input id="techoUniObr" name="techoUniObr"
+                                               type="text" class="validate campoEntero"
+                                               maxlength="11" />
+                                        <label for="techoUniObr" id="lblTechoUniObr">Techo en unidades</label>
+                                    </div>
+                                </div>
+
+                                <div id="salPar">
+                                    <div class="input-field col s4 m3">
+                                        <input id="participacion" name="participacion"
+                                               type="text" class="validate campoDecimal"
+                                               maxlength="6" />
+                                        <label for="participacion" id="lblParticipacion">Participacion en %</label>
+                                    </div>
+
+                                    <div class="input-field col s4 m3">
+                                        <input id="sueloParticipacion" name="sueloParticipacion"
+                                               type="text" class="validate campoDecimal"
+                                               maxlength="14" />
+                                        <label for="sueloParticipacion" id="lblSueloParticipacion">Suelo en monto</label>
+                                    </div>
+
+                                    <div class="input-field col s4 m3">
+                                        <input id="techoParticipacion" name="techoParticipacion"
+                                               type="text" class="validate campoDecimal"
+                                               maxlength="14" />
+                                        <label for="techoParticipacion" id="lblTechoParticipacion">Techo en monto</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-red btn-flat" id="btnRegresar">Regresar</a>
+                            <input type="submit" name="btnSubmit" class="modal-close waves-effect waves-green btn-flat" id="btnSubmit" value="Crear empleado" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#salPorUniObr').hide();
+                $('#salPar').hide();
+                
+                // Variables globales.
+                var tipoSalarioInicial = "T";
+                var participacionInicial = 0;
+                var salarioUnitarioInicial = 0;
+                var sueloInicial = 0;
+                var techoInicial = 0;
+                var defaultDate = new Date();
+                var minDate = new Date();
+                var maxDate = new Date();
+                var today = new Date();
+                var codigoInicial;
+                var identidadInicial;
+                var modoEdicion = false;
+                
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                // Carga el registro del empleado en la página web.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "cargaRegistro.do",
+                    data: { name: "GETEMPINF" },
+                    success: function (data, status) {
+                        var informacionEmpleado = JSON.parse(caracteresEspeciales(data.toString()));
+                        adecuarElementos(informacionEmpleado.modo);
+                        codigoInicial = informacionEmpleado.codigo;
+                        identidadInicial = informacionEmpleado.identidad;
+                        tipoSalarioInicial = informacionEmpleado.codigo3;
+                        
+                        // Asigna los valores a los campos.
+                        $('#codigo').val(informacionEmpleado.codigo);
+                        $('#nombre').val(informacionEmpleado.nombres);
+                        $('#apellido').val(informacionEmpleado.apellidos);
+                        $('#identidad').val(informacionEmpleado.identidad);
+                        $('#correoElectronico').val(informacionEmpleado.correoElectronico);
+                        $('#telefono').val(informacionEmpleado.telefono);
+                        $('#fechaIngreso').val(informacionEmpleado.fechaIngreso);
+                        $('#fechaNacimiento').val(informacionEmpleado.fechaNacimiento);
+                        $('#direccion').val(informacionEmpleado.direccion);
+                        $('#salarioBase').val(informacionEmpleado.salarioBase.toFixed(2));
+                        $('#lblSalarioBase').addClass('active');
+                        $('#nombreArchivoSeleccionado').val(informacionEmpleado.hojaDeVida).attr('readonly', 'readonly');
+                        $('#nombreArchivoInicial').val(informacionEmpleado.hojaDeVida);
+                        // Marca como activo o inactivo el empleado.
+                        if (informacionEmpleado.activo)
+                            $('#cbxActivo').attr('checked', 'true');
+                        else $('#cbxActivo').removeAttr('checked');
+                        
+                        // Asign o remueve clase ACTIVE a etiquetas de los campos.
+                        if(String(informacionEmpleado.codigo).length > 0)
+                            $('#lblCodigo').addClass('active');
+                        else $('#lblCodigo').removeClass('active');
+                        
+                        if(String(informacionEmpleado.nombres).length > 0)
+                            $('#lblNombre').addClass('active');
+                        else $('#lblNombre').removeClass('active');
+                        
+                        if(String(informacionEmpleado.apellidos).length > 0)
+                            $('#lblApellido').addClass('active');
+                        else $('#lblApellido').removeClass('active');
+                        
+                        if(String(informacionEmpleado.identidad).length > 0)
+                            $('#lblIdentidad').addClass('active');
+                        else $('#lblIdentidad').removeClass('active');
+                        
+                        if(String(informacionEmpleado.correoElectronico).length > 0)
+                            $('#lblCorreoElectronico').addClass('active');
+                        else $('#lblCorreoElectronico').removeClass('active');
+                        
+                        if(String(informacionEmpleado.telefono).length > 0)
+                            $('#lblTelefono').addClass('active');
+                        else  $('#lblTelefono').removeClass('active');
+                        
+                        if(String(informacionEmpleado.fechaIngreso).length > 0)
+                            $('#lblFechaIngreso').addClass('active');
+                        else $('#lblFechaIngreso').removeClass('active');
+                        
+                        if(String(informacionEmpleado.fechaNacimiento).length > 0)
+                            $('#lblFechaNacimiento').addClass('active');
+                        else $('#lblFechaNacimiento').removeClass('active');
+                        
+                        if(String(informacionEmpleado.direccion).length > 0)
+                            $('#lblDireccion').addClass('active');
+                        else $('#lblDireccion').removeClass('active');
+                        
+                        // Selecciona la frecuenia de pago correspondiente.
+                        $('.rbtFrecuencia' + informacionEmpleado.frecuencia).prop('checked', true);
+                        
+                        // Asigna valores a campos del salario.
+                        $('#tipoSalario').val(tipoSalarioInicial);
+                        if (tipoSalarioInicial === "T") {
+                            $('#salPorUniObr').hide();
+                            $('#salPar').hide();
+
+                            $('#salarioUniObr').val('0.00');
+                            $('#sueloUniObr').val('0');
+                            $('#techoUniObr').val('0');
+                            $('#participacion').val('0.000');
+                            $('#sueloParticipacion').val('0.00');
+                            $('#techoParticipacion').val('0.00');
+
+                            $("#salarioUniObr").removeAttr("required");
+                            $("#sueloUniObr").removeAttr("required");
+                            $("#techoUniObr").removeAttr("required");
+                            $("#salarioUniObr").removeAttr("aria-required");
+                            $("#sueloUniObr").removeAttr("aria-required");
+                            $("#techoUniObr").removeAttr("aria-required");
+                            $("#participacion").removeAttr("required");
+                            $("#sueloParticipacion").removeAttr("required");
+                            $("#techoParticipacion").removeAttr("required");
+                            $("#participacion").removeAttr("aria-required");
+                            $("#sueloParticipacion").removeAttr("aria-required");
+                            $("#techoParticipacion").removeAttr("aria-required");
+                        } else if (informacionEmpleado.codigo3 === "O") {
+                            salarioUnitarioInicial = informacionEmpleado.salarioObra;
+                            sueloInicial = informacionEmpleado.suelo;
+                            techoInicial = informacionEmpleado.techo;
+                            $('#salPorUniObr').show();
+                            $('#salPar').hide();
+
+                            $('#salarioUniObr').val(informacionEmpleado.salarioObra.toFixed(2));
+                            $('#sueloUniObr').val(informacionEmpleado.suelo.toFixed(0));
+                            $('#techoUniObr').val(informacionEmpleado.techo.toFixed(0));
+                            $('#lblSalarioUniObr').addClass('active');
+                            $('#lblSueloUniObr').addClass('active');
+                            $('#lblTechoUniObr').addClass('active');
+
+                            $('#participacion').val('0.000');
+                            $('#sueloParticipacion').val('0.00');
+                            $('#techoParticipacion').val('0.00');
+
+                            $("#salarioUniObr").attr("required", "");
+                            $("#sueloUniObr").attr("required", "");
+                            $("#techoUniObr").attr("required", "");
+                            $("#salarioUniObr").attr("aria-required", "true");
+                            $("#sueloUniObr").attr("aria-required", "true");
+                            $("#techoUniObr").attr("aria-required", "true");
+
+                            $("#participacion").removeAttr("required");
+                            $("#sueloParticipacion").removeAttr("required");
+                            $("#techoParticipacion").removeAttr("required");
+                            $("#participacion").removeAttr("aria-required");
+                            $("#sueloParticipacion").removeAttr("aria-required");
+                            $("#techoParticipacion").removeAttr("aria-required");
+                        } else if (informacionEmpleado.codigo3 === "P") {
+                            participacionInicial = informacionEmpleado.participacion;
+                            sueloInicial = informacionEmpleado.suelo;
+                            techoInicial = informacionEmpleado.techo;
+                            $('#salPar').show();
+                            $('#salPorUniObr').hide();
+
+                            $('#participacion').val(informacionEmpleado.participacion.toFixed(3));
+                            $('#sueloParticipacion').val(informacionEmpleado.suelo.toFixed(2));
+                            $('#techoParticipacion').val(informacionEmpleado.techo.toFixed(2));
+                            $('#lblParticipacion').addClass('active');
+                            $('#lblSueloParticipacion').addClass('active');
+                            $('#lblTechoParticipacion').addClass('active');
+
+                            $('#salarioUniObr').val('0.00');
+                            $('#sueloUniObr').val('0');
+                            $('#techoUniObr').val('0');
+                            $('#salPorUniObr').hide();
+
+                            $("#participacion").attr("required", "");
+                            $("#sueloParticipacion").attr("required", "");
+                            $("#techoParticipacion").attr("required", "");
+                            $("#participacion").attr("aria-required", "true");
+                            $("#sueloParticipacion").attr("aria-required", "true");
+                            $("#techoParticipacion").attr("aria-required", "true");
+
+                            $("#salarioUniObr").removeAttr("required");
+                            $("#sueloUniObr").removeAttr("required");
+                            $("#techoUniObr").removeAttr("required");
+                            $("#salarioUniObr").removeAttr("aria-required");
+                            $("#sueloUniObr").removeAttr("aria-required");
+                            $("#techoUniObr").removeAttr("aria-required");
+                        }
+                        
+                        if(informacionEmpleado.modo === "mod-v" )
+                            $('#btnRegresar').addClass('right');
+                        else    modoEdicion = true;
+                            
+                        
+                        $('#departamento').html(informacionEmpleado.selectDepartamento);
+                        $('#puesto').html(informacionEmpleado.selectPuesto);
+                        $('#genero').html(informacionEmpleado.selectGenero);
+                        $('#estadoCivil').html(informacionEmpleado.selectEstadoCivil);
+                        $('select').trigger('contentChanged');
+                    }
+                });
+                
+                
+                // Configuración inicial para campo fecha de nacimiento.
+                defaultDate.setFullYear(defaultDate.getFullYear() - 18);
+                maxDate.setFullYear(maxDate.getFullYear() - 16);
+                $('#fechaNacimiento').datepicker({
+                    format: 'dd/mmm/yyyy',
+                    setDefaultDate: true,
+                    defaultDate: defaultDate,
+                    maxDate: maxDate,
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                            weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                        cancel: "Cancelar"
+                    }
+                });
+                
+                
+                // Configuración inicial para campo fecha de ingreso.
+                minDate.setMonth(minDate.getMonth() - 1);
+                maxDate = new Date();
+                maxDate.setMonth(maxDate.getMonth() + 1);
+                $('#fechaIngreso').datepicker({
+                    format: 'dd/mmm/yyyy',
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    setDefaultDate: true,
+                    defaultDate: today,
+                    
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                        weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                        cancel: "Cancelar"
+                    }
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Configuración de la ventana modal.
+                $('.modal').modal({
+                    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+                    opacity: .5, // Opacity of modal background
+                    inDuration: 300, // Transition in duration
+                    outDuration: 200, // Transition out duration
+                    startingTop: '4%', // Starting top style attribute
+                    endingTop: '10%', // Ending top style attribute
+                    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                        // alert("Ready");
+                    },
+                    complete: function () {
+                        // alert('Closed');
+                    } // Callback for Modal close
+                });
+                
+                
+                // Verifica que los campos de la primera pantalla estén llenos.
+                $(document.body).on("click", "#btnContinuar", function(e){
+                    // Detiene evento submit para presentar pantalla de salario.
+                    e.preventDefault();
+                    var error = false;
+                    var idElemento;
+                    
+                    if(modoEdicion){
+                        if( $('#codigo').val() !== codigoInicial )
+                            $.ajax({
+                                method: "post",
+                                async: false,
+                                url: "validar.do",
+                                data: { service: "VLDEMPCDE",
+                                        code: $('#codigo').val() },
+                                success: function (data, status) {
+                                    var respuesta = JSON.parse(data.toString());
+                                    if(respuesta.error){
+                                        $('#codigoHelper').attr('data-error', respuesta.mensaje);
+                                        $('#codigoHelper').addClass('helper-text');
+                                        $('#identidadHelper').addClass('helper-text');
+                                        $('#codigo').removeClass('valid').addClass('invalid');
+                                        event.preventDefault();
+                                    }
+                                }
+                            });
+
+                        if( $('#identidad').val() !== identidadInicial )
+                            $.ajax({
+                                method: "post",
+                                async: false,
+                                url: "validar.do",
+                                data: { service: "VLDEMPIDT",
+                                        id: $('#identidad').val() },
+                                success: function (data, status) {
+                                    var respuesta = JSON.parse(data.toString());
+                                    if(respuesta.error){
+                                        $('#identidadHelper').attr('data-error', respuesta.mensaje);
+                                        $('#codigoHelper').addClass('helper-text');
+                                        $('#identidadHelper').addClass('helper-text');
+                                        $('#identidad').removeClass('valid').addClass('invalid');
+                                        event.preventDefault();
+                                    }
+                                }
+                            });
+
+                        if($('#genero').val() === null)
+                            M.toast({html: 'Antes seleccione el género del empleado'});
+                        else if($('#estadoCivil').val() === null)
+                            M.toast({html: 'Antes seleccione el estado civil del empleado'});
+                        else{
+
+                            if($('#codigo').val().trim().length === 0){
+                                M.toast({html: 'Proporcione el código de empleado.'});
+                                idElemento = '#codigo';
+                                error = true;
+                            } else if($('#identidad').val().trim().length === 0){
+                                M.toast({html: 'El número de identidad es obligatorio.'});
+                                idElemento = '#identidad';
+                                error = true;
+                            } else if($('#fechaIngreso').val().trim().length === 0){
+                                M.toast({html: 'Se requiere la fecha de ingreso.'});
+                                idElemento = '#fechaIngreso';
+                                error = true;
+                            } else if($('#nombre').val().trim().length === 0){
+                                M.toast({html: 'Seguro que el empleado debe tener al menos un nombre.'});
+                                idElemento = '#nombre';
+                                error = true;
+                            } else if($('#apellido').val().trim().length === 0){
+                                M.toast({html: '¿No papá, no mamá que proporcionara un apellido?'});
+                                idElemento = '#apellido';
+                                error = true;
+                            } else if($('#fechaNacimiento').val().trim().length === 0){
+                                M.toast({html: 'La persona tiene que haber nacido en algún momento, ¿no cree?'});
+                                idElemento = '#fechaNacimiento';
+                                error = true;
+                            } else if($('#telefono').val().trim().length === 0){
+                                M.toast({html: 'Se requiere teléfono de contacto.'});
+                                idElemento = '#telefono';
+                                error = true;
+                            } else if($('#direccion').val().trim().length === 0){
+                                M.toast({html: 'Es necesario que proporcione el domicilio del empleado.'});
+                                idElemento = '#direccion';
+                                error = true;
+                            } else if($('#nombreArchivoSeleccionado').val().trim().length === 0){
+                                M.toast({html: 'Sin hoja de vida no podemos continuar con el registro.'});
+                                idElemento = '#nombreArchivoSeleccionado';
+                                error = true;
+                            }
+                        }
+                    }
+                        
+                    if(!error)
+                        $('#modal1').modal('open');
+                    else
+                        $(idElemento).putCursorAtEnd().on('focus', function(){
+                            $(idElemento).putCursorAtEnd();
+                        });
+                });
+                
+                
+                // Envía el formulario.
+                $(document.body).on("click", "#btnSubmit", function(e){
+                    var tipoSalario = $('#tipoSalario').val();
+                    
+                    if( tipoSalario === "T" 
+                                    &&  $("#salarioBase").val().trim() !== "" ){
+                        var salario = parseFloat($("#salarioBase").val().trim());
+                        
+                        if( salario <= 0){
+                            e.preventDefault();
+                            alert("El salario base no puede ser 0.00");
+                        } else
+                            $('#form1').submit();
+                    } else if ( tipoSalario === "O" 
+                                    &&  $("#salarioBase").val().trim() !== ""
+                                    &&  $("#salarioUniObr").val().trim() !== ""
+                                    &&  $("#sueloUniObr").val().trim() !== ""
+                                    &&  $("#techoUniObr").val().trim() !== "" ){
+                        var salario = parseFloat($("#salarioBase").val().trim());
+                        var salarioPorUnidad = parseFloat($("#salarioUniObr").val().trim());
+                        var suelo = parseInt($("#sueloUniObr").val().trim());
+                        var techo = parseInt($("#techoUniObr").val().trim());
+                        
+                        if( !(salario > 0  &&  salarioPorUnidad > 0
+                                &&  suelo > 0  &&  techo > suelo) ){
+                            e.preventDefault();
+                            
+                            if(!(salario > 0))
+                                alert("El salario base no puede ser 0.00.");
+                            else if(!(salarioPorUnidad > 0))
+                                alert("El salario por unidad de obra no puede ser igual 0.00.");
+                            else if(!(suelo > 0))
+                                alert("Las unidades de suelo deben ser mayores a 0.");
+                            else if(!(techo > suelo))
+                                alert("Las unidades de techo deben ser superiores al suelo.");
+                        } else
+                            $('#form1').submit();
+                    } else if ( tipoSalario === "P" 
+                                    &&  $("#salarioBase").val().trim() !== ""
+                                    &&  $("#participacion").val().trim() !== ""
+                                    &&  $("#sueloParticipacion").val().trim() !== ""
+                                    &&  $("#techoParticipacion").val().trim() !== "" ){
+                        var salario = parseFloat($("#salarioBase").val().trim());
+                        var participacion = parseFloat($("#participacion").val().trim());
+                        var suelo = parseFloat($("#sueloParticipacion").val().trim());
+                        var techo = parseFloat($("#techoParticipacion").val().trim());
+                        
+                        if( !(salario > 0  &&  participacion > 0
+                                &&  suelo > 0  &&  techo > suelo) ){
+                            e.preventDefault();
+                            alert("3");
+                            
+                            if(!(salario > 0))
+                                alert("El salario base no puede ser 0.00.");
+                            else if(!(participacion > 0))
+                                alert("El porcentaje de participación no puede ser igual 0.00.");
+                            else if(!(suelo > 0))
+                                alert("El monto de suelo deben ser mayor a 0.00.");
+                            else if(!(techo > suelo))
+                                alert("El monto de techo deben ser superior al monto de suelo.");
+                        } else
+                            $('#form1').submit();
+                    }
+                });
+                
+                
+                // Regresa al lobby de empleados.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea regresar al lobby de empleados?"))
+                        window.location.replace("lobbyempleados.html");
+                    
+                    event.preventDefault();
+                });
+                
+                
+                // Actualiza la lista de puestos de trabajo de acuerdo al
+                // departamento seleccionado.
+                $('#departamento').on('change', function () {
+                    // Obtiene el código necesario para cargar el registro en pantalla.
+                    $.ajax({
+                        method: "post",
+                        url: "serviciosc.do",
+                        data: { name: "GETJOBL",
+                                code: $(this).val() },
+                        success: function (data, status) {
+                            var informacionPuesto = JSON.parse(data.toString());
+                            
+                            if (!informacionPuesto.error) {
+                                $('#puesto').html(informacionPuesto.respuesta);
+                                $('select').trigger('contentChanged');
+                            }
+                        }
+                    });
+                });
+                
+                
+                // Muestra inputs de acuerdo al tipo de salario seleccinado.
+                $('#tipoSalario').on('change', function () {
+                    $('#lblSalarioBase').addClass('active');
+
+                    if ($(this).val() === 'T') {
+                        $('#salPar').hide();
+                        $('#salPorUniObr').hide();
+                        
+                        if (tipoSalarioInicial !== 'O') {
+                            $('#salarioUniObr').val("0.00");
+                            $('#sueloUniObr').val("0");
+                            $('#techoUniObr').val("0");
+                        }
+
+                        if (tipoSalarioInicial !== 'P') {
+                            $('#participacion').val("0.000");
+                            $('#sueloParticipacion').val("0.00");
+                            $('#techoParticipacion').val("0.00");
+                        }
+                        
+                        
+                        $("#salarioUniObr").removeAttr("required");
+                        $("#sueloUniObr").removeAttr("required");
+                        $("#techoUniObr").removeAttr("required");
+                        $("#salarioUniObr").removeAttr("aria-required");
+                        $("#sueloUniObr").removeAttr("aria-required");
+                        $("#techoUniObr").removeAttr("aria-required");
+                        $("#participacion").removeAttr("required");
+                        $("#sueloParticipacion").removeAttr("required");
+                        $("#techoParticipacion").removeAttr("required");
+                        $("#participacion").removeAttr("aria-required");
+                        $("#sueloParticipacion").removeAttr("aria-required");
+                        $("#techoParticipacion").removeAttr("aria-required");
+                    } else if ($(this).val() === 'O') {
+                        $('#salPorUniObr').show();
+                        $('#salPar').hide();
+                        $('#lblSalarioUniObr').addClass('active');
+                        $('#lblSueloUniObr').addClass('active');
+                        $('#lblTechoUniObr').addClass('active');
+
+                        if (tipoSalarioInicial !== 'O') {
+                            $('#salarioUniObr').val("0.00");
+                            $('#sueloUniObr').val("0");
+                            $('#techoUniObr').val("0");
+                        } else {
+                            $('#salarioUniObr').val(salarioUnitarioInicial.toFixed(2));
+                            $('#sueloUniObr').val(sueloInicial.toFixed(0));
+                            $('#techoUniObr').val(techoInicial.toFixed(0));
+                        }
+
+
+                        if (tipoSalarioInicial !== 'P') {
+                            $('#participacion').val("0.000");
+                            $('#sueloParticipacion').val("0.00");
+                            $('#techoParticipacion').val("0.00");
+                        }
+                                                
+                        
+                        $("#salarioUniObr").attr("required", "");
+                        $("#sueloUniObr").attr("required", "");
+                        $("#techoUniObr").attr("required", "");
+                        $("#salarioUniObr").attr("aria-required", "true");
+                        $("#sueloUniObr").attr("aria-required", "true");
+                        $("#techoUniObr").attr("aria-required", "true");
+
+                        $("#participacion").removeAttr("required");
+                        $("#sueloParticipacion").removeAttr("required");
+                        $("#techoParticipacion").removeAttr("required");
+                        $("#participacion").removeAttr("aria-required");
+                        $("#sueloParticipacion").removeAttr("aria-required");
+                        $("#techoParticipacion").removeAttr("aria-required");
+                    } else if ($(this).val() === 'P') {
+                        $('#salPar').show();
+                        $('#salPorUniObr').hide();
+                        $('#lblParticipacion').addClass('active');
+                        $('#lblSueloParticipacion').addClass('active');
+                        $('#lblTechoParticipacion').addClass('active');
+
+                        if (tipoSalarioInicial !== 'P') {
+                            $('#participacion').val("0.000");
+                            $('#sueloParticipacion').val("0.00");
+                            $('#techoParticipacion').val("0.00");
+                        } else if (tipoSalarioInicial === 'P') {
+                            $('#participacion').val(participacionInicial.toFixed(3));
+                            $('#sueloParticipacion').val(sueloInicial.toFixed(2));
+                            $('#techoParticipacion').val(techoInicial.toFixed(2));
+                        }
+
+
+                        if (tipoSalarioInicial !== 'O') {
+                            $('#salarioUniObr').val("0.00");
+                            $('#sueloUniObr').val("0");
+                            $('#techoUniObr').val("0");
+                        }
+                        
+                        
+                        $("#participacion").attr("required", "");
+                        $("#sueloParticipacion").attr("required", "");
+                        $("#techoParticipacion").attr("required", "");
+                        $("#participacion").attr("aria-required", "true");
+                        $("#sueloParticipacion").attr("aria-required", "true");
+                        $("#techoParticipacion").attr("aria-required", "true");
+
+                        $("#salarioUniObr").removeAttr("required");
+                        $("#sueloUniObr").removeAttr("required");
+                        $("#techoUniObr").removeAttr("required");
+                        $("#salarioUniObr").removeAttr("aria-required");
+                        $("#sueloUniObr").removeAttr("aria-required");
+                        $("#techoUniObr").removeAttr("aria-required");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

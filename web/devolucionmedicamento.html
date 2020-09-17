@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">     
+            <div class="row">
+                <form class="col s12" action="medicamento.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" id="divInventarioFarmacia" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Devolución de Medicamento
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+                            
+                            <div class="input-field col s6">
+                                <input name="serie" id="serie" type="text" 
+                                       maxlength="25" class="campoVacio" disabled/>
+                                <label id="lblSerie" for="serie">Serie</label>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input name="lote" id="lote" type="text" 
+                                       maxlength="25" class="campoVacio" disabled/>
+                                <label id="lblLote" for="lote">Lote</label>
+                            </div>
+                            
+
+                            <div class="input-field col s6">
+                                <input id="costo" name="costo" type="text"
+                                       class="campoVacio" disabled/>
+                                <label for="costo" id="lblCosto">Costo del lote</label>
+                            </div>
+                            
+
+                            <div class="input-field col s6">
+                                <input id="existencia" name="existencia" type="text"
+                                       class="campoVacio" disabled/>
+                                <label for="existencia" id="lblExistencia">Cantidad en existencia</label>
+                            </div>
+                            
+                            <div class="input-field col s6 ">
+                                <input id="fechaVencimiento" name="fechaVencimiento"
+                                       type="text" class=" campoVacio" disabled/>
+                                <label for="fechaVencimiento" id="lblFechaVencimiento">Fecha de vencimiento</label>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input id="cantidad" name="cantidad" type="text"
+                                       required="" aria-required="true"
+                                       class="validate campoEntero" />
+                                <label for="cantidad" id="lblCantidad">Cantidad a devolver</label>
+                            </div>  
+
+                            <div class="input-field col s12">
+                                <textarea name="motivo" id="motivo" 
+                                          maxlength="300" required="" aria-required="true"
+                                          class="materialize-textarea validate
+                                          campoLetrasEspacios"></textarea>
+                                <label id="lblMotivo" for="motivo">Motivo de devolución</label>
+                            </div>
+                            
+                            <input name="page" id="page" type="text" class="campoVacio" hidden="hidden">
+
+                            <div class="input-field col s12" style="margin-top: 0%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right"
+                                        name="btnSubmit" id="btnSubmit">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                var cantidadExistencia;
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga el registro del inventario de suministro médico en la página web.
+                $.ajax({
+                    method: "post",
+                    url: "cargaRegistro.do",
+                    data: {name: "GETMDCRTNINF"},
+                    success: function (data, status) {
+                        var informacionDevolucionMedicamento = JSON.parse(caracteresEspeciales(data.toString()));
+                        adecuarElementos(informacionDevolucionMedicamento.modo);
+                        cantidadExistencia = informacionDevolucionMedicamento.cantidad;
+                        
+                        // Asigna los valores a los campos.
+                        $('#serie').val(informacionDevolucionMedicamento.codigo2);
+                        $('#lote').val(informacionDevolucionMedicamento.codigo);
+                        $('#costo').val(informacionDevolucionMedicamento.costo);
+                        $('#existencia').val(informacionDevolucionMedicamento.cantidad);
+                        $('#fechaVencimiento').val(informacionDevolucionMedicamento.fechaVencimiento);
+                        
+                        // Asign o remueve clase ACTIVE a etiquetas de los campos.
+                        if(String(informacionDevolucionMedicamento.codigo).length > 0)
+                            $('#lblLote').addClass('active');
+                        else $('#lblLote').removeClass('active');
+                        
+                        if(String(informacionDevolucionMedicamento.codigo2).length > 0)
+                            $('#lblSerie').addClass('active');
+                        else $('#lblSerie').removeClass('active');
+                        
+                        if(informacionDevolucionMedicamento.cantidad > 0){
+                            $('#existencia').val(informacionDevolucionMedicamento.cantidad);
+                            $('#lblExistencia').addClass('active');
+                        } else{
+                            $('#existencia').val('');
+                            $('#lblExistencia').removeClass('active');
+                        }
+                        
+                        if(informacionDevolucionMedicamento.cantidadDevuelta > 0){
+                            $('#cantidad').val(informacionDevolucionMedicamento.cantidadDevuelta);
+                            $('#lblCantidad').addClass('active');
+                        } else $('#lblCantidad').removeClass('active');
+                        
+                        if(informacionDevolucionMedicamento.costo > 0)
+                            $('#lblCosto').addClass('active');
+                        else $('#lblCosto').removeClass('active');
+                        
+                        if(String(informacionDevolucionMedicamento.fechaVencimiento).length > 0)
+                            $('#lblFechaVencimiento').addClass('active');
+                        else $('#lblFechaVencimiento').removeClass('active');
+                        
+                        if(String(informacionDevolucionMedicamento.motivoDevolucion).length > 0){
+                            $('#motivo').text(informacionDevolucionMedicamento.motivoDevolucion);
+                            $('#lblMotivo').addClass('active');
+                        } else $('#lblMotivo').removeClass('active');
+                        
+                        // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                        if (informacionDevolucionMedicamento.error
+                                && String(informacionDevolucionMedicamento.mensaje).length > 0)
+                            myAlert(informacionDevolucionMedicamento.mensaje);
+                    }
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Valida los campos antes de someter el formulario.
+                $('#btnSubmit').on('click', function(event){
+                    if( cantidadExistencia < parseInt($('#cantidad').val()) ){
+                        event.preventDefault();
+                        alert("¡No puede devolver una cantidad mayor de medicamento a la que existe!");
+                    } else {
+                        $('#page').val(document.location.href.match(/[^\/]+$/)[0]);
+                        $('#serie').removeAttr("disabled");
+                        $('#lote').removeAttr("disabled");
+                    }
+                });
+                
+                
+                // Regresa al lobby de suministros médicos.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea regresar a la página del inventario de medicamentos?"))
+                        window.location.replace("lobbymedicamentos.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

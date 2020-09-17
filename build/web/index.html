@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style type="text/css">
+            form .row{
+                margin-top: -1.4%;
+            }
+
+            #red, #green, #blue {
+                margin: 10px;
+                display: inline-block;
+                height: 200px;
+            }
+
+            #colorpicker {
+                height: 240px;
+                width: 310px;
+                margin: 0 auto;
+                padding: 10px;
+                border: 1px solid #BFBFBF;
+            }
+
+            #result {
+                margin: 60px 26px;
+                height: 100px;
+                width: 100px;
+                display: inline-block;
+                vertical-align: top;
+                color: rgb(127, 127, 127);
+                background: rgb(127, 127, 127);
+                border: 1px solid #fff;
+                box-shadow: 0 0 10px;
+            }
+
+            #red .noUi-connect {
+                background: #c0392b;
+            }
+
+            #green .noUi-connect {
+                background: #27ae60;
+            }
+
+            #blue .noUi-connect {
+                background: #2980b9;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col s12">
+                            <!--h3 class="center-align" id="nombreEmpresa"></h3-->
+                            <div class="card horizontal" style="box-shadow: none">
+                                <div class="card-stacked" style="background-color: #fafafa;">
+                                    <h3 class="center-align" id="nombreEmpresa" style="margin: auto"></h3>
+                                </div>
+                                <div class="card-image">
+                                    <img id="logoEmpesa" style="height: 64px; width: 64px;"/>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom: -1%">
+                                <form class="col s12" action="login.do" method="post" autocomplete="off">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">account_circle</i>
+                                            <input id="usuario" name="usuario" type="text" class="validate"/>
+                                            <label for="usuario">Usuario</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">lock_open</i>
+                                            <input id="contrasenia" name="contrasenia" type="password" class="validate"/>
+                                            <label for="contrasenia">Contraseña</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row center">
+                                        <div class="col s12">
+                                            <button class="btn waves-effect waves-light"
+                                                    id="btnSubmit"
+                                                        type="submit" name="btnSubmit">
+                                                    Ingresar
+                                                </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                
+                // Recupera el logo de la empresa.logoEmpresa
+                obtenerLogotipo();
+                
+                // Configuración de la ventana modal.
+                $('.modal').modal({
+                    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+                    opacity: .5, // Opacity of modal background
+                    inDuration: 300, // Transition in duration
+                    outDuration: 200, // Transition out duration
+                    startingTop: '4%', // Starting top style attribute
+                    endingTop: '10%', // Ending top style attribute
+                    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                        // alert("Ready");
+                    },
+                    complete: function () {
+                        // alert('Closed');
+                    } // Callback for Modal close
+                });
+
+                $('#modal1').modal('open');
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion("index.html");
+                
+                
+                // Encripta la contraseña proporcionada por el usuario con SHA512.
+                $('#btnSubmit').on('click', function(event){
+                    $('#contrasenia').val(SHA512($('#contrasenia').val()));
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            #divUltimaSesion{
+                width: 100%;
+                border-color: red;
+                border-width: 2px;
+                border-style: dashed;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container" style="margin-top: -0.3%">
+            <div class="row">
+                <form action="planrehabilitacion.do" method="post" autocomplete="off" enctype="multipart/form-data">
+                    <div class="card-panel" id="firstScreen">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">
+                                Modalidades a Aplicar
+                            </h4>
+                            <hr/>
+                            
+                            <div class="input-field col s12">
+                                <table style="border-collapse: collapse;">
+                                    <tbody>
+                                        <tr style='border-bottom: none;'>
+                                            <td colspan="3" style="padding-left:0; padding-top:0; padding-bottom:0.4%;">
+                                                Número de plan: <a id="lblPlanRehabilitacion"></a>
+                                            </td>
+                                        </tr>
+                                        <tr style='border-bottom:none; background-color:#F8F8F8;'>
+                                            <td style="width:33%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Expediente: <a id="lblExpediente"></a></td>
+                                            <td style="width:36%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Nombre: <span id="lblNombre"></span></td>
+                                            <td style="width:31%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Edad: <span id="lblEdad"></span> años</td>
+                                        </tr>
+                                        <tr style="border-bottom: none;">
+                                            <td style="width:33%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Sesiones asistidas: <span id="lblSesiones"></span></td>
+                                            <td style="width:36%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Fecha de inicio: <span id="lblFechaInicio"></span></td>
+                                            <td style="width:31%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Fecha de finalización:  <span id="lblFechaFinal"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="myContent">
+                                <div class="input-field col s12" style="margin-top: -0%; margin-bottom: -0.5%;">
+                                    <h5>Modalidades del plan de rehabilitación</h5>
+                                </div>
+                                <div class="col s12" id="divModalidades"></div>
+                            </div>
+
+                            <div class="input-field col s12" style="margin-top: 1.5%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar</button>
+
+                                <button class="btn cyan waves-effect waves-light right"
+                                        id="btnContinuar">
+                                    Terminar sesión</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-panel" id="secondScreen" hidden="hidden">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">Registro de Cita Médica</h4><hr/>
+
+                            <div class="row" style="margin-top: -1%; margin-bottom: -2%;">
+                                <!--div class="input-field col s2">
+                                    <label id="lblSesion">Sesión 1/12</label>
+                                </div-->
+
+                                <div class="input-field col s10" style="margin-bottom: -2%;">
+                                    <input type="text" class="campoVacio" readonly style="border-bottom-color: white;"/>
+                                </div>
+
+                                <div class="input-field col s4">
+                                    <input id="fechaAtencion" name="fechaAtencion" type="text"
+                                           class="campoVacio" readonly/>
+                                    <label for="fechaAtencion" id="lblFechaAtencion">Fecha de atención</label>
+                                </div>
+
+                                <div class="input-field col s4">
+                                    <input id="horaInicio" name="horaInicio"
+                                           type="text" class="campoVacio" readonly/>
+                                    <label for="horaInicio" id="lblHoraInicio">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s4">
+                                    <input id="horaFinal" name="horaFinal"
+                                           type="text" class="campoVacio" readonly/>
+                                    <label for="horaFinal" id="lblHoraFinal">Hora final</label>
+                                </div>
+
+                                <div class="switch input-field col s4">
+                                    <label>
+                                        El paciente: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Faltó
+                                        <input type="checkbox" id="cbxAsistio" name="cbxAsistio">
+                                        <span class="lever"></span>
+                                        Asistió
+                                    </label>
+                                </div>
+
+                                <div class="input-field col s8">
+                                    <textarea id="motivoAusencia" name="motivoAusencia" maxlength="300"
+                                              class="materialize-textarea campoLetrasNumeros" required></textarea>
+                                    <label for="motivoAusencia" id="lblMotivoAusencia">Motivo de la ausencia</label>
+                                </div>
+
+                                <div class="input-field col s12">
+                                    <textarea id="notas" name="notas"
+                                              class="materialize-textarea campoLetrasNumeros" required></textarea>
+                                    <label for="notas" id="lblNotas">Notas</label>
+                                </div>
+                                
+                                
+                                <div class="input-field col s12" id="divUltimaSesion" hidden="hidden">
+                                    <div class="input-field col s12">
+                                        <h5 style="font-weight: bold;" class="center">Última sesión del plan de rehabilitación</h5><hr/>
+                                    </div>
+
+                                    <div class="switch col s12">
+                                        <label>
+                                            <span style="color: black;">El paciente:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span style="color: red; font-weight: bold;">Debe continuar en rehabilitación</span>
+                                            <input type="checkbox" id="cbxAltaMedica" name="cbxAltaMedica">
+                                            <span class="lever"></span>
+                                            <span style="color: green; font-weight: bold;">Tiene el alta médica</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="input-field col s12">
+                                        <textarea id="evaluacionFinal" name="evaluacionFinal"
+                                                  class="materialize-textarea campoLetrasNumeros"></textarea>
+                                        <label for="evaluacionFinal" id="lblEvaluacionFinal">Evaluación final</label>
+                                    </div>
+
+                                    <div class="input-field col s12">
+                                        <textarea id="nuevasIndicaciones" name="nuevasIndicaciones"
+                                                  class="materialize-textarea" required></textarea>
+                                        <label for="nuevasIndicaciones" id="lblNuevasIndicaciones">Nuevas indicaciones</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <input name="page" id="page" type="text" class="campoVacio" hidden="hidden">
+                            <input name="planRehabilitacion" id="planRehabilitacion" type="text" class="campoVacio" hidden="hidden">
+                                
+                            <div class="input-field col s12" style="margin-top: 1.5%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnRegresar">
+                                    Regresar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit" name="btnSubmit" id="btnSubmit" style="margin-top: -1%">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Variables globales.
+                var codigoPlanRehabilitacion = 0;
+                var ultimaSesion = false;
+                
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Solicita la información de referencia para el plan de rehabilitación.
+                $.ajax({
+                    method: "post",
+                    url: "serviciosc.do",
+                    data: {name: "GETREHPLANL3"},
+                    success: function (data, status) {
+                        var informacionPlanRehabilitacion = JSON.parse(caracteresEspeciales(data.toString()));
+                        
+                        // Carga la información general del plan de rehabilitación.
+                        if(!informacionPlanRehabilitacion.error){
+                            codigoPlanRehabilitacion = informacionPlanRehabilitacion.numeroPlan;
+                            ultimaSesion = ( informacionPlanRehabilitacion.cantidadSesiones -
+                                             informacionPlanRehabilitacion.asistencias ) == 14;
+                            alert(ultimaSesion);
+                            $('#lblPlanRehabilitacion').text(informacionPlanRehabilitacion.numeroPlan);
+                            $('#lblExpediente').text(informacionPlanRehabilitacion.expediente);
+                            $('#lblNombre').text(informacionPlanRehabilitacion.nombrePaciente);
+                            $('#lblEdad').text(informacionPlanRehabilitacion.edad);
+                            $('#lblSesiones').text(informacionPlanRehabilitacion.asistencias +
+                                              ' de ' + informacionPlanRehabilitacion.cantidadSesiones);
+                            $('#lblFechaInicio').text(informacionPlanRehabilitacion.fechaInicial);
+                            $('#lblFechaFinal').text(informacionPlanRehabilitacion.fechaFinal);
+                            
+                            $('#fechaAtencion').val(informacionPlanRehabilitacion.fechaSesion);
+                            $('#lblFechaAtencion').addClass('active');
+                            $('#horaInicio').val(informacionPlanRehabilitacion.horaInicio);
+                            $('#lblHoraInicio').addClass('active');
+                            $('#horaFinal').val(informacionPlanRehabilitacion.horaFinal);
+                            $('#lblHoraFinal').addClass('active');
+                            // $('#lblSesion').text('Sesión ' + (informacionPlanRehabilitacion.asistencias + 1) +
+                            //                     '/' + informacionPlanRehabilitacion.cantidadSesiones);
+                            
+                            
+                            // Solicita la lista de modalidades que provee la
+                            // institución para que el usuario defina cuales aplicarán.
+                            $.ajax({
+                                method: "post",
+                                async: false,
+                                url: "serviciosc.do",
+                                data: { name: "GETREHPLANMODL",
+                                        code: codigoPlanRehabilitacion },
+                                success: function (dataIn, statusIn) {
+                                    var listaModalidades = JSON.parse(dataIn.toString());
+
+                                    if(!listaModalidades.error){
+                                        $('#divModalidades').html(listaModalidades.listaModalidades);
+                                        $('.collapsible').collapsible();
+                                        
+                                        var content = $('#myContent');
+                                        if (content.css('maxHeight')) {
+                                            content.css('maxHeight', 'none');
+                                        } else {
+                                            content.css('maxHeight', content.height() + 'px');
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                
+                
+                // Evita que se seleccionen o se deseleccionen los elementos marcados por el usuario.
+                $(document.body).on("click", "input[type='checkbox']", function(e){
+                    if($(this).attr("id") === "cbxAsistio"){
+                        if($(this).is(':checked')){
+                            $('#motivoAusencia').val('');
+                            $('#motivoAusencia').removeAttr('required');
+                            $('#motivoAusencia').attr('disabled', 'disabled');
+                        
+                            if(ultimaSesion){
+                                $('#divUltimaSesion').removeAttr('hidden');
+                                $('#divUltimaSesion').show();
+
+                                $('#evaluacionFinal').attr('required', 'required');
+                                $('#nuevasIndicaciones').attr('required', 'required');
+                            }
+                        } else {
+                            $('#motivoAusencia').removeAttr('disabled');
+                            $('#motivoAusencia').attr('required', 'required');
+                            
+                            if(ultimaSesion){
+                                $('#divUltimaSesion').attr('hidden', 'hidden');
+                                $('#divUltimaSesion').hide();
+
+                                $('#evaluacionFinal').removeAttr('required');
+                                $('#nuevasIndicaciones').removeAttr('required');
+                            }
+                        }
+                    } else if(!$(this).is(':checked')
+                             && $(this).attr("id") !== "cbxAltaMedica"){
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                
+                
+                // Regresa a la pantalla de inicio del formulario.
+                $('#btnRegresar').on('click', function(event){
+                    $('#firstScreen').show();
+                    $('#secondScreen').hide();
+                    event.preventDefault();
+                });
+                
+                
+                // Valida campos de primera pantalla para pasar a la segunda pantalla.
+                $('#btnContinuar').on('click', function(event){
+                    event.preventDefault();
+                    
+                    if(confirm("¿Desea hacer el check out de la sesión?")){
+                        $('#secondScreen').removeAttr('hidden');
+                        $('#firstScreen').hide();
+                        $('#secondScreen').show();
+                    }
+                });
+                
+                
+                // Envía el formulario.
+                $(document.body).on("click", "#btnSubmit", function (event) {
+                    $('#planRehabilitacion').val(codigoPlanRehabilitacion);
+                    $('#page').val(document.location.href.match(/[^\/]+$/)[0]);
+                    $('#motivoAusencia').removeAttr('disabled');
+                });
+                
+                
+                // Regresa a la agenda.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea regresar a la agenda?"))
+                        window.location.replace("agenda.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

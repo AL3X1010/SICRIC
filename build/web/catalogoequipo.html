@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form class="col s12" action="catalogoequipo.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Información del Catálogo de Equipos Médicos
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s6">
+                                <select id="proveedor" name="proveedor" required="" aria-required="true">
+                                </select>
+                                <label for="proveedor">Proveedor</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input type="text" class="campoVacio" readonly style="border-bottom-color: white;"/>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input name="marca" id="marca" type="text" 
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate campoLetrasNumeros campoMayusculas">
+                                <label for="marca" id="lblMarca">Marca del equipo médico</label>
+                                <span id="marcaHelper"></span>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input name="modelo" id="modelo" type="text" 
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate campoLetrasNumeros campoMayusculas">
+                                <label for="modelo" id="lblModelo">Modelo del equipo médico</label>
+                                <span id="modeloHelper"></span>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input name="nombre" id="nombre" type="text" 
+                                       maxlength="100" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label for="nombre" id="lblNombre">Nombre de equipo médico</label>
+                                <span id="nombreHelper"></span>
+                            </div> 
+
+                            <div class="input-field col s6">
+                                <input name="costo" id="costo" type="text" 
+                                       maxlength="13" required="" aria-required="true"
+                                       class="validate campoDecimal">
+                                <label for="costo" id="lblCosto">Costo por unidad</label>
+                                <span id="costoHelper"></span>
+                            </div>
+
+                            <div class="col s6" id="divCantidad"></div> 
+
+                            <div class="input-field col s12">
+                                <textarea name="descripcion" id="descripcion" 
+                                          maxlength="300" required="" aria-required="true"
+                                          class="materialize-textarea validate campoLetrasEspacios"></textarea>
+                                <label for="descripcion" id="lblDescripcion">Descripción del equipo médico</label>
+                            </div>
+
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit" style="visibility: hidden;">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Variables globales.
+                var nombreInicial;
+                var marcaInicial;
+                var modeloInicial;
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga el registro del equipo médico en la página web.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "cargaRegistro.do",
+                    data: {name: "GETMEDEQUINF"},
+                    success: function (data, status) {
+                        var informacionCatalogoEquipo = JSON.parse(data.toString());
+                        adecuarElementos(informacionCatalogoEquipo.modo);
+                        nombreInicial = informacionCatalogoEquipo.nombre;
+                        marcaInicial = informacionCatalogoEquipo.marca;
+                        modeloInicial = informacionCatalogoEquipo.modelo;
+
+                        // Asigna los valores a los campos.
+                        $('#marca').val(informacionCatalogoEquipo.marca);
+                        $('#modelo').val(informacionCatalogoEquipo.modelo);
+                        $('#nombre').val(informacionCatalogoEquipo.nombre);
+                        $('#descripcion').val(informacionCatalogoEquipo.descripcion);
+                        
+                        if(informacionCatalogoEquipo.costo > 0){
+                            $('#costo').val(informacionCatalogoEquipo.costo.toFixed(2));
+                            $('#lblCosto').addClass('active');
+                        } else{
+                            $('#costo').val('');
+                            $('#lblCosto').removeClass('active');
+                        }
+                        
+                        if(informacionCatalogoEquipo.codigo > 0 && informacionCatalogoEquipo.cantidad > 0){
+                            $('#divCantidad').addClass('input-field').html(
+                                "<input name='cantidad' id='cantidad' type='text'" +
+                                "       maxlength='100' class='campoVacio'" +
+                                "       value='" + informacionCatalogoEquipo.cantidad + "'" +
+                                "       readonly='readonly'/>" +
+                                "<label for='cantidad' class='active'>Cantidad en existencia</label>"
+                            );
+                        }
+                        
+                        // Marca como activo o inactivo el equipo médico.
+                        if (informacionCatalogoEquipo.activo)
+                            $('#cbxActivo').attr('checked', 'true');
+                        else $('#cbxActivo').removeAttr('checked');
+
+                        if (String(informacionCatalogoEquipo.marca).length > 0)
+                            $('#lblMarca').addClass('active');
+                        else $('#lblMarca').removeClass('active');
+                        
+                        if (String(informacionCatalogoEquipo.modelo).length > 0)
+                            $('#lblModelo').addClass('active');
+                        else $('#lblModelo').removeClass('active');
+
+                        if (String(informacionCatalogoEquipo.nombre).length > 0)
+                            $('#lblNombre').addClass('active');
+                        else $('#lblNombre').removeClass('active');
+                        
+                        if (String(informacionCatalogoEquipo.descripcion).length > 0)
+                            $('#lblDescripcion').addClass('active');
+                        else $('#lblDescripcion').removeClass('active');
+                        
+                        // Aigna opciones a los elementos SELECT.
+                        $('#proveedor').html(informacionCatalogoEquipo.selectProveedor);
+                        $('select').trigger('contentChanged');
+
+                        // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                        if (informacionCatalogoEquipo.error)
+                            myAlert(informacionCatalogoEquipo.mensaje);
+                    }
+                });
+
+
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Valida los campos antes de someter el formulario.
+                $('#btnSubmit').on('click', function (event) {
+                    // Valida que el nombre proporcionado no existe ya, excepto
+                    // para el mismo registro.
+                    if ($('#nombre').val() !== nombreInicial)
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: {service: "VLDMEDEQUNAM",
+                                   name: $('#nombre').val()},
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if (respuesta.error) {
+                                    $('#nombreHelper').attr('data-error', respuesta.mensaje);
+                                    $('#nombreHelper').addClass('helper-text');
+                                    $('#costoHelper').addClass('helper-text');
+                                    $('#nombre').removeClass('valid').addClass('invalid');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                    
+                    
+                    // Valida que el modelo ingresado no exista para la marca proporcionada,
+                    // excepto para el mismo registro.
+                    if ($('#modelo').val() !== modeloInicial)
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: {service: "VLDMEDEQUMOD",
+                                   mark: $('#marca').val(),
+                                   model: $('#modelo').val()},
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if (respuesta.error) {
+                                    $('#modeloHelper').attr('data-error', respuesta.mensaje);
+                                    $('#modeloHelper').addClass('helper-text');
+                                    $('#marcaHelper').addClass('helper-text');
+                                    $('#modelo').removeClass('valid').addClass('invalid');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                });
+
+
+                // Regresa al lobby de catálogo de equipo médico.
+                $('#btnCancelar').on('click', function (event) {
+                    if (confirm("¿Desea regresar al lobby del catálogo de equipos médicos?"))
+                        window.location.replace("lobbycatalogoequipos.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

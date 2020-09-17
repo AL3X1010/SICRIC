@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">     
+            <div class="row">
+                <form class="col s12" action="proveedor.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" id="divProveedor" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Información del Proveedor
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+                        
+                            <div class="switch input-field col s12">
+                                <label>
+                                    Inactivo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo">
+                                    <span class="lever"></span>
+                                    Activo
+                                </label>
+                            </div>
+                            <div class="input-field col s12"></div>
+
+                            
+                            <div class="input-field col s6">
+                                <input name="nombreProveedor" id="nombreProveedor" type="text" 
+                                       maxlength="100" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label id="lblNombreProveedor" for="nombreProveedor">Nombre del proveedor</label>
+                                <span id="nombreProveedorHelper"></span>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <select id='tipo' name='tipo'></select>
+                                <label for='tipo'>Tipo de proveedor</label>
+                                <span id="tipoHelper"></span>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input name="telefonoProveedor" id="telefonoProveedor" type="text"
+                                       maxlength="8" required="" aria-required="true" 
+                                       class="validate campoEntero"/>
+                                <label id="lblTelefonoProveedor" for="telefonoProveedor">Teléfono del proveedor</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="correoElectronico" id="correoElectronico" type="email"
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate"/>
+                                <label id="lblCorreoElectronico" for="correoElectronico">Correo electrónico</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="nombreContacto" id="nombreContacto" type="text" 
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios">
+                                <label id="lblNombreContacto" for="nombreContacto">Nombre del contacto</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="telefonoContacto" id="telefonoContacto" type="text"
+                                       maxlength="8" required="" aria-required="true" 
+                                       class="validate campoEntero"/>
+                                <label id="lblTelefonoContacto" for="telefonoContacto">Teléfono del contacto</label>
+                            </div>
+                            
+                            <div class="input-field col s12">
+                                    <input name="direccion" id="direccion" type="text"
+                                       maxlength="250" required="" aria-required="true"
+                                       class="validate"/>
+                                <label id="lblDireccion" for="direccion">Dirección</label>
+                            </div>
+                                
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right"
+                                        name="btnSubmit" id="btnSubmit" style="visibility: hidden;">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>    
+                </form>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Variables globales.
+                var nombreProveedorInicial;
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Carga el registro del proveedor en la página web.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "cargaRegistro.do",
+                    data: {name: "GETPVDINF"},
+                    success: function (data, status) {
+                        var informacionProveedor = JSON.parse(caracteresEspeciales(data.toString()));
+                        adecuarElementos(informacionProveedor.modo);
+                        nombreProveedorInicial = informacionProveedor.nombreProveedor;
+                        
+                        // Asigna los valores a los campos.
+                        $('#nombreProveedor').val(informacionProveedor.nombreProveedor);
+                        $('#correoElectronico').val(informacionProveedor.correoElectronico);
+                        $('#nombreContacto').val(informacionProveedor.nombreContacto);
+                        $('#direccion').val(informacionProveedor.direccion);
+                        
+                        // Marca como activo o inactivo el proveedor.
+                        if (informacionProveedor.activo)
+                            $('#cbxActivo').attr('checked', 'true');
+                        else    $('#cbxActivo').removeAttr('checked');
+                        
+                        if(String(informacionProveedor.nombreProveedor).length > 0)
+                            $('#lblNombreProveedor').addClass('active');
+                        else    $('#lblNombreProveedor').removeClass('active');
+                        
+                        if(informacionProveedor.telefonoProveedor > 0){
+                            $('#lblTelefonoProveedor').addClass('active');
+                            $('#telefonoProveedor').val(informacionProveedor.telefonoProveedor);
+                        } else  $('#lblTelefonoProveedor').removeClass('active');
+                        
+                        if(String(informacionProveedor.correoElectronico).length > 0)
+                            $('#lblCorreoElectronico').addClass('active');
+                        else    $('#lblCorreoElectronico').removeClass('active');
+                        
+                        if(String(informacionProveedor.nombreContacto).length > 0)
+                            $('#lblNombreContacto').addClass('active');
+                        else    $('#lblNombreContacto').removeClass('active');
+                        
+                        if(informacionProveedor.telefonoContacto > 0){
+                            $('#lblTelefonoContacto').addClass('active');
+                            $('#telefonoContacto').val(informacionProveedor.telefonoProveedor);
+                        } else  $('#lblTelefonoContacto').removeClass('active');
+                        
+                        if(String(informacionProveedor.direccion).length > 0)
+                            $('#lblDireccion').addClass('active');
+                        else    $('#lblDireccion').removeClass('active');
+                        
+                        // Aigna opciones a los elementos SELECT.
+                        $('#tipo').html(informacionProveedor.selectTipo);
+                        $('select').trigger('contentChanged');
+                        
+                        // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                        if(informacionProveedor.error)
+                                myAlert(informacionProveedor.mensaje);
+                    }
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Valida los campos antes de someter el formulario.
+                $('#btnSubmit').on('click', function(event){
+                    if( $('#nombreProveedor').val() !== nombreProveedorInicial )
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: { service: "VLDPVDNAM",
+                                    name: $('#nombreProveedor').val() },
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if(respuesta.error){
+                                    $('#nombreProveedorHelper').attr('data-error', respuesta.mensaje);
+                                    $('#nombreProveedorHelper').addClass('helper-text');
+                                    $('#tipoHelper').addClass('helper-text');
+                                    $('#nombreProveedor').removeClass('valid').addClass('invalid');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                });
+                
+                
+                // Regresa al lobby de proveedores.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea regresar al lobby de proveedores?"))
+                        window.location.replace("lobbyproveedores.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

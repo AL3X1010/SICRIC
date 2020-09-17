@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            .modal {
+                width: 60%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form class="col s12" method="POST" action="paciente.do" autocomplete="OFF">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Información del Paciente
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s5">
+                                <select id='centroRemision' name='centroRemision'></select>
+                                <label for='centroRemision'>Centro de remisión</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="medico" name="medico" type="text" maxlength="100"
+                                       class="campoLetrasEspacios" />
+                                <label for="medico" id="lblMedico">Médico que remitió</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input id="fechaIngreso" name="fechaIngreso" type="text"
+                                       class="campoVacio" readonly="readonly"/>
+                                <label for="fechaIngreso" id="lblFechaIngreso">Fecha de ingreso</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="codigo" name="codigo" type="text" maxlength="15"
+                                       class="validate campoLetrasNumeros campoMayusculas"
+                                       required="" aria-required="true" />
+                                <label for="codigo" id="lblCodigo">Código de paciente</label>
+                                <span id="codigoHelper"></span>
+                            </div>
+
+                            <div class="input-field col s5">
+                                <input id="identidad" name="identidad" type="text" maxlength="15"
+                                       class="validate campoLetrasNumeros campoMayusculas" required="" aria-required="true" />
+                                <label for="identidad" id="lblIdentidad">Identidad o pasaporte</label>
+                                <span id="identidadHelper"></span>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input id="fechaNacimiento" name="fechaNacimiento"
+                                       type="text" class="validate datepicker campoVacio"
+                                       required="" aria-required="true" />
+                                <label for="fechaNacimiento" id="lblFechaNacimiento">Fecha de nacimiento</label>
+                                <span id="fechaNacimientoHelper"></span>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input id="nombre" name="nombre" type="text" maxlength="50"
+                                       class="validate campoLetrasEspacios"
+                                       required="" aria-required="true" />
+                                <label for="nombre" id="lblNombre">Nombres</label>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input id="apellido" name="apellido"  type="text" maxlength="50"
+                                       class="validate campoLetrasEspacios" required="" aria-required="true" />
+                                <label for="apellido" id="lblApellido">Apellidos</label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <select id="genero" name="genero" required="" aria-required="true">
+                                </select>
+                                <label for="genero">Género</label>
+                                <span id="generoHelper"></span>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <select id="estadoCivil" name="estadoCivil"
+                                        required="" aria-required="true">
+                                </select>
+                                <label for="estadoCivil">Estado civil</label>
+                                <span id="estadoCivilHelper"></span>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="telefono" name="telefono" type="text"
+                                       maxlength="8" class="validate campoEntero"
+                                       required="" aria-required="true" />
+                                <label for="telefono" id="lblTelefono">Teléfono</label>
+                                <span id="telefonoHelper"></span>
+                            </div>
+
+                            <div class="input-field col s3" style="display: none;">
+                                <input id="telefonoEmergencia" name="telefonoEmergencia"
+                                       type="text" maxlength="8"
+                                       class="validate campoEntero"
+                                       required="" aria-required="true" />
+                                <label for="telefonoEmergencia" id="lblTelefonoEmergencia">
+                                    Teléfono de emergencia
+                                </label>
+                            </div>
+
+                            <div class="input-field col s4">
+                                <input id="correoElectronico" name="correoElectronico"
+                                       type="email" maxlength="50"/>
+                                <label for="correoElectronico" id="lblCorreoElectronico">Correo electrónico</label>
+                            </div>
+
+                            <div class="input-field col s8">
+                                <textarea id="direccion" name="direccion"
+                                          required="" aria-required="true" 
+                                          class="materialize-textarea validate"
+                                          maxlength="250" data-length="250"></textarea>
+                                <label for="direccion" id="lblDireccion">Dirección</label>
+                            </div>
+
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2.5%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar</button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                var codigoHospital;
+                var pacienteExiste = false;
+                var codigoInicial = "";
+                var identidadInicial = ""
+                var telefonoInicial = 0;
+                var defaultDate = new Date();
+                var maxDate = new Date();
+                var today = new Date();
+
+                defaultDate.setFullYear(defaultDate.getFullYear() - 18);
+                maxDate.setFullYear(maxDate.getFullYear() - 16);
+                
+
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Configuración inicial para campo fecha de ingreso.
+                $('#fechaIngreso').val(hoy());
+                $('#lblFechaIngreso').addClass('active');
+                /*
+                 .datepicker({
+                 format: 'dd/mmm/yyyy',
+                 minDate: minDate,
+                 maxDate: maxDate,
+                 setDefaultDate: true,
+                 defaultDate: today,
+                 
+                 i18n: {
+                 months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                 monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                 weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                 weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                 weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                 cancel: "Cancelar"
+                 }
+                 }); */
+
+
+                // Configuración inicial para campo fecha de nacimiento.
+                $('#fechaNacimiento').datepicker({
+                    format: 'dd/mmm/yyyy',
+                    setDefaultDate: true,
+                    defaultDate: defaultDate,
+                    maxDate: maxDate,
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                        weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                        cancel: "Cancelar"
+                    }
+                });
+
+
+                // Configuración inicial para campo fecha de cita.
+                $('#fechaCita').datepicker({
+                    format: 'dd/mmm/yyyy',
+                    minDate: today,
+                    defaultDate: today,
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                        weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                        cancel: "Cancelar"
+                    }
+                });
+
+
+                // Configuración inicial para campo de hora inicio.
+                $('#horaInicio').timepicker({
+                    i18n: {
+                        done: "OK",
+                        cancel: "Cancelar"
+                    }
+                });
+
+
+                // Obtiene el código necesario para cargar el registro en pantalla.
+                $.ajax({
+                    method: "post",
+                    url: "cargaRegistro.do",
+                    data: {name: "GETPTNINF"},
+                    success: function (data, status) {
+                        var respuesta = JSON.parse(data.toString());
+                        var informacionPaciente = respuesta[1];
+                        adecuarElementos(respuesta[0].modo);
+
+                        if (!informacionPaciente.error) {
+                            $('#codigo').val(informacionPaciente.codigo);
+                            codigoInicial = informacionPaciente.codigo;
+                            $('#nombre').val(informacionPaciente.nombres);
+                            $('#apellido').val(informacionPaciente.apellidos);
+                            $('#identidad').val(informacionPaciente.identidad);
+                            identidadInicial = informacionPaciente.identidad;
+                            $('#correoElectronico').val(informacionPaciente.correoElectronico);
+                            // $('#fechaIngreso').val(informacionPaciente.fechaIngreso);
+                            // $('#fechaNacimiento').val(informacionPaciente.fechaNacimiento);
+                            $('#direccion').val(informacionPaciente.direccion);
+                            $('#medico').val(informacionPaciente.medicoRemitio);
+                            $('#lblFechaIngreso').addClass('active');
+                            $('#lblFechaNacimiento').addClass('active');
+
+                            if (informacionPaciente.codigo !== "") {
+                                $('#telefono').val(informacionPaciente.telefono);
+                                telefonoInicial = informacionPaciente.telefono;
+                                $('#telefonoEmergencia').val(informacionPaciente.telefonoEmergencia);
+                                $('#lblCodigo').addClass('active');
+                                $('#lblNombre').addClass('active');
+                                $('#lblApellido').addClass('active');
+                                $('#lblIdentidad').addClass('active');
+                                $('#lblCorreoElectronico').addClass('active');
+                                $('#lblTelefono').addClass('active');
+                                $('#lblTelefonoEmergencia').addClass('active');
+                                $('#lblDireccion').addClass('active');
+                                $('#lblMedico').addClass('active');
+                                pacienteExiste = true;
+                            } else {
+                                $('#btnSubmit').html("<i class='material-icons right'>arrow_forward</i>Continuar");
+                                $('#telefono').val('');
+                                $('#telefonoEmergencia').val('');
+                                $('#lblCodigo').removeClass('active');
+                                $('#lblNombre').removeClass('active');
+                                $('#lblApellido').removeClass('active');
+                                $('#lblIdentidad').removeClass('active');
+                                $('#lblCorreoElectronico').removeClass('active');
+                                $('#lblTelefono').removeClass('active');
+                                $('#lblTelefonoEmergencia').removeClass('active');
+                                $('#lblDireccion').removeClass('active');
+                                $('#lblMedico').removeClass('active');
+                                pacienteExiste = false;
+                            }
+                        } else {
+                            $('#nombre').val('');
+                            $('#lblNombre').removeClass('active');
+                            $('#descripcion').val('');
+                            $('#lblDescripcion').removeClass('active');
+                            $('#cbxActivo').attr('checked', 'true');
+
+                            $('#lblCodigo').removeClass('active');
+                            $('#lblNombre').removeClass('active');
+                            $('#lblApellido').removeClass('active');
+                            $('#lblIdentidad').removeClass('active');
+                            $('#lblCorreoElectronico').removeClass('active');
+                            $('#lblTelefono').removeClass('active');
+                            $('#lblTelefonoEmergencia').removeClass('active');
+                            $('#lblFechaIngreso').removeClass('active');
+                            $('#lblFechaNacimiento').removeClass('active');
+                            $('#lblDireccion').removeClass('active');
+                            $('#lblMedico').removeClass('active');
+                            pacienteExiste = false;
+
+                            myAlert(informacionPaciente.mensaje);
+                        }
+
+
+                        $('#centroRemision').html(informacionPaciente.selectHospital);
+                        $('#genero').html(informacionPaciente.selectGenero);
+                        $('#estadoCivil').html(informacionPaciente.selectEstadoCivil);
+                        $('select').trigger('contentChanged');
+                    }
+                });
+
+
+                // Configuración inicial para campo de hora final.
+                $('#horaFinal').timepicker({
+                    i18n: {
+                        done: "OK",
+                        cancel: "Cancelar"
+                    }
+                });
+
+
+                // Envía el formulario.
+                $(document.body).on("click", "#btnSubmit", function (event) {
+                    codigoHospital = parseInt($('#centroRemision').val().trim());
+                    
+                    if ($('#medico').val().trim().length === 0){
+                        alert('Debe proporcionar el nombre del médico que remitió al paciente.');
+                        return false;
+                    } else if ($('#fechaIngreso').val().trim().length === 0){
+                        alert('Seleccione la fecha de ingreso.');
+                        return false;
+                    } else if ($('#codigo').val().trim().length === 0){
+                        alert('Asigne un código al paciente para su fácil identificación.');
+                        return false;
+                    } else if ($('#identidad').val().trim().length === 0){
+                        alert('Es necesario que proporcione un número de identidad o pasaporte.');
+                        return false;
+                    } else if ($('#fechaNacimiento').val().trim().length === 0){
+                        alert('Seleccione la fecha de nacimiento del paciente.');
+                        return false;
+                    } else if ($('#nombre').val().trim().length === 0){
+                        alert('Debe proporcionar el nombre del paciente.');
+                        return false;
+                    } else if ($('#apellido').val().trim().length === 0){
+                        alert('Debe proporcionar el apellido del paciente.');
+                        return false;
+                    } else if ($('#telefono').val().trim().length === 0){
+                        alert('Se requiere un número de teléfono para continuar.');
+                        return false;
+                    } else if ($('#telefonoEmergencia').val().trim().length === 0){
+                        alert('Solicite el número de teléfono para contactar en caso de emergencia.');
+                        return false;
+                    } else if ($('#direccion').val().trim().length === 0){
+                        alert('Debe proporcionar la dirección de domicilio.');
+                        return false;
+                    } else
+                    
+                    // Valida que el código de paciente asignado no se haya asignado
+                    // a ningún otro paciente.
+                    if ($('#codigo').val() !== codigoInicial)
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: {service: "VLDPTNCDE",
+                                   code: $('#codigo').val()},
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if (respuesta.error) {
+                                    $('#codigoHelper').attr('data-error', respuesta.mensaje);
+                                    $('#codigoHelper').addClass('helper-text');
+                                    $('#codigo').removeClass('valid').addClass('invalid');
+                                    // elementos de apoyo para que se mantenga distribución de elementos.
+                                    $('#identidadHelper').addClass('helper-text');
+                                    $('#fechaNacimientoHelper').addClass('helper-text');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                    
+                    // Valida que el número de identdad proporcionado no existe ya, excepto
+                    // para el mismo registro.
+                    else if ($('#identidad').val() !== identidadInicial)
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: {service: "VLDPTNIDT",
+                                   identity: $('#identidad').val()},
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if (respuesta.error) {
+                                    $('#identidadHelper').attr('data-error', respuesta.mensaje);
+                                    $('#identidadHelper').addClass('helper-text');
+                                    $('#identidad').removeClass('valid').addClass('invalid');
+                                    // elementos de apoyo para que se mantenga distribución de elementos.
+                                    $('#codigoHelper').addClass('helper-text');
+                                    $('#fechaNacimientoHelper').addClass('helper-text');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                    
+                    // Valida que el teléfono proporcionado no existe ya en caso
+                    // de ser número de teléfono celular, excepto para el mismo registro.
+                    else if ($('#telefono').val() !== telefonoInicial
+                            && $('#telefono').val().trim().substr(0, 1) !== 2)
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: {service: "VLDPTNCEL",
+                                   cellphone: $('#telefono').val()},
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if (respuesta.error) {
+                                    $('#telefonoHelper').attr('data-error', respuesta.mensaje);
+                                    $('#telefonoHelper').addClass('helper-text');
+                                    $('#telefono').removeClass('valid').addClass('invalid');
+                                    // elementos de apoyo para que se mantenga distribución de elementos.
+                                    $('generoHelper').addClass('helper-text');
+                                    $('#estadoCivilHelper').addClass('helper-text');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Solicita médico que remitió según se cambie valor de selectHTML-Hospital.
+                $('#centroRemision').on('change', function () {
+                    codigoHospital = parseInt($(this).val().trim());
+
+                    if (codigoHospital !== 1) {
+                        $('#medico').addClass('validate');
+                        $('#medico').attr('required', 'required');
+                        $('#medico').attr('aria-required', 'true');
+                    } else {
+                        $('#medico').removeClass('validate');
+                        $('#medico').removeClass('invalid');
+                        $('#medico').removeAttr('required');
+                        $('#medico').removeAttr('aria-required');
+                    }
+                });
+
+
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+            });
+        </script>
+    </body>
+</html>

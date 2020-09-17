@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">     
+            <div class="row">
+                <form class="col s12" action="respaldo.do" method="post"> 
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3%">
+                            <h4 class="center">Respaldo de Base de Datos</h4>
+                            <hr/>
+                            <div class="col s12" style="margin-top: 2%;">
+                                <ul class="collapsible">
+                                    <li class="active">
+                                        <div class="collapsible-header"><i class="material-icons">cloud_download</i>Crear Respaldo</div>
+                                        <div class="collapsible-body">
+                                            <div class="row" style="margin-top: -2%; margin-bottom: -2%;">
+                                                <div class="input-field col s6">
+                                                    <button class="btn cyan waves-effect waves-light"
+                                                            id="btnRespaldar" name="btnRespaldar">Generar Respaldo</button>
+                                                </div>
+                                            </div>    
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="collapsible-header"><i class="material-icons">cloud_upload</i>Restaurar Respaldo</div>
+                                        <div class="collapsible-body">
+                                            <div class="row" style="margin-top: -3.5%; margin-bottom: -2%;">
+                                                <div class="input-field col s6 offset-s4">
+                                                    <button class="btn waves-effect waves-light yellow darken-2"
+                                                            id="btnRestaurar" name="btnRestaurar">Restaurar Respaldo Previo</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="input-field col s12"></div>
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%;">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Actualiza el estado del elmento Collapsible.
+                $('.collapsible').collapsible();
+                
+                
+                // Botón para crear respaldo de la base de datos.
+                $("#btnRespaldar").on("click", function (event) {
+                    if(!confirm("Se sustituirá el respaldo previo. ¿Desea continuar?"))
+                        event.preventDefault();
+                });
+                
+                
+                // Botón para procer a restaurar el respaldo realizado con anterioridad.
+                $("#btnRestaurar").on("click", function (event) {
+                    if(!confirm("Está a punto de restaurar un respaldo, se perderán los cambios que hayan sido ingresados posteriormente. ¿Desea continuar?"))
+                        event.preventDefault();
+                });
+                
+                
+                // Botón para salir del formulario sin realizar ninguna actividad.
+                $("#btnCancelar").on("click", function (event) {
+                    event.preventDefault();
+                    
+                    if(confirm("¿Desea regresar a la página anterior?"))
+                        history.go(-1);
+                });
+            });
+        </script>
+    </body>
+</html>

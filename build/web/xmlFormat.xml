@@ -1,0 +1,131 @@
+<modalidades>
+   <modalidad codigo="1">
+      <elemento correlativo="1">
+         <opcion correlativo="0" valor="Hombro derecho" subtipo="AREA" />
+         <opcion correlativo="0" valor="25" subtipo="TIEMPO" />
+      </elemento>
+      <elemento correlativo="2">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="false" subtipo="" />
+         <opcion correlativo="3" valor="false" subtipo="" />
+      </elemento>
+      <elemento correlativo="3">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="false" subtipo="" />
+         <opcion correlativo="4" valor="true" subtipo="" />
+         <opcion correlativo="5" valor="true" subtipo="" />
+         <opcion correlativo="6" valor="true" subtipo="" />
+      </elemento>
+      <elemento correlativo="4">
+         <opcion correlativo="0" valor="Ninguna." subtipo="ABIERTO" />
+      </elemento>
+   </modalidad>
+   <modalidad codigo="2">
+      <elemento correlativo="1">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="false" subtipo="" />
+      </elemento>
+      <elemento correlativo="2">
+         <opcion correlativo="1" valor="false" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+      </elemento>
+      <elemento correlativo="3">
+         <opcion correlativo="0" valor="15 lbs - 45 lbs" subtipo="ABIERTO" />
+      </elemento>
+      <elemento correlativo="4">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="true" subtipo="" />
+      </elemento>
+   </modalidad>
+</modalidades>
+
+<modalidades>
+   <modalidad codigo="1">
+      <elemento correlativo="1">
+         <opcion correlativo="0" valor="Hombro derecho" subtipo="AREA" />
+         <opcion correlativo="0" valor="25" subtipo="TIEMPO" />
+      </elemento>
+      <elemento correlativo="2">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="false" subtipo="" />
+         <opcion correlativo="3" valor="false" subtipo="" />
+      </elemento>
+      <elemento correlativo="3">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="true" subtipo="" />
+         <opcion correlativo="4" valor="false" subtipo="" />
+         <opcion correlativo="5" valor="true" subtipo="" />
+         <opcion correlativo="6" valor="false" subtipo="" />
+      </elemento>
+      <elemento codigo="1" correlativo="4">
+         <opcion correlativo="0" valor="Ninguna." subtipo="ABIERTO" />
+      </elemento>
+   </modalidad>
+   <modalidad codigo="2">
+      <elemento correlativo="1">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="false" subtipo="" />
+      </elemento>
+      <elemento correlativo="2">
+         <opcion correlativo="1" valor="false" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+      </elemento>
+      <elemento codigo="2" correlativo="3">
+         <opcion correlativo="0" valor="150 - 250" subtipo="ABIERTO" />
+      </elemento>
+      <elemento correlativo="4">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="true" subtipo="" />
+      </elemento>
+   </modalidad>
+</modalidades>
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<elementos>
+   <modalidad codigo="1">
+      <elemento codigo="1" correlativo="1">
+         <opcion correlativo="0" valor="Hombro derecho" subtipo="AREA" />
+         <opcion correlativo="0" valor="25" subtipo="TIEMPO" />
+      </elemento>
+      <elemento codigo="1" correlativo="2">
+         <opcion correlativo="1" valor="false" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="false" subtipo="" />
+      </elemento>
+      <elemento codigo="1" correlativo="3">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="true" subtipo="" />
+         <opcion correlativo="4" valor="true" subtipo="" />
+         <opcion correlativo="5" valor="false" subtipo="" />
+         <opcion correlativo="6" valor="true" subtipo="" />
+      </elemento>
+      <elemento codigo="1" correlativo="4">
+         <opcion correlativo="0" valor="" subtipo="ABIERTO" />
+      </elemento>
+   </modalidad>
+   <modalidad codigo="2">
+      <elemento codigo="2" correlativo="1">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="false" subtipo="" />
+      </elemento>
+      <elemento codigo="2" correlativo="2">
+         <opcion correlativo="1" valor="false" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+      </elemento>
+      <elemento codigo="2" correlativo="3">
+         <opcion correlativo="0" valor="" subtipo="ABIERTO" />
+      </elemento>
+      <elemento codigo="2" correlativo="4">
+         <opcion correlativo="1" valor="true" subtipo="" />
+         <opcion correlativo="2" valor="true" subtipo="" />
+         <opcion correlativo="3" valor="true" subtipo="" />
+      </elemento>
+   </modalidad>
+</elementos>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+        <style>
+            .inactiveLink {
+                color: #000000;
+                pointer-events: none;
+                text-decoration: none;
+                opacity: 0.4;
+            }
+            
+            .activeLink{
+                pointer-events: none;
+                text-decoration: none;
+                color: #ef5350;
+            }
+            
+            .resaltar:hover{
+                background-color: lightgray;
+            }
+            
+            th {
+                background: white;
+                position: sticky;
+                top: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row" id="listaDepartamentos"></div>
+        </div>
+
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                // verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Obtiene mensajes de retroalimentación para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                // Carga la lista de departamentos en la página web.
+                $.ajax({
+                    method: "post",
+                    url: "cargarLista.do",
+                    data: {name: "GETDPTL"},
+                    success: function (data, status) {
+                        var listaDepartamentos = JSON.parse(data.toString());
+                        if(typeof listaDepartamentos.length === 'undefined'){
+                            if(listaDepartamentos.error)
+                                myAlert(listaDepartamentos.mensaje);
+                        } else {
+                            var nuevoContenido =
+                                    "<h5 class='center'>Lista de Accesos al Sistema" +
+                                        "<a href='departamento.html' class='departamentoNuevo'>" +
+                                           "<i class='material-icons right'>" +
+                                               "add_circle_outline" +
+                                           "</i>" +
+                                        "</a>" +
+                                    "</h5><hr/>" +
+                                    "<table id='myTable2'>" +
+                                        "<thead>" +
+                                            "<tr>" +
+                                                "<th onclick='sortTable(0)' style='cursor:pointer' id='nombreCol'>Usuario<i></th>" +
+                                                "<th onclick='sortTable(0)' style='cursor:pointer' id='fechaInicioCol'>Fecha de ingreso</th>" +
+                                                "<th onclick='sortTable(0)' style='cursor:pointer' id='fechaSalidaCol'>Fecha de salida</th>" +
+                                                "<th class='center'>Ver</th>" +
+                                                "<th class='center'>Imprimir</th>" +
+                                            "</tr>" +
+                                        "</thead>" +
+                                        "<tbody>";
+
+                            for( var indice = 1; indice < listaDepartamentos.length; indice++ ){
+                                if( listaDepartamentos[indice].codigo < 1){
+                                    nuevoContenido =
+                                        "<h5 class='center'>Departamentos en la empresa" +
+                                            "<a href='departamento.html' class='departamentoNuevo'>" +
+                                               "<i class='material-icons right'>" +
+                                                   "add_circle_outline" +
+                                               "</i>" +
+                                            "</a>" +
+                                        "</h5><hr/>" +
+                                        "<div class='col s12 center'>" +
+                                            "<p>" +
+                                                "*** Antes debe crear un departamento ***" +
+                                            "</p>" +
+                                        "</div>";
+                                    break;
+                                } else {
+                                    var contenidoTemporal =
+                                        "<tr style='border: none;' class='resaltar'>" +
+                                            "<td style='padding-top: 1%; padding-bottom: 1%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>" + listaDepartamentos[indice].nombre + "</td>" +
+                                            "<td style='padding-top: 1%; padding-bottom: 1%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>" + listaDepartamentos[indice].descripcion + "</td>" +
+                                            "<td class='center' style='padding-top: 1%; padding-bottom: 1%;'>" +
+                                                "<i class='material-icons'>$#icono#$</i></a>" +
+                                            "</td>" +
+                                            "<td class='center' style='padding-top: 1%; padding-bottom: 1%;'><a href='departamento.html' class='departamentoExistente' " +
+                                                    "data-codigo='" + listaDepartamentos[indice].codigo +  "' " +
+                                                    "data-modo='mod-v'>" +
+                                                "<i class='material-icons'>visibility</i></a>" +
+                                            "</td>" +
+                                            "<td class='center' style='padding-top: 1%; padding-bottom: 1%;'><a href='departamento.html' class='departamentoExistente' " +
+                                                        "data-codigo='" + listaDepartamentos[indice].codigo +  "' " +
+                                                        "data-modo='mod-e'>" +
+                                                    "<i class='material-icons'>print</i></a>" +
+                                            "</td>" +
+                                        "</tr>";
+                    
+                                    if(listaDepartamentos[indice].activo)
+                                        nuevoContenido += contenidoTemporal.replace('$#icono#$', 'check_box');
+                                    else
+                                        nuevoContenido += contenidoTemporal.replace('$#icono#$', 'check_box_outline_blank');
+                                }
+                            }
+
+                            $('#listaDepartamentos').html(nuevoContenido + "</tbody></table>");
+                        }
+                    }
+                });
+                
+                
+                $(document.body).on('click', 'a', function(e){
+                    if($(this).hasClass('departamentoExistente')){
+                        establecerCodigo( document.location.href.match(/[^\/]+$/)[0],
+                                          $(this).data('codigo'),
+                                          $(this).data('modo') );
+                    } else if($(this).hasClass('departamentoNuevo')){
+                        establecerCodigo( document.location.href.match(/[^\/]+$/)[0] );
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

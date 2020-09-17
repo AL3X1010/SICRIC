@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+        <style>
+            .div-table{
+                overflow-x: auto;
+            }
+
+            .generic{
+                min-width: 100px;
+                white-space:nowrap;
+                padding: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div style="margin-top: -0.3%">
+            <div class="row">
+                <div class="card-panel">
+                    <div class="row" style="margin-top: -3.5%">
+                        <h4 class="center">
+                            Detalle de la Sesión
+                            <a href='#'><i class='material-icons right' id="icon"></i></a>
+                        </h4>
+                        <hr/>
+
+                        <div class="input-field col s12">
+                            <table style="border-collapse: collapse;">
+                                <tbody>
+                                    <tr style="border-bottom: none;">
+                                        <td style="width:25%; padding-left:0; padding-top:0; padding-bottom:0.7%;">Usuario: <span id="spUser">userjp</span></td>
+                                        <td style="width:25%; padding-left:0; padding-top:0; padding-bottom:0.7%;">Fecha de ingreso: <span id="spFechaIngreso">02/Nov/2019 02:37:05.844</span></td>
+                                        <td style="width:25%; padding-left:0; padding-top:0; padding-bottom:0.7%; text-align: right;">Fecha de salida: <span id="spFechaSalida">02/Nov/2019 03:06:23.355</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="col s12">
+                            <h5>Actividades realizadas</h5>
+                            <hr/>
+                        </div>
+
+
+                        <div id="divRegistros">
+                            <div class="col s4 offset-s4 center">
+                                <div class="preloader-wrapper big active" id="preloader">
+                                    <div class="spinner-layer spinner-blue">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-red">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-yellow">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-green">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-field col s12" style="margin-top: 1%; margin-bottom: -2%">
+                            <button class="btn red lighten-2 waves-effect waves-light left"
+                                    id="btnCancelar">
+                                Regresar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Solicita la lista de acciones del usuario.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "serviciosc.do",
+                    data: {name: "GETUSRACTL"},
+                    success: function (data, status) {
+                        var informacionAcceso = JSON.parse(caracteresEspeciales(data.toString()));
+
+                        if (!informacionAcceso.error) {
+                            $('#divRegistros').html(informacionAcceso.elementoHTML);
+                        }
+
+                        // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                        if (informacionAcceso.error)
+                            myAlert(informacionAcceso.mensaje);
+                    }
+                });
+
+
+                // Regresa al lobby de sesiones.
+                $('#btnCancelar').on('click', function (event) {
+                    if (confirm("¿Desea regresar al lobby de sesiones?"))
+                        window.location.replace("lobbysesiones.html");
+
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

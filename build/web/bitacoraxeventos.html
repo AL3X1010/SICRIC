@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div class="container" style="margin-top: -0.3%">
+            <div class="row">
+                <form class="col s12" action="departamento.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Bitácora de Eventos
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="col s12">
+                                <h6>Seleccione el tipo de evento:</h6>
+                            </div>
+
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Todos</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Agregar registros</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Modificar registros</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Eliminar registros</span>
+                                </label>
+                            </div>
+                            
+                            
+                            
+                            <div class="col s12" style="margin-top: 2%;">
+                                <h6>Seleccione los reportes a generar:</h6>
+                            </div>
+
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Todos</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Centro de Rehabilitación</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Departamentos</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Puestos de trabajo</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Empleados</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Pacientes</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Modalidades</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Planes de rehabilitación</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Equipos médicos</span>
+                                </label>
+                            </div>
+                            
+                            <div class="col s12 m3">
+                                <label>
+                                    <input type="checkbox" />
+                                    <span>Suministros médicos</span>
+                                </label>
+                            </div>
+                            
+                            
+                            
+                            <div class="col s12" style="margin-top: 2%;">
+                                <h6>Indique el rango de fechas:</h6>
+                            </div>
+                            
+                            <div class="input-field col s6 m4">
+                                <input id="desde" name="desde" type="text"
+                                       class="validate datepicker campoVacio"
+                                       required="" aria-required="true" />
+                                <label for="desde" id="lblDesde">Desde</label>
+                            </div>
+                            
+                            <div class="input-field col s6 m4">
+                                <input id="hasta" name="hasta" type="text"
+                                       class="validate datepicker campoVacio"
+                                       required="" aria-required="true" />
+                                <label for="hasta" id="lblHasta">Hasta</label>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <div class="input-field col s12">
+                                <textarea name="descripcion" id="descripcion" 
+                                          maxlength="300" required="" aria-required="true"
+                                          class="materialize-textarea validate
+                                          campoLetrasEspacios"></textarea>
+                                <label id="lblDescripcion" for="descripcion">Motivo</label>
+                            </div>
+
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn yellow darken-2 waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit">
+                                    Generar reporte</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                // verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+
+            });
+        </script>
+    </body>
+</html>

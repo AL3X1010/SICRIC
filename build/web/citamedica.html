@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            .modal {
+                width: 60%;
+            }
+
+            /* Style the button that is used to open and close the collapsible content */
+            #myContent {
+                padding: 0 18px;
+                background-color: white;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form id="form1" class="col s12" method="POST" action="planrehabilitacion.do" autocomplete="OFF">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Agendar Cita Médica
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s6">
+                                <input type="text" class="autocomplete"
+                                       id="planRehabilitacion" 
+                                       name="planRehabilitacion" >
+                                <label for="planRehabilitacion">Búsqueda por código de paciente</label>
+                                <i class="material-icons prefix">search</i>
+                            </div>
+
+                            <div class="switch input-field col s6">
+                                <input type="text" style="border-bottom: 1px solid white" disabled />
+                            </div>
+                            
+                            <div class="myContent" id="myContent">
+                                <div class="row" style="margin-top: -2.9%; margin-bottom: -2%;">
+                                    <div class="input-field col s12">
+                                        <h6 style="font-weight: bold;">Información general</h6>
+
+                                        <table style="border-collapse: collapse;">
+                                            <tbody>
+                                                <tr style='border-bottom:none;'>
+                                                    <td style="width:33%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;">Expediente: <a href="#" id="lblExpediente">0801199757871</a></td>
+                                                    <td style="width:36%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;" id="lblNombrePaciente">Nombre: Karen Sanabria Silva</td>
+                                                    <td style="width:31%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table style="border-collapse: collapse;">
+                                            <tbody>
+                                                <tr style="border-bottom: none;">
+                                                    <td style="width:33%; padding-left:0; padding-top:0.3%; padding-bottom:0.7%;">Número de plan: <a href="#" id="lblNumeroPlan">493585334</a></td>
+                                                    <td style="width:30%; padding-left:0; padding-top:0.3%; padding-bottom:0.7%;" id="lblAsistencia">Asistencias/sesiones: 2/12</td>
+                                                    <td style="width:37%; padding-left:0; padding-top:0.3%; padding-bottom:0.7%;" id="lblFechas">Inicio: 26/Dic/2019  -  Finalización: 31/Ene/2020</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <input id="fechaCita" name="fechaCita"
+                                       type="text" class="datepicker campoVacio" />
+                                <label for="fechaCita" id="lblFechaCita">Fecha de cita médica</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input id="horaInicio" name="horaInicio"
+                                       type="text" class="timepicker campoVacio" />
+                                <label for="horaInicio" id="lblHoraInicio">Hora inicio</label>
+                            </div>
+
+                            <div class="input-field col s3">
+                                <input id="horaFinal" name="horaFinal"
+                                       type="text" class="timepicker campoVacio" />
+                                <label for="horaFinal" id="lblHoraFinal">Hora final</label>
+                            </div>
+                            
+                            <div class="input-field col s12">
+                                <textarea name="nota" id="nota" 
+                                          maxlength="300" required="" aria-required="true"
+                                          class="materialize-textarea validate campoLetrasEspacios"></textarea>
+                                <label id="lblNota" for="nota">Nota adicional</label>
+                            </div>
+                            
+                            <input name="page" id="page" type="text" class="campoVacio" hidden="hidden">
+
+                            <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Variables globales.
+                var primeraPasada = true;
+                var desplegarDiv = false;
+                var defaultDate = new Date();
+                var maxDate = new Date();
+                var today = new Date();
+
+                defaultDate.setFullYear(defaultDate.getFullYear() - 18);
+                maxDate.setFullYear(maxDate.getFullYear() - 16);
+
+
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga la lista de planes activos.
+                $.ajax({
+                    method: "post",
+                    url: "cargarLista.do",
+                    data: {name: "GETREHPLANL"},
+                    success: function (data, status) {
+                        var planesActivos = JSON.parse(data.toString());
+                        
+                        if(!planesActivos.error && planesActivos.data !== null){
+                            desplegarDiv = true;
+                            
+                            $('#planRehabilitacion').autocomplete({
+                                data: planesActivos.data,
+                            });
+                        }
+                    }
+                });
+                
+                
+                $('#planRehabilitacion').on('change', function(){
+                    if(!primeraPasada && desplegarDiv){
+                        primeraPasada = true;
+                        
+                        // Obtiene información general del plan de rehabilitación.
+                        $.ajax({
+                            method: "post",
+                            url: "serviciosc.do",
+                            data: { name: "GETREHPLANL1",
+                                    code: $(this).val() },
+                            success: function (data, status) {
+                                var informacionPlanRehabilitacion = JSON.parse(data.toString());
+                                
+                                if(!informacionPlanRehabilitacion.error){
+                                    $('#lblExpediente').text(informacionPlanRehabilitacion.expediente);
+                                    $('#lblNombrePaciente').text(informacionPlanRehabilitacion.nombrePaciente);
+                                    $('#lblNumeroPlan').text(informacionPlanRehabilitacion.numeroPlan);
+                                    $('#lblAsistencia').text(informacionPlanRehabilitacion.asistencia);
+                                    $('#lblFechas').text(informacionPlanRehabilitacion.fechas);
+                                    
+                                    
+                                    var content = $('#myContent');
+                                    if (content.css('maxHeight')) {
+                                        content.css('maxHeight', 'none');
+                                    } else {
+                                        content.css('maxHeight', content.height() + 'px');
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        primeraPasada = false;
+                    }
+                });
+
+                // Configuración inicial para campo fecha de cita.
+                $('#fechaCita').datepicker({
+                    format: 'dd/mmm/yyyy',
+                    minDate: today,
+                    defaultDate: today,
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                        weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                        cancel: "Cancelar"
+                    }
+                });
+
+                // Configuración inicial para campo de hora inicio.
+                $('#horaInicio').timepicker({
+                    i18n: {
+                        done: "OK",
+                        cancel: "Cancelar"
+                    }
+                });
+
+                // Configuración inicial para campo de hora inicio.
+                $('#horaFinal').timepicker({
+                    i18n: {
+                        done: "OK",
+                        cancel: "Cancelar"
+                    }
+                });
+
+
+                // Envía el formulario.
+                $(document.body).on("click", "#btnSubmit", function (e) {
+                    $('#page').val(document.location.href.match(/[^\/]+$/)[0]);
+                    
+                    if( $('#asignado').val() !== nombreInicial )
+                        $.ajax({
+                            method: "post",
+                            async: false,
+                            url: "validar.do",
+                            data: { service: "VLDDPTNAM",
+                                    name: $('#nombre').val() },
+                            success: function (data, status) {
+                                var respuesta = JSON.parse(data.toString());
+                                if(respuesta.error){
+                                    $('#nombreHelper').attr('data-error', respuesta.mensaje);
+                                    $('#nombreHelper').addClass('helper-text');
+                                    $('#nombre').removeClass('valid').addClass('invalid');
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                });
+
+                $('#autocomplete-input').change(function () {
+                    $(this).toggleClass("active");
+                    
+
+                    
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            .modal {
+                width: 60%;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="userNavBar"></div>
+        <form id="form1" class="col s12" method="POST" action="planrehabilitacion.do" autocomplete="OFF">
+            <div class="container" id="firstScreen">
+                <div class="row">
+                        <div class="card-panel">
+                            <div class="row" style="margin-top: -3.5%">
+                                <h4 class="center">Creación de Plan de Rehabilitación</h4>
+                                <hr/>
+
+                                <div class="input-field col s6">
+                                    <select id="terapeuta" name="terapeuta"></select>
+                                    <label>Seleccione el fisioterapeuta que lo atenderá</label>
+                                </div>
+
+                                <div class="input-field col s6">
+                                    <input type="text" class="autocomplete"
+                                           id="paciente" name="paciente" >
+                                    <label for="paciente">Paciente (expediente o nombre)</label>
+                                </div>
+
+                                <div class="input-field col s6">
+                                        <input id="fechaInicio" name="fechaInicio"
+                                           required="" aria-required="true"
+                                           type="text" class="datepicker campoVacio" />
+                                    <label for="fechaInicio" id="lblFechaInio">Fecha inicial del plan</label>
+                                </div>
+
+                                <div class="input-field col s3">
+                                    <input id="horaInicio" name="horaInicio"
+                                           required="" aria-required="true"
+                                           type="text" class="timepicker campoVacio" />
+                                    <label for="horaInicio" id="lblHoraInicio">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s3">
+                                    <input id="horaFinal" name="horaFinal"
+                                           required="" aria-required="true"
+                                           type="text" class="timepicker campoVacio" />
+                                    <label for="horaFinal" id="lblHoraFinal">Hora final</label>
+                                </div>
+
+                                <div class="input-field col s3">
+                                    <select id="cantidadSesiones" name="cantidadSesiones">
+                                        <option value="1" selected>1 sesión</option>
+                                        <option value="2">2 sesiones</option>
+                                        <option value="3">3 sesiones</option>
+                                        <option value="4">4 sesiones</option>
+                                        <option value="5">5 sesiones</option>
+                                        <option value="6">6 sesiones</option>
+                                        <option value="7">7 sesiones</option>
+                                        <option value="8">8 sesiones</option>
+                                        <option value="9">9 sesiones</option>
+                                        <option value="10">10 sesiones</option>
+                                        <option value="11">11 sesiones</option>
+                                        <option value="12">12 sesiones</option>
+                                        <option value="13">13 sesiones</option>
+                                        <option value="14">14 sesiones</option>
+                                        <option value="15">15 sesiones</option>
+                                    </select>
+                                    <label>Cantidad de sesiones</label>
+                                </div>
+
+                                <div class="input-field col s3">
+                                    <input type="text" style="border-bottom: 1px solid white" disabled />
+                                </div>
+
+                                <div class='col s12' style="margin-top: 1%; margin-bottom: 0%;">
+                                    <h6 style="font-weight: bold;">Frecuencia</h6>
+                                    <hr>
+                                </div>
+
+                                <div class='input-field col s3'>
+                                    <select id="frecuencia" name="frecuencia">
+                                        <option value="ds" selected>Días seleccionados</option>
+                                        <option value="di">Diaria</option>
+                                        <option value="se">Semanal</option>
+                                    </select>
+                                    <label>Indique el formato de asisetncia</label>
+                                </div>
+
+                                <div class='input-field col s1 offset-s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxLun" name="cbxLun"/>
+                                        <span>Lun</span>
+                                    </label>
+                                </div>
+
+                                <div class='input-field col s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxMar" name="cbxMar"/>
+                                        <span>Mar</span>
+                                    </label>
+                                </div>
+
+                                <div class='input-field col s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxMie" name="cbxMie"/>
+                                        <span>Mié</span>
+                                    </label>
+                                </div>
+
+                                <div class='input-field col s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxJue" name="cbxJue"/>
+                                        <span>Jue</span>
+                                    </label>
+                                </div>
+
+                                <div class='input-field col s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxVie" name="cbxVie"/>
+                                        <span>Vie</span>
+                                    </label>
+                                </div>
+
+                                <div class='input-field col s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxSab" name="cbxSab"/>
+                                        <span>Sáb</span>
+                                    </label>
+                                </div>
+
+                                <div class='input-field col s1'>
+                                    <label>
+                                        <input type="checkbox" id="cbxDom" name="cbxDom"/>
+                                        <span>Dom</span>
+                                    </label>
+                                </div>
+
+                                <input name="page" id="page" type="text" class="campoVacio" hidden="hidden">
+                                <input name="pacienteSeleccionado" id="pacienteSeleccionado" type="text" class="campoVacio" hidden="hidden">
+                                <input name="modalidades" id="modalidades" type="text" class="campoVacio" hidden="hidden">
+
+                                <div class="input-field col s12" style="margin-top: -1%; margin-bottom: -2%">
+                                    <button class="btn red lighten-2 waves-effect waves-light left"
+                                            id="btnCancelar">
+                                        Cancelar
+                                    </button>
+
+                                    <button class="btn cyan waves-effect waves-light right"
+                                            id="btnContinuar">
+                                        Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <div class="container" id="secondScreen" hidden="hidden">
+                <div class="row">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">
+                                Indicación de Modalidades
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s12" style="margin-bottom: -1%;">
+                                <h5>Modalidades del plan de rehabilitación</h5>
+                            </div>
+
+                            <div class="col s12" id="divModalidades"></div>
+
+
+                            <div class="input-field col s12" style="margin-top: 1.5%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnRegresar">
+                                    Regresar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit">
+                                    Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                var pacienteSeleccionado = "";
+                var primeraPasada = true;
+                var tomorrow = new Date();
+
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Obtiene el código necesario para cargar el registro en pantalla.
+                $.ajax({
+                    method: "post",
+                    url: "serviciosc.do",
+                    data: { name: "GETTRPL",
+                            code: $(this).val() },
+                    success: function (data, status) {
+                        var listaTerapeutas = JSON.parse(data.toString());
+
+                        if (!listaTerapeutas.error) {
+                            $('#terapeuta').html(listaTerapeutas.elemento);
+                            $('select').trigger('contentChanged');
+                        }
+                    }
+                });
+                
+                
+                // Carga la lista de pacientes para campo de autocompletado.
+                $.ajax({
+                    method: "post",
+                    url: "cargarLista.do",
+                    data: {name: "GETPTNINFL"},
+                    success: function (data, status) {
+                        var listaPacientes = JSON.parse(data.toString());
+
+                        if (!listaPacientes.error && listaPacientes.data !== null) {
+                            $('#paciente').autocomplete({
+                                data: listaPacientes.data,
+                            });
+                        }
+                    }
+                });
+                
+                
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                // Configuración inicial para campo fecha de nacimiento.
+                $('#fechaInicio').datepicker({
+                    format: 'dd/mmm/yyyy',
+                    setDefaultDate: true,
+                    defaultDate: tomorrow,
+                    minDate: tomorrow,
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                        weekdaysAbbrev: ["D", "L", "M", "M", "J", "V", "S"],
+                        cancel: "Cancelar"
+                    }
+                });
+                
+                
+                // Extra el código de paciente del valor buscado.
+                $('#paciente').on('change', function () {
+                    if (!primeraPasada) {
+                        primeraPasada = true;
+                        pacienteSeleccionado = $(this).val().split('  -  ')[0];
+                    } else
+                        primeraPasada = false;
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Reacondiciona la selección de días de la semana de acuerdo a la opción seleccionada.
+                $('#frecuencia').on('change', function () {
+                    if($(this).val() === 'di'){ // frecuencia diaria
+                        $('#cbxLun').prop('checked', '').attr('disabled', 'disabled');
+                        $('#cbxMar').prop('checked', '').attr('disabled', 'disabled');
+                        $('#cbxMie').prop('checked', '').attr('disabled', 'disabled');
+                        $('#cbxJue').prop('checked', '').attr('disabled', 'disabled');
+                        $('#cbxVie').prop('checked', '').attr('disabled', 'disabled');
+                        $('#cbxSab').prop('checked', '').attr('disabled', 'disabled');
+                        $('#cbxDom').prop('checked', '').attr('disabled', 'disabled');
+                    } else {
+                        $('#cbxLun').prop('checked', '').removeAttr('disabled');
+                        $('#cbxMar').prop('checked', '').removeAttr('disabled');
+                        $('#cbxMie').prop('checked', '').removeAttr('disabled');
+                        $('#cbxJue').prop('checked', '').removeAttr('disabled');
+                        $('#cbxVie').prop('checked', '').removeAttr('disabled');
+                        $('#cbxSab').prop('checked', '').removeAttr('disabled');
+                        $('#cbxDom').prop('checked', '').removeAttr('disabled');
+                    }
+                });
+                
+                
+                // Valida campos de primera pantalla para pasar a la segunda pantalla.
+                $('#btnContinuar').on('click', function(event){
+                    event.preventDefault();
+                    
+                    if(pacienteSeleccionado.trim().length === 0){
+                        // Valida que se haya seleccionado un paciente.
+                        alert("Antes debe elegir a un paciente.");
+                        return false;
+                    } else if($('#horaInicio').val() >= $('#horaFinal').val()){
+                        // Valida que la hora de inicio sea menor que la hora final.
+                        alert("Selección de horas incorrecta.");
+                        return false;
+                    }  else if($('#frecuencia').val() !== 'di'){ // di = frecuencia diaria
+                        // Valida que los días marcados concuerde con la frecuencia seleccionada.
+                        var cantidadDias = 0;
+                        
+                        if($('#cbxLun').prop('checked'))
+                            cantidadDias++;
+                        if($('#cbxMar').prop('checked'))
+                            cantidadDias++;
+                        if($('#cbxMie').prop('checked'))
+                            cantidadDias++;
+                        if($('#cbxJue').prop('checked'))
+                            cantidadDias++;
+                        if($('#cbxVie').prop('checked'))
+                            cantidadDias++;
+                        if($('#cbxSab').prop('checked'))
+                            cantidadDias++;
+                        if($('#cbxDom').prop('checked'))
+                            cantidadDias++;
+                        
+                        if(cantidadDias === 0){
+                            alert("Debe seleccionar al menos un día a la semana.");
+                            return false;
+                        } else if($('#frecuencia').val() === 'se' && cantidadDias > 1){
+                            alert("Debe seleccionar unicamente un día a la semana.");
+                            return false;
+                        }
+                    }
+                    
+                    $('#secondScreen').removeAttr('hidden');
+                    $('#firstScreen').hide();
+                    $('#secondScreen').show();
+                });
+
+
+                // Solicita la lista de modalidades que provee la institución
+                // para que el usuario defina cuales aplicarán.
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "serviciosc.do",
+                    data: {name: "GETREHPLANMODL"},
+                    success: function (dataIn, statusIn) {
+                        var listaModalidades = JSON.parse(caracteresEspeciales(dataIn.toString()));
+
+                        if(!listaModalidades.error){
+                            $('#divModalidades').html(listaModalidades.listaModalidades);
+                            $('.collapsible').collapsible();
+                        }
+                    }
+                });
+                
+                
+                // Envía el formulario.
+                $(document.body).on("click", "#btnSubmit", function (event) {
+                    // Valida que se haya seleccionado al menos una modalidad,
+                    // si es así construye XML con selección.
+                    var xmlOutput = "<elementos>";
+                    var xmlLongitudIncial = xmlOutput.length;
+                    
+                    // Recorre todas las modalidades para armar XML que enviará al servidor.
+                    $("#divModalidades ul li").each(function(){
+                        var xmlTemp = "";
+                        var longitudRespuesta = 0;
+                        var usado = false;
+                        var codigoModalidad = 0;
+                        
+                        var liDivs = $(this).find('div');
+                        liDivs.each(function(){
+                            $(this).data('codigo');
+                            $(this).data('correlativo');
+                            
+                            if($(this).hasClass('collapsible-body') || $(this).hasClass('row'))
+                                return;     // No contiene información de interés.
+                            else if($(this).hasClass('collapsible-header')){
+                                // Es el encabezado de la modalidad.
+                                xmlTemp += "<modalidad codigo='" + $(this).data('codigo') + "'>";
+                                codigoModalidad = $(this).data('codigo');
+                                longitudRespuesta = xmlTemp.length;
+                            } else if(typeof $(this).data('correlativo') !== 'undefined'
+                                    && typeof $(this).data('tipo') !== 'undefined'){
+                                if(longitudRespuesta !== xmlTemp.length){
+                                    xmlTemp += "</elemento>";
+                                    longitudRespuesta = xmlTemp.length;
+                                }
+                                
+                                // Es uno de los elementos predeterminados.
+                                if($(this).data('tipo') === 'divComentario'){
+                                    var valorTextArea = "";
+                                    $(this).find("textarea").each(function(){
+                                        valorTextArea = $(this).val().trim();
+                                    });
+                                    
+                                    if(valorTextArea.length > 0)
+                                        usado = true;
+                                        
+                                    xmlTemp +=
+                                        "<elemento codigo='" + codigoModalidad + "' " +
+                                        "          correlativo='" + $(this).data('correlativo') + "'>" +
+                                        "  <opcion correlativo='0' valor='" + valorTextArea + "' subtipo='ABIERTO'/>";
+                                } else
+                                    xmlTemp += "<elemento codigo='" + codigoModalidad + "' " +
+                                               "          correlativo='" + $(this).data('correlativo') + "'>";
+                            } else if(typeof $(this).data('tipo') !== 'undefined'
+                                    && $(this).data('tipo') === 'divArea'){
+                                var valorInput = "";
+                                $(this).find("input").each(function(){
+                                    valorInput = $(this).val().trim();
+                                });
+                                    
+                                if(valorInput.length > 0)
+                                    usado = true;
+                                
+                                xmlTemp += "<opcion correlativo='0' valor='" + valorInput + "' subtipo='AREA'/>";
+                            } else if(typeof $(this).data('tipo') !== 'undefined'
+                                    && $(this).data('tipo') === 'divTiempo'){
+                                var valorInput = "";
+                                $(this).find("input").each(function(){
+                                    valorInput = $(this).val();
+                                });
+                                    
+                                if(valorInput.length > 0)
+                                    usado = true;
+                                
+                                xmlTemp += "<opcion correlativo='0' valor='" + valorInput + "' subtipo='TIEMPO'/>";
+                            } else if(typeof $(this).data('correlativo') !== 'undefined'){
+                                var valorInput = false;
+                                $(this).find("input").each(function(){
+                                    valorInput = $(this).prop('checked');
+                                });
+                                
+                                if(valorInput)
+                                    usado = true;
+                                
+                                xmlTemp += "<opcion correlativo='" + $(this).data('correlativo') + "' valor='" + valorInput + "' subtipo=''/>";
+                            }
+                        });
+                            
+                        if(usado)
+                            xmlOutput += xmlTemp + "</elemento></modalidad>";
+                    });
+                    
+                    
+                    if(xmlLongitudIncial !== xmlOutput.length){
+                        $('#modalidades').val(xmlOutput + "</elementos>");
+                        $('#page').val(document.location.href.match(/[^\/]+$/)[0]);
+                        $('#pacienteSeleccionado').val(pacienteSeleccionado);
+                    } else {
+                        event.preventDefault();
+                        alert('Debe proveer valores al menos para una modalidad.')
+                    }
+                });
+                
+                
+                // Regresa a la pantalla de inicio del formulario.
+                $('#btnRegresar').on('click', function(event){
+                    $('#firstScreen').show();
+                    $('#secondScreen').hide();
+                    event.preventDefault();
+                });
+                
+                
+                // Regresa a la agenda del centro médico.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea salir de la página actual?"))
+                        window.location.replace("agenda.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

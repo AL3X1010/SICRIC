@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            .deshabilitado{
+                color: gray;
+                font-weight: bold;
+                background-color: lightgray;
+            }
+
+            .habilitado{
+                color: green;
+                font-weight: bold;
+                background-color: #a5d6a7;
+            }
+
+            #preloader {
+                position: absolute;
+                top :0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form class="col s12" action="usuario.do" method="post" autocomplete="off">
+                    <div class="preloader-wrapper big active" id="preloader">
+                        <div class="spinner-layer spinner-blue">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-red">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div><div class="gap-patch">
+                                <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-yellow">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div><div class="gap-patch">
+                                <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+
+                        <div class="spinner-layer spinner-green">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div><div class="gap-patch">
+                                <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card-panel" id="formulario" style="visibility: hidden;">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">
+                                Información del Usuario
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="switch input-field col s12">
+                                <label>
+                                    Inactivo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo">
+                                    <span class="lever"></span>
+                                    Activo
+                                </label>
+                            </div>
+
+                            <div class="input-field col s12"></div> 
+
+                            <div class="input-field col s6">
+                                <input name="usuario" id="usuario" type="text" 
+                                       maxlength="15" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios"/>
+                                <label id="lblUsuario" for="usuario">Usuario</label>
+                            </div>
+
+                            <div class="input-field col s6">
+                                <select id="rol" name="rol"></select>
+                                <label for="rol">Rol</label>
+                            </div>
+                            
+                            <input name="output" id="output" type="text" class="campoVacio" hidden="hidden">
+                            
+                            <h5>Mapa de accesos</h5>    
+                            <div id="mapa"></div>
+
+                            <div class="input-field col s12" style="margin-top: 2.5%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga el registro del centro en la pagina web.
+                $.ajax({
+                    method: "post",
+                    url: "cargaRegistro.do",
+                    data: {name: "GETUSRINF"},
+                    success: function (data, status) {
+                        var informacionUsuario = JSON.parse(data.toString());
+                        adecuarElementos(informacionUsuario.modo);
+                        $('#formulario').css('visibility', 'visible');
+                        $('#preloader').css('visibility', 'hidden');
+
+                        // Asigna los valores a los campos.
+                        $('#usuario').val(informacionUsuario.usuario);
+                        $('#mapa').html(informacionUsuario.mapaAccesos);
+
+                        if (informacionUsuario.codigo > 0)
+                            $('#lblUsuario').addClass('active');
+                        else
+                            $('#lblUsuario').removeClass('active');
+
+                        // Marca como activo o inactivo el usuario.
+                        if (informacionUsuario.activo)
+                            $('#cbxActivo').attr('checked', 'true');
+                        else
+                            $('#cbxActivo').removeAttr('checked');
+
+                        $('#rol').html(informacionUsuario.selectRol);
+                        $('select').trigger('contentChanged');
+
+
+                        // Si ocurrió error debe mostrar mensaje informándole al usuario.
+                        if (informacionUsuario.error)
+                            myAlert(informacionUsuario.mensaje);
+                    }
+                });
+                
+                
+                // Actualiza el mapa de accesos para el rol indicado.
+                $('#rol').on('change', function () {
+                    // Obtiene la lista de páginas web permitidas para el rol seleccionado.
+                    $.ajax({
+                        method: "post",
+                        url: "serviciosc.do",
+                        data: { name: "GETACCMAP",
+                                code: $(this).val() },
+                        success: function (data, status) {
+                            var mapaAccesos = JSON.parse(data.toString());
+                            
+                            if (!mapaAccesos.error) {
+                                $('#mapa').html(mapaAccesos.mapaAccesos);
+                            }
+                        }
+                    });
+                });
+
+
+                // Permite cambiar de modo vista a modo edición.
+                $('#icon').on('click', function () {
+                    adecuarElementos('mod-e');
+                });
+
+
+                // Permite activar o desactivar el acceso de VISUALIZACIÓN.
+                $(document.body).on("click", ".colVisualizar", function () {
+                    var estadoPermitido = $(this).data("estado");
+                    $(this).data("estado", !estadoPermitido);
+
+                    if (!estadoPermitido) {
+                        $(this).removeClass("deshabilitado");
+                        $(this).addClass("habilitado");
+                    } else {
+                        $(this).removeClass("habilitado");
+                        $(this).addClass("deshabilitado");
+                    }
+                });
+
+
+                // Permite activar o desactivar el acceso de EDICIÓN.
+                $(document.body).on("click", ".colEditar", function () {
+                    var estadoPermitido = $(this).data("estado");
+                    $(this).data("estado", !estadoPermitido);
+
+                    if (!estadoPermitido) {
+                        $(this).removeClass("deshabilitado");
+                        $(this).addClass("habilitado");
+                        $('#colVis' + $(this).data('codigo'))
+                                .removeClass("deshabilitado")
+                                .addClass("habilitado")
+                                .data("estado", !estadoPermitido);
+                    } else {
+                        $(this).removeClass("habilitado");
+                        $(this).addClass("deshabilitado");
+                    }
+                });
+                
+                
+                // Limita la cantidad de archivos que pueden ser subidos.
+                $("#btnSubmit").click(function (e) {
+                    var xmlPaginas = "<elementos>";
+                    $('.tablaPaginas').find('tr').each(function(index, element){
+                        var columnas = $(this).find('td');
+                        
+                        if(columnas.length){
+                            xmlPaginas +=
+                                "<pagina codigo='" + $(columnas.eq(0)).data('codigo') + "'" +
+                                "        visualizacion='" + $(columnas.eq(2)).hasClass('habilitado') + "'" +
+                                "        edicion='" + $(columnas.eq(3)).hasClass('habilitado') + "'/>";
+                        }
+                    });
+                    $('#output').val(xmlPaginas + "</elementos>");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

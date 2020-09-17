@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <link rel='stylesheet' type='text/css' href='materialize/css/jquery-ui-1.8.11.custom.css' />
+        <link rel='stylesheet' type='text/css' href='materialize/css/jquery.weekcalendar.css' />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style type='text/css'>
+            body {
+                font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+                margin: 0;
+            }
+
+            h1 {
+                margin: 0 0 1em;
+                padding: 0.5em 0.5em 0;
+            }
+
+            p.description {
+                font-size: 0.8em;
+                padding: 1em;
+                top: 3.2em;
+                margin-right: 400px;
+            }
+
+            #message {
+                font-size: 0.7em;
+                position: absolute;
+                top: 1em;
+                right: 1em;
+                width: 350px;
+                display: none;
+                padding: 1em;
+                background: #ffc;
+                border: 1px solid #dda;
+            }
+
+            .wc-title{
+                color: black;
+                font-weight: bold;
+            }
+        </style>
+
+        <script type='text/javascript' src='materialize/js/jquery-1.4.4.min.js'></script>
+        <script type='text/javascript' src='materialize/js/jquery-ui-1.8.11.custom.min.js'></script>
+        <script type="text/javascript" src="materialize/js/date.js"></script>
+        <script type='text/javascript' src='materialize/js/jquery.weekcalendar.js'></script>
+        <script type='text/javascript'>
+            var year = new Date().getFullYear();
+            var month = new Date().getMonth();
+            var day = new Date().getDate();
+
+            // alert(new Date(year, month, day, 12));
+
+            var eventData = {
+                events: [
+                    {'id': 1, 'paciente': 'Noelia Martínez', 'terapeuta': 'Ketzel Varela', 'expediente': '0801-1981-12831', 'telefono': '2222-2222', 'color': '#477998', 'ausencias': 0, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13), 'title': 'Ketzer Varela<br/>9876-1115'},
+                    {'id': 2, 'paciente': 'Juan Oyuela', 'terapeuta': 'Mauro Rodriguez', 'expediente': '1602-1999-25945', 'telefono': '3333-3333', 'color': '#261C15', 'ausencias': 1, 'start': new Date(year, month, day, 14), 'end': new Date(year, month, day, 15), 'title': 'Dev Meeting'},
+                    {'id': 10, 'paciente': 'Juan Oyuela', 'terapeuta': 'Mauro Rodriguez', 'expediente': '1602-1999-25945', 'telefono': '3333-3333', 'color': '#261C15', 'ausencias': 1, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13), 'title': 'Dev Meeting'},
+                    {'id': 3, 'paciente': 'Netzer Ávila', 'terapeuta': 'Ana Varela', 'expediente': '0202-2005-12839', 'telefono': '4444-4444', 'color': '#2D2D2A', 'ausencias': 2, 'start': new Date(year, month, day, 16), 'end': new Date(year, month, day, 17), 'title': 'Hair cut'},
+                    {'id': 4, 'paciente': 'Karen Sarabia', 'terapeuta': 'Hector Motiño', 'expediente': '0318-1970-00828', 'telefono': '5555-5555', 'color': '#283D3B', 'ausencias': 0, 'start': new Date(year, month, day, 8), 'end': new Date(year, month, day, 9), 'title': 'Team breakfast'},
+                    {'id': 5, 'paciente': 'Rodney Martins', 'terapeuta': 'Emy Lopez', 'expediente': '0808-1959-93842', 'telefono': '6666-6666', 'color': '#1F2041', 'ausencias': 3, 'start': new Date(year, month, day, 14), 'end': new Date(year, month, day, 15), 'title': 'Product showcase'},
+                    {'id': 6, 'paciente': 'Karen Sarabia', 'terapeuta': 'Hector Motiño', 'expediente': '0318-1970-00828', 'telefono': '5555-5555', 'color': '#283D3B', 'ausencias': 0, 'start': new Date(year, month, day - 1, 8), 'end': new Date(year, month, day - 1, 9), 'title': 'Team breakfast'},
+                    {'id': 7, 'paciente': 'Rodney Martins', 'terapeuta': 'Emy Lopez', 'expediente': '0808-1959-93842', 'telefono': '6666-6666', 'color': '#1F2041', 'ausencias': 1, 'start': new Date(year, month, day + 1, 14), 'end': new Date(year, month, day + 1, 15), 'title': 'Product showcase'},
+                    {'id': 8, 'paciente': 'José Marquez', 'terapeuta': 'Carlos Velasquez', 'expediente': '0108-1976-87432', 'telefono': '2233-4455', 'color': '#99621E', 'ausencias': 2, 'start': new Date(year, month, day + 1, 15), 'end': new Date(year, month, day + 1, 16), 'title': 'Overlay event'},
+                    {'id': 9, 'paciente': 'Martín García', 'terapeuta': 'Carlos Velasquez', 'expediente': '0108-1999-20953', 'telefono': '7777-7777', 'color': '#99621E', 'ausencias': 2, 'start': new Date(year, month, day + 1, 15), 'end': new Date(year, month, day + 1, 16), 'title': 'Overlay event'}
+                ]
+            };
+            /*
+             var eventData2 = "{" +
+             "events : [" +
+             "{'id':1, 'paciente':'Noelia Martínez', 'terapeuta': 'Ketzel Varela', 'expediente': '0801-1981-12831', 'telefono': '2222-2222', 'color': '#477998', 'ausencias': 0, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13), 'title':'Ketzer Varela<br/>9876-1115'}," +
+             "{'id':2, 'paciente':'Juan Oyuela', 'terapeuta': 'Mauro Rodriguez', 'expediente':'1602-1999-25945', 'telefono':'3333-3333', 'color': '#261C15', 'ausencias': 1, 'start': new Date(year, month, day, 14), 'end': new Date(year, month, day, 15), 'title':'Dev Meeting'}," +
+             "{'id':10, 'paciente':'Juan Oyuela', 'terapeuta': 'Mauro Rodriguez', 'expediente':'1602-1999-25945', 'telefono':'3333-3333', 'color': '#261C15', 'ausencias': 1, 'start': new Date(year, month, day, 12), 'end': new Date(year, month, day, 13), 'title':'Dev Meeting'}," +
+             "{'id':3, 'paciente':'Netzer Ávila', 'terapeuta': 'Ana Varela', 'expediente':'0202-2005-12839', 'telefono':'4444-4444', 'color': '#2D2D2A', 'ausencias': 2, 'start': new Date(year, month, day, 16), 'end': new Date(year, month, day, 17), 'title':'Hair cut'}," +
+             "{'id':4, 'paciente':'Karen Sarabia', 'terapeuta': 'Hector Motiño', 'expediente':'0318-1970-00828', 'telefono':'5555-5555', 'color': '#283D3B', 'ausencias': 0, 'start': new Date(year, month, day, 8), 'end': new Date(year, month, day, 9), 'title':'Team breakfast'}," +
+             "{'id':5, 'paciente':'Rodney Martins', 'terapeuta': 'Emy Lopez', 'expediente':'0808-1959-93842', 'telefono':'6666-6666', 'color': '#1F2041', 'ausencias': 3, 'start': new Date(year, month, day, 14), 'end': new Date(year, month, day, 15), 'title':'Product showcase'}," +
+             "{'id':6, 'paciente':'Karen Sarabia', 'terapeuta': 'Hector Motiño', 'expediente':'0318-1970-00828', 'telefono':'5555-5555', 'color': '#283D3B', 'ausencias': 0, 'start': new Date(year, month, day - 1, 8), 'end': new Date(year, month, day - 1, 9), 'title':'Team breakfast'}," +
+             "{'id':7, 'paciente':'Rodney Martins', 'terapeuta': 'Emy Lopez', 'expediente':'0808-1959-93842', 'telefono':'6666-6666', 'color': '#1F2041', 'ausencias': 1, 'start': new Date(year, month, day + 1, 14), 'end': new Date(year, month, day + 1, 15), 'title':'Product showcase'}," +
+             "{'id':8, 'paciente':'José Marquez', 'terapeuta': 'Carlos Velasquez', 'expediente':'0108-1976-87432', 'telefono':'2233-4455', 'color': '#99621E', 'ausencias': 2, 'start': new Date(year, month, day + 1, 15), 'end': new Date(year, month, day + 1, 16), 'title':'Overlay event'}," +
+             "{'id':9, 'paciente':'Martín García', 'terapeuta': 'Carlos Velasquez', 'expediente':'0108-1999-20953', 'telefono':'7777-7777', 'color': '#99621E', 'ausencias': 2, 'start': new Date(year, month, day + 1, 15), 'end': new Date(year, month, day + 1, 16), 'title':'Overlay event'}" +
+             "]" +
+             "}"; */
+
+            $(document).ready(function () {
+                // Variables globales.
+                var errorSesion = false;
+                var eventsData = {options: {businessHours: {start: 6, end: 19, limitDisplay: true}}};
+                
+                
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Función que convierte caracteres especiales UNICODE.
+                function caracteresEspeciales(texto) {
+                    var INICIO_ADMIRACION = "¡";
+                    var A_MAYUSCULA_TILDADA = "Á";
+                    var E_MAYUSCULA_TILDADA = "É";
+                    var I_MAYUSCULA_TILDADA = "Í";
+                    var O_MAYUSCULA_TILDADA = "Ó";
+                    var U_MAYUSCULA_TILDADA = "Ú";
+                    var N_MAYUSCULA_TILDADA = "Ñ";
+                    var A_MINUSCULA_TILDADA = "á";
+                    var E_MINUSCULA_TILDADA = "é";
+                    var I_MINUSCULA_TILDADA = "í";
+                    var O_MINUSCULA_TILDADA = "ó";
+                    var U_MINUSCULA_TILDADA = "ú";
+                    var N_MINUSCULA_TILDADA = "ñ";
+
+                    texto = texto.replace(/\\u00A1/g, INICIO_ADMIRACION);
+                    texto = texto.replace(/\\u00C1/g, A_MAYUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00C9/g, E_MAYUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00CD/g, I_MAYUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00D3/g, O_MAYUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00DA/g, U_MAYUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00D1/g, N_MAYUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00E1/g, A_MINUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00E9/g, E_MINUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00ED/g, I_MINUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00F3/g, O_MINUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00FA/g, U_MINUSCULA_TILDADA);
+                    texto = texto.replace(/\\u00F1/g, N_MINUSCULA_TILDADA);
+
+                    return texto;
+                }
+
+
+                // Función que recupera el mensaje de retroalimentación para el usuario.
+                function obtenerRetroalimentacion(paginaWeb) {
+                    // Verifica si existen mensajes de retroalimentacion para el usuario.
+                    if (!errorSesion)
+                        $.ajax({
+                            method: "post",
+                            url: "serviciosc.do",
+                            data: { name: "GETMSG",
+                                    page: paginaWeb.toString() },
+                            success: function (data, status) {
+                                var respuestaServ = $.trim(data.toString());
+
+                                if (respuestaServ.length > 0)
+                                    myAlert(respuestaServ);
+                            }
+                        });
+                }
+
+
+
+                // Función que verifica si existe sesión creada.
+                function verificarSesion(paginaWeb) {
+                    $.ajax({
+                        method: "post",
+                        async: false,
+                        url: "serviciosc.do",
+                        data: { name: "GETSSNI",
+                                page: paginaWeb.toString() },
+                        success: function (data, status) {
+                            var respuestaServ = JSON.parse($.trim(data.toString()));
+
+                            errorSesion = respuestaServ.error;
+                            if (respuestaServ.error)
+                                window.location.replace("index.html");
+                            else
+                                $.ajax({
+                                    method: "post",
+                                    async: false,
+                                    url: "serviciosc.do",
+                                    data: {name: "GETEVTINF"},
+                                    success: function (data, status) {
+                                        console.log(data.toString());
+                                        var respuestaServidor = JSON.parse(caracteresEspeciales(data.toString()));
+
+                                        if (!respuestaServidor.error) {
+                                            eventData = respuestaServidor.eventsData;
+                                        }
+                                        console.log(eventsData);
+                                    },
+                                    complete: function(data) {
+                                            // Carga la información de la agenda con la información recuperada del sistema.
+                                            // Obtenido a partir de https://github.com/themouette/jquery-week-calendar
+                                            $('#calendar').weekCalendar({
+                                                data: eventData,
+                                                readonly: true,
+                                                height: function ($calendar) {
+                                                    return $(window).height() - $('h1').outerHeight(true);
+                                                },
+                                                eventRender: function (calEvent, $event) {
+                                                    if (calEvent.end.getTime() < new Date().getTime()) {
+                                                        $event.css('backgroundColor', '#aaa');
+                                                        $event.find('.time').css({
+                                                            backgroundColor: '#999',
+                                                            border: '1px solid #888',
+                                                        });
+                                                    }
+                                                },
+                                                eventNew: function (calEvent, $event) {
+                                                    // displayMessage('<strong>Added event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
+                                                    // alert('You\'ve added a new event. You would capture this event, add the logic for creating a new event with your own fields, data and whatever backend persistence you require.');
+                                                },
+                                                eventDrop: function (calEvent, $event) {
+                                                    // displayMessage('<strong>Moved Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
+                                                },
+                                                eventResize: function (calEvent, $event) {
+                                                    // displayMessage('<strong>Resized Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
+                                                },
+                                                eventClick: function (calEvent, $event) {
+                                                    // displayMessage('<strong>Clicked Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
+                                                    if (confirm("¿Desea hacer check-in de este plan de rehabilitación?"))
+                                                        $.ajax({
+                                                            method: "get",
+                                                            async: false,
+                                                            url: "serviciosc.do",
+                                                            data: { name: "SETREHSSNINF",
+                                                                    file: String(calEvent.expediente),
+                                                                    start: String(calEvent.start),
+                                                                    end: String(calEvent.end) },
+                                                            success: function (data, status) {
+                                                                alert(String(calEvent.expediente));
+                                                                var respuestaServidor = JSON.parse(
+                                                                        caracteresEspeciales(data.toString()));
+
+                                                                if (!respuestaServidor.error)
+                                                                    window.location.replace("checkin.html");
+                                                                else
+                                                                    alert("Ocurrió un error al intentar carga la información solicitada.")
+                                                            }
+                                                        });
+
+
+
+
+                                                },
+                                                eventMouseover: function (calEvent, $event) {
+                                                    // displayMessage('<strong>Mouseover Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
+                                                },
+                                                eventMouseout: function (calEvent, $event) {
+                                                    // displayMessage('<strong>Mouseout Event</strong><br/>Start: ' + calEvent.start + '<br/>End: ' + calEvent.end);
+                                                },
+                                                noEvents: function () {
+                                                    // displayMessage('There are no events for this week');
+                                                }
+                                            });
+
+                                            $("#calendar").weekCalendar("refresh");
+                                        }
+                                });
+                        }
+                    });
+                }
+
+
+                function displayMessage(message) {
+                    $('#message').html(message).fadeIn();
+                }
+
+                $('<div id="message" class="ui-corner-all"></div>').prependTo($('body'));
+            });
+
+
+        </script>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            var jQuery341 = $.noConflict(true);
+        </script>
+    </head>
+    <body>
+        <div id="calendar"></div>
+
+
+    </body>
+</html>

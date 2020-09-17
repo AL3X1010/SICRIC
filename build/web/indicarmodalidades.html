@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            #myContent {
+                padding: 0 18px;
+                background-color: white;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form action="modalidad.do" method="post" autocomplete="off">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">
+                                Indicación de Modalidades
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s12" style="margin-bottom: -1%;">
+                                <h5>Información del plan de rehabilitación</h5>
+                            </div>
+                            <div class="input-field col s12">
+                                <table style="border-collapse: collapse;">
+                                    <tbody>
+                                        <tr style='border-bottom: none;'>
+                                            <td colspan="3" style="padding-left:0; padding-top:0; padding-bottom:0.4%;">
+                                                Número de plan: <a id="lblPlanRehabilitacion"></a>
+                                            </td>
+                                        </tr>
+                                        <tr style='border-bottom:none; background-color:#F8F8F8;'>
+                                            <td style="width:33%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Expediente: <a id="lblExpediente"></a></td>
+                                            <td style="width:36%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Nombre: <span id="lblNombre"></span></td>
+                                            <td style="width:31%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Edad: <span id="lblEdad"></span> años</td>
+                                        </tr>
+                                        <tr style="border-bottom: none;">
+                                            <td style="width:33%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Número de sesiones: <span id="lblSesiones"></span></td>
+                                            <td style="width:36%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Fecha de inicio: <span id="lblFechaInicio"></span></td>
+                                            <td style="width:31%; padding-left:0; padding-top:0.7%; padding-bottom:0.7%;">
+                                                Fecha de finalización:  <span id="lblFechaFinal"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="myContent">
+                                <div class="input-field col s12" style="margin-top: -0%; margin-bottom: -0.5%;">
+                                    <h5>Modalidades del plan de rehabilitación</h5>
+                                </div>
+                                <div class="col s12" id="divModalidades"></div>
+                            </div>
+
+                            
+                            <input name="page" id="page" type="text" class="campoVacio" hidden="hidden">
+                            <input name="modalidades" id="modalidades" type="text" class="campoVacio" hidden="hidden">
+                            
+                            
+                            <div class="input-field col s12" style="margin-top: 1.5%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn cyan waves-effect waves-light right" type="submit"
+                                        id="btnSubmit" name="btnSubmit">
+                                    Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <!-- Interface de usuario de JQuery necesario para el Drag And Drop-->
+        <script src="materialize/js/jquery-ui.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Verifica si existe sesión actual, en caso de no existir redirige a index.html.
+                // verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Solicita la información de referencia para el plan de rehabilitación.
+                $.ajax({
+                    method: "post",
+                    url: "serviciosc.do",
+                    data: {name: "GETREHPLANL3"},
+                    success: function (data, status) {
+                        var informacionPlanRehabilitacion = JSON.parse(caracteresEspeciales(data.toString()));
+                        
+                        // Carga la información general del plan de rehabilitación.
+                        if(!informacionPlanRehabilitacion.error){
+                            $('#lblPlanRehabilitacion').text(informacionPlanRehabilitacion.numeroPlan);
+                            $('#lblExpediente').text(informacionPlanRehabilitacion.expediente);
+                            $('#lblNombre').text(informacionPlanRehabilitacion.nombrePaciente);
+                            $('#lblEdad').text(informacionPlanRehabilitacion.edad);
+                            $('#lblSesiones').text(informacionPlanRehabilitacion.cantidadSesiones);
+                            $('#lblFechaInicio').text(informacionPlanRehabilitacion.fechaInicial);
+                            $('#lblFechaFinal').text(informacionPlanRehabilitacion.fechaFinal);
+                            
+                            
+                            // Solicita la lista de modalidades que provee la
+                            // institución para que el usuario defina cuales aplicarán.
+                            $.ajax({
+                                method: "post",
+                                async: false,
+                                url: "serviciosc.do",
+                                data: {name: "GETREHPLANMODL"},
+                                success: function (dataIn, statusIn) {
+                                    var listaModalidades = JSON.parse(caracteresEspeciales(dataIn.toString()));
+
+                                    if(!listaModalidades.error){
+                                        $('#divModalidades').html(listaModalidades.listaModalidades);
+                                        $('.collapsible').collapsible();
+                                        
+                                        var content = $('#myContent');
+                                        if (content.css('maxHeight')) {
+                                            content.css('maxHeight', 'none');
+                                        } else {
+                                            content.css('maxHeight', content.height() + 'px');
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                
+                
+                // Funcionalidad para el botón de enviar formulario.
+                $('#btnSubmit').on('click', function(event){
+                    event.preventDefault();
+                    $('#page').val(document.location.href.match(/[^\/]+$/)[0]);
+                    var xmlOutput = "<modalidades>";
+                    var xmlLongitudIncial = xmlOutput.length;
+                    
+                    // Recorre todas las modalidades para armar XML que enviará al servidor.
+                    $("#divModalidades ul li").each(function(){
+                        var xmlTemp = "";
+                        var longitudRespuesta = 0;
+                        var usado = false;
+                        var liDivs = $(this).find('div');
+                        liDivs.each(function(){
+                            $(this).data('codigo');
+                            $(this).data('correlativo');
+                            
+                            if($(this).hasClass('collapsible-body') || $(this).hasClass('row'))
+                                return;     // No contiene información de interés.
+                            else if($(this).hasClass('collapsible-header')){
+                                // Es el encabezado de la modalidad.
+                                xmlTemp += "<modalidad codigo='" + $(this).data('codigo') + "'>";
+                                longitudRespuesta = xmlTemp.length;
+                            } else if(typeof $(this).data('correlativo') !== 'undefined'
+                                    && typeof $(this).data('tipo') !== 'undefined'){
+                                if(longitudRespuesta !== xmlTemp.length){
+                                    xmlTemp += "</elemento>";
+                                    longitudRespuesta = xmlTemp.length;
+                                }
+                                
+                                // Es uno de los elementos predeterminados.
+                                if($(this).data('tipo') === 'divComentario'){
+                                    var valorTextArea = "";
+                                    $(this).find("textarea").each(function(){
+                                        valorTextArea = $(this).val().trim();
+                                    });
+                                    
+                                    if(valorTextArea.length > 0)
+                                        usado = true;
+                                        
+                                    xmlTemp +=
+                                        "<elemento correlativo='" + $(this).data('correlativo') + "'>" +
+                                        "  <opcion correlativo='0' valor='" + valorTextArea + "' subtipo='ABIERTO'/>";
+                                } else
+                                    xmlTemp += "<elemento correlativo='" + $(this).data('correlativo') + "'>";
+                            } else if(typeof $(this).data('tipo') !== 'undefined'
+                                    && $(this).data('tipo') === 'divArea'){
+                                var valorInput = "";
+                                $(this).find("input").each(function(){
+                                    valorInput = $(this).val().trim();
+                                });
+                                    
+                                if(valorInput.length > 0)
+                                    usado = true;
+                                
+                                xmlTemp += "<opcion correlativo='0' valor='" + valorInput + "' subtipo='AREA'/>";
+                            } else if(typeof $(this).data('tipo') !== 'undefined'
+                                    && $(this).data('tipo') === 'divTiempo'){
+                                var valorInput = "";
+                                $(this).find("input").each(function(){
+                                    valorInput = $(this).val();
+                                });
+                                    
+                                if(valorInput.length > 0)
+                                    usado = true;
+                                
+                                xmlTemp += "<opcion correlativo='0' valor='" + valorInput + "' subtipo='TIEMPO'/>";
+                            } else if(typeof $(this).data('correlativo') !== 'undefined'){
+                                var valorInput = false;
+                                $(this).find("input").each(function(){
+                                    valorInput = $(this).prop('checked');
+                                });
+                                
+                                if(valorInput)
+                                    usado = true;
+                                
+                                xmlTemp += "<opcion correlativo='" + $(this).data('correlativo') + "' valor='" + valorInput + "' subtipo=''/>";
+                            }
+                        });
+                            
+                        if(usado)
+                            xmlOutput += xmlTemp + "</elemento></modalidad>";
+                    });
+                    
+                    
+                    if(xmlLongitudIncial !== xmlOutput.length)
+                        $('#modalidades').val(xmlOutput + "</modalidades>");
+                    else {
+                        event.preventDefault();
+                        alert('Debe proveer valores al menos para una modalidad.')
+                    }
+                });
+                
+                
+                // Regresa a la agenda del centro médico.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea salir de la página actual?"))
+                        window.location.replace("agenda.html");
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <style>
+            /* Style the button that is used to open and close the collapsible content */
+            .myContent {
+                padding: 0 18px;
+                background-color: white;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">     
+            <div class="row">
+                <form class="col s12" action="medicamento.do" method="post" autocomplete="off"> 
+                    <div class="card-panel">
+                        <div class="row" id="divInventarioFarmacia" style="margin-top: -3.5%">
+                            <h4 class="center">
+                                Formulario de Entrega de Medicamentos
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+
+                            <div class="input-field col s12">
+                                <h6 style="font-weight: bold;">Búsqueda del medicamento</h6>
+                                <hr/>
+                            </div>
+
+                            <div class="input-field col s6" style="margin-top: 0%">
+                                <input type="text" class="autocomplete"
+                                       id="serie" name="serie" >
+                                <label for="serie">Búsqueda por serie o nombre</label>
+                            </div>
+
+                            <div class="switch input-field col s6" style="margin-top: 0%">
+                                <input type="text" style="border-bottom: 1px solid white" disabled />
+                            </div>
+
+                            <div  class="myContent" id="myContent">
+                                <div class="input-field col s12" style="margin-top: 1%">
+                                    <h6 style="font-weight: bold;">Información del medicamento</h6>
+                                    <hr/>
+
+                                    <table style="border-collapse: collapse;">
+                                        <tbody>
+                                            <tr style="border-bottom: none;">
+                                                <td style="width:50%; padding-left:0; padding-top:0.3%; padding-bottom:0.7%;">Nombre del medicamento: <a><span style="font-weight: bold;" id="nombreMedicamento"></span></a></td>
+                                                <td style="width:50%; padding-left:0; padding-top:0.3%; padding-bottom:0.7%;">Serie del medicamento: <a><span style="font-weight: bold;" id="serieMedicamento"></span></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table style="border-collapse: collapse;" id="detalleLotes">
+                                    </table>
+                                    <table style="border-collapse: collapse;">
+                                            <tr style='border-bottom:none;' id="ultimaFila">
+                                                <td colspan="3" style="padding-left:0; padding-top:0.7%; padding-bottom:0.3%; font-weight: bold;" id="cantidadExistenciaCatalogo"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="switch input-field col s3">
+                                    <label>
+                                        Otro
+                                        <input type="checkbox" id="cbxConforme" name="cbxConforme">
+                                        <span class="lever"></span>
+                                        Conforme
+                                    </label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <select id='loteGenerico' name='loteGenerico'></select>
+                                    <label for='loteGenerico'>Lote</label>
+                                </div>
+
+                                <div class="input-field col s3">
+                                    <input id="cantidadEntregada" name="cantidadEntregada"
+                                           type="text" class="validate campoEntero" />
+                                    <label for="cantidadEntregada" id="lblCantidadEntregada">Cantidad entregada</label>
+                                </div>
+
+                                <div class="input-field col s1">
+                                    <a id="masIcon" class="btn-floating pulse"><i class="material-icons">add</i></a>
+                                </div>
+                            </div>
+
+                            <div  class="myContent" id="myContent2">
+                                <div class="input-field col s12" style="margin-top: -1%">
+                                    <table style="border-collapse: collapse;">
+                                        <tbody>
+                                            <tr style='border-bottom:none; background-color: lightgrey;'>
+                                                <td style='width:50%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Lote: <span id="loteRA"></span></td>
+                                                <td style='width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Vencimiento: <span id="vencimientoRA"></span></td>
+                                                <td style='width:20%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Existencia: <span id="cantidadRA"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div  class="myContent" id="myContent3">
+                                <div class="input-field col s12" style="margin-top: 1%;">
+                                    <h5 style="font-weight: bold;">Lista de medicamentos a expedir</h5>
+                                    <hr/>
+
+                                    <table style="border-collapse: collapse;">
+                                        <thead>
+                                            <tr style='border-bottom:none;'>
+                                                <th style="width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;">Nombre</th>
+                                                <th style="width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;">Serie</th>
+                                                <th style="width:23%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;">Lote</th>
+                                                <th style="width:10%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;">Cantidad</th>
+                                                <th style="width:7%; padding-top:0.7%; padding-bottom:0.3%;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="listaEntregaMedicamentos"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <input name="page" id="page" type="text" class="campoVacio" hidden="hidden">
+                            <input name="output" id="output" type="text" class="campoVacio" hidden="hidden">
+
+                            <div class="input-field col s4" style="margin-top: 1%; margin-bottom: -2%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+                            </div>
+
+                            <div class="input-field col s4 center" style="margin-top: 1%; margin-bottom: -2%">
+                                <button class="btn cyan waves-effect waves-light"
+                                        name="btnGenerar" id="btnGenerar">
+                                    Generar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Variables globales.
+                var primeraPasada = true;
+                var desplegarDiv = false;
+                var existenciaTotal = 0;
+                var contador = 0;
+
+
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                // verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+
+
+                // Carga la lista de series para dispensar medicamentos.
+                $.ajax({
+                    method: "post",
+                    url: "cargarLista.do",
+                    data: {name: "GETMDCSERL"},
+                    success: function (data, status) {
+                        var seriesMedicamentos = JSON.parse(data.toString());
+
+                        if (!seriesMedicamentos.error && seriesMedicamentos.data !== null) {
+                            desplegarDiv = true;
+
+                            $('#serie').autocomplete({
+                                data: seriesMedicamentos.data,
+                            });
+                        }
+                    }
+                });
+
+
+                $('#serie').on('change', function () {
+                    if (!primeraPasada && desplegarDiv) {
+                        primeraPasada = true;
+
+                        // Obtiene información general del medicamento.
+                        $.ajax({
+                            method: "post",
+                            url: "serviciosc.do",
+                            data: {name: "GETMDCDET",
+                                code: $(this).val()},
+                            success: function (data, status) {
+                                var informacionExistenciaMedicamento = JSON.parse(data.toString());
+
+                                if (!informacionExistenciaMedicamento.error) {
+                                    $('#nombreMedicamento').text(informacionExistenciaMedicamento.nombre);
+                                    $('#serieMedicamento').text(informacionExistenciaMedicamento.serie);
+                                    $('#loteGenerico').html(informacionExistenciaMedicamento.selectLotes);
+                                    $('#cantidadExistenciaCatalogo').text(
+                                            'Existencia total del medicamento: ' +
+                                            informacionExistenciaMedicamento.cantidadDisponibleCatalogo);
+                                    existenciaTotal = informacionExistenciaMedicamento.cantidadDisponibleCatalogo;
+                                    
+                                    if(informacionExistenciaMedicamento.cantidadDisponibleCatalogo > 0)
+                                        $('#cantidadExistenciaCatalogo').css('color', 'green');
+                                    else $('#cantidadExistenciaCatalogo').css('color', 'red');
+                                    
+                                    var contador = 1;
+                                    $('#detalleLotes').empty();
+                                    for(i in informacionExistenciaMedicamento.lotes){
+                                        var idListado = 'ce' + informacionExistenciaMedicamento.serie + informacionExistenciaMedicamento.lotes[i].codigo;
+                                        var cantidadListada = 0;
+                                        
+                                        if($('#' + idListado).text().trim().length > 0)
+                                            cantidadListada = parseInt($('#' + idListado).text());
+                                        
+                                        if(contador <= 3)
+                                            $('#detalleLotes').append(
+                                                "<tr style='border-bottom:none;' id='tr" + informacionExistenciaMedicamento.lotes[i].codigo + "'>" +
+                                                "    <td style='width:50%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Lote: <span id='sl" + informacionExistenciaMedicamento.lotes[i].lote + "'>" + informacionExistenciaMedicamento.lotes[i].lote + "</span></td>" +
+                                                "    <td style='width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" + informacionExistenciaMedicamento.lotes[i].fechaVencimiento + "</td>" +
+                                                "    <td style='width:20%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Existencia: <span id='sc" + informacionExistenciaMedicamento.lotes[i].lote + "'>" + (informacionExistenciaMedicamento.lotes[i].cantidadDisponibleLote - cantidadListada) + "</span></td>" +
+                                                "</tr>"
+                                            );
+                                        else
+                                            $('#detalleLotes').append(
+                                                "<tr style='border-bottom:none;' hidden id='tr" + informacionExistenciaMedicamento.lotes[i].codigo + "'>" +
+                                                "    <td style='width:50%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Lote: <span id='sl" + informacionExistenciaMedicamento.lotes[i].lote + "'>" + informacionExistenciaMedicamento.lotes[i].lote + "</span></td>" +
+                                                "    <td style='width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" + informacionExistenciaMedicamento.lotes[i].fechaVencimiento + "</td>" +
+                                                "    <td style='width:20%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>Existencia: <span id='sc" + informacionExistenciaMedicamento.lotes[i].lote + "'>" + (informacionExistenciaMedicamento.lotes[i].cantidadDisponibleLote - cantidadListada) + "</span></td>" +
+                                                "</tr>"
+                                            );
+                                    
+                                        contador++;
+                                    }
+                                    
+                                    $('#cbxConforme').attr('checked', 'true');
+                                    $('#loteGenerico').attr('disabled', 'disabled');
+                                    $('select').trigger('contentChanged');
+
+                                    var content = $('#myContent');
+                                    if (content.css('maxHeight')) {
+                                        content.css('maxHeight', 'none');
+                                    } else {
+                                        content.css('maxHeight', content.height() + 'px');
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        primeraPasada = false;
+                    }
+                });
+                
+                
+                // Muestra inputs de acuerdo al tipo de salario seleccinado.
+                $('#cbxConforme').on('change', function () {
+                    $('#loteGenerico').removeAttr('disabled');
+                    $('select').trigger('contentChanged');
+                    
+                    // $('#myContent').css('maxHeight', $('#myContent').height() + 'px');;
+                });
+                
+                $('#loteGenerico').on('change', function () {
+                    var loteSeleccionado = $('#loteGenerico').val();
+                    $('#loteRA').text($('#sl' + loteSeleccionado).text());
+                    $('#vencimientoRA').text($('#sv' + loteSeleccionado).text());
+                    $('#cantidadRA').text($('#sc' + loteSeleccionado).text());
+                    
+                    
+                    var content = $('#myContent2');
+                    if (content.css('maxHeight')) {
+                        content.css('maxHeight', 'none');
+                    } else {
+                        content.css('maxHeight', content.height() + 'px');
+                    }
+                });
+                
+                
+                $('#masIcon').on('click', function () {
+                    var loteSeleccionado = $('#loteGenerico').val();
+                    var cantidadDisponible = parseInt($('#sc' + loteSeleccionado).text().trim());
+                    var cantidadEntregada = parseInt($('#cantidadEntregada').val().trim());
+                    var iteraciones = 0;
+                    
+                    if($('#cantidadEntregada').val().trim().length === 0 ){
+                        alert("Cantidad entregada no puede estar vacía.");
+                        return false;
+                    } else if(cantidadEntregada === 0 ){
+                        alert("Cantidad entregada tiene que ser mayor a cero.");
+                        return false;
+                    } else if(!$('#cbxConforme').prop('checked') &&
+                            cantidadEntregada > cantidadDisponible){
+                        alert("No se puede dispensar la cantidad indicada para el lote seleccionado.");
+                        return false;
+                    } else if(!$('#cbxConforme').prop('checked')) {
+                        iteraciones = 1;
+                    } else if($('#cbxConforme').prop('checked') &&
+                            cantidadEntregada > existenciaTotal) {
+                        alert("No se puede dispensar la cantidad indicada para el medicamento seleccionado.");
+                        return false;
+                    } else if($('#cbxConforme').prop('checked') &&
+                            cantidadEntregada <= cantidadDisponible){
+                        iteraciones = 1;
+                    }
+                    
+                    if(iteraciones === 1){
+                        $('#sc' + loteSeleccionado).text(String(cantidadDisponible - cantidadEntregada).trim());
+                        $('#listaEntregaMedicamentos').append(
+                            "<tr style='border-bottom:none;'> " +
+                            "    <td style='width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                    $('#nombreMedicamento').text() +
+                            "    </td> " +
+                            "    <td style='width:30%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                    $('#serieMedicamento').text() +
+                            "    </td> " +
+                            "    <td style='width:23%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                    $('#sl' + loteSeleccionado).text() +
+                            "    </td> " +
+                            "    <td style='width:10%; padding-top:0.7%; padding-bottom:0.3%;' id='ce" + $('#serieMedicamento').text() + loteSeleccionado + "'>" +
+                                    cantidadEntregada +
+                            "    </td> " +
+                            "    <td style='width:7%; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                            "      <a data-serie='" + $('#serieMedicamento').text() + "' data-lote='" + loteSeleccionado + "' href='#' class='delMedLis' style='color: red; font-weight: bold;'>" +
+                            "        <i class='material-icons'>clear</i></a></td> " +
+                            "</tr> "
+                        );
+                    } else {
+                        $('#detalleLotes').find('tr').each(function(index, element){
+                            var columnas = $(this).find('td');
+                            var lote = columnas.eq(0).text().split(": ")[1];
+                            var cantidadEntregadaLote = 0;
+                            cantidadDisponible = parseInt($('#sc' + lote).text());
+                            
+                            if(cantidadDisponible > cantidadEntregada){
+                                cantidadDisponible = cantidadDisponible - cantidadEntregada;
+                                cantidadEntregadaLote = cantidadEntregada;
+                                cantidadEntregada = 0;
+                            } else {
+                                cantidadEntregada = cantidadEntregada - cantidadDisponible;
+                                cantidadEntregadaLote = cantidadDisponible;
+                                cantidadDisponible = 0;
+                            }
+                    
+                            $('#listaEntregaMedicamentos').append(
+                                "<tr style='border-bottom:none;'> " +
+                                "    <td style='width:32%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                        $('#nombreMedicamento').text() +
+                                "    </td> " +
+                                "    <td style='width:32%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                        $('#serieMedicamento').text() +
+                                "    </td> " +
+                                "    <td style='width:25%; padding-left:0; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                        lote +
+                                "    </td> " +
+                                "    <td style='width:10%; padding-top:0.7%; padding-bottom:0.3%;' id='ce" + $('#serieMedicamento').text() + loteSeleccionado + "'>" +
+                                        cantidadEntregadaLote +
+                                "    </td> " +
+                                "    <td style='width:7%; padding-top:0.7%; padding-bottom:0.3%;'>" +
+                                "      <a data-serie='" + $('#serieMedicamento').text() + "' data-lote='" + loteSeleccionado + "' href='#' class='delMedLis' style='color: red; font-weight: bold;'>" +
+                                "        <i class='material-icons'>clear</i></a></td> " +
+                                "</tr> "
+                            );
+                            
+                            $('#sc' + lote).text(String(cantidadDisponible));
+                            
+                        });
+                    }
+                    
+                    $('#cantidadEntregada').val('');
+                    $('myContent3').removeAttr('hidden');
+                    var content = $('#myContent3');
+                    if (content.css('maxHeight')) {
+                        content.css('maxHeight', 'none');
+                    } else {
+                        content.css('maxHeight', content.height() + 'px');
+                    }
+                });
+                
+                
+                $(document.body).on('click', '.delMedLis', function(){
+                    if($('#serieMedicamento').text() === $(this).data('serie')){
+                        var cantidadLote = parseInt($('#sc' + $(this).data('lote')).text());
+                        var cantidadExpedida = parseInt($('#ce' + $(this).data('serie') + $(this).data('lote')).text());
+                                
+                        $('#sc' + $(this).data('lote')).text(String(cantidadLote + cantidadExpedida));
+                    }
+                    
+                    $(this).closest('tr').remove();
+                    if($('#listaEntregaMedicamentos tr').length === 0)
+                        $('#myContent3').attr('hidden', 'hidden');
+                });
+                
+                
+                // Regresa al lobby de medicamentos.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea regresar al inventario de medicamentos?"))
+                        window.location.replace("lobbymedicamentos.html");
+                    
+                    event.preventDefault();
+                });
+                
+                // Envía el formulario.
+                $('#btnGenerar').on('click', function(event){
+                    if($('#listaEntregaMedicamentos tr').length === 0){
+                        alert("Formulario no puede ser enviado debido a que no existe " +
+                              "ningún registro en la tabla de \"Listado de medicamentos a expedir\".");
+                        event.preventDefault();
+                        return false;
+                    } else if(!confirm("¿Enviar la información ingresada?")){
+                        event.preventDefault();
+                        return false;
+                    }
+                    
+                    var xmlMedicamentos = "<elementos>";
+                    $('#listaEntregaMedicamentos').find('tr').each(function(index, element){
+                        var columnas = $(this).find('td');
+                        xmlMedicamentos +=
+                                "<medicamento serie='" + columnas.eq(1).text().toString().trim() + "'" +
+                                "             lote='" + columnas.eq(2).text().toString().trim() + "'" +
+                                "             cantidad='" + columnas.eq(3).text().toString().trim() + "'/>";
+                    });
+                    $('#output').val(xmlMedicamentos + "</elementos>");
+                    $('#page').val(document.location.href.match(/[^\/]+$/)[0]);
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

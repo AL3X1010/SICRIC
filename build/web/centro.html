@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+        
+        <style>
+            .modal {
+                width: 60%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="userNavBar"></div>
+        <div class="container">
+            <div class="row">
+                <form class="col s12" method="post" autocomplete="off" enctype="multipart/form-data">
+                    <div class="card-panel">
+                        <div class="row" style="margin-top: -3.5%;">
+                            <h4 class="center">
+                                Información del Centro de Rehabilitación
+                                <a href='#'><i class='material-icons right' id="icon"></i></a>
+                            </h4>
+                            <hr/>
+                            
+                            <div class="input-field col s6">
+                                <input name="nombre" id="nombre" type="text" 
+                                       maxlength="100" required="" aria-required="true"
+                                       class="validate campoLetrasEspacios"/>
+                                <label id="lblNombre" for="nombre">Nombre Del Centro</label>
+                            </div>
+                            
+                            <div class="input-field col s6" style="margin-top: -0.21%">
+                                <div class="file-field input-field">
+                                    <div class="btn cyan waves-effect">
+                                        <span>Logo</span>
+                                        <input type="file" name="nombreArchivo" id="nombreArchivo" accept=".png" multiple/>
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text" id="nombreArchivoSeleccionado" name="nombreArchivoSeleccionado"/>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="input-field col s6">
+                                <input name="telefono" id="telefono" type="text"
+                                       maxlength="8" required="" aria-required="true" 
+                                       class="validate campoEntero"/>
+                                <label id="lblTelefono" for="telefono">Telefono</label>
+                            </div>
+                            
+                            <div class="input-field col s6">
+                                <input name="correo" id="correo" type="email"
+                                       maxlength="50" required="" aria-required="true"
+                                       class="validate"/>
+                                <label id="lblCorreo" for="correo">Correo electrónico</label>
+                            </div>
+                        
+                            <div class="input-field col s12">
+                                <input name="direccion" id="direccion" type="text"
+                                       maxlength="250" required="" aria-required="true"
+                                       class="validate"/>
+                                <label id="lblDireccion" for="direccion">Direccion</label>
+                            </div>
+                            
+                            <input name="nombreArchivoInicial" id="nombreArchivoInicial" type="text" class="campoVacio" hidden="hidden"/>
+                            
+                            <div class="input-field col s12" style="margin-top: -0%; margin-bottom: 0%">
+                                <button class="btn red lighten-2 waves-effect waves-light left"
+                                        id="btnCancelar">
+                                    Cancelar
+                                </button>
+
+                                <button data-target="modal1"
+                                        class="btn cyan waves-effect waves-light right"
+                                        id="btnContinuar">
+                                    <i class="material-icons right">arrow_forward</i>Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                            <h4>Horario de Atención Médica</h4>
+                            <div class="row" style="margin-top: -3%">
+                                <div class="input-field col s12 m12">
+                                    <label>Ya casi finalizas, solo falta definir el horario con el cuál se generará la agenda de trabajo.</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Lunes
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioLunes" name="horaInicioLunes"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioLunes" id="lblHoraInicioLunes">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalLunes" name="horaFinalLunes"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalLunes" id="lblHoraFinalLunes">Hora final</label>
+                                </div>
+                                
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Martes
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioMartes" name="horaInicioMartes"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioMartes" id="lblHoraInicioMartes">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalMartes" name="horaFinalMartes"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalMartes" id="lblHoraFinalMartes">Hora final</label>
+                                </div>
+                                
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Miércoles
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioMiercoles" name="horaInicioMiercoles"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioMiercoles" id="lblHoraInicioMiercoles">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalMiercoles" name="horaFinalMiercoles"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalMiercoles" id="lblHoraFinalMiercoles">Hora final</label>
+                                </div>
+                                
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Jueves
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioJueves" name="horaInicioJueves"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioJueves" id="lblHoraInicioJueves">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalJueves" name="horaFinalJueves"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalJueves" id="lblHoraFinalJueves">Hora final</label>
+                                </div>
+                                
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Viernes
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioViernes" name="horaInicioViernes"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioViernes" id="lblHoraInicioViernes">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalViernes" name="horaFinalViernes"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalViernes" id="lblHoraFinalViernes">Hora final</label>
+                                </div>
+                                
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Sábado
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioSabado" name="horaInicioSabado"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioSabado" id="lblHoraInicioSabado">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalSabado" name="horaFinalSabado"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalSabado" id="lblHoraFinalSabado">Hora final</label>
+                                </div>
+                                
+                                <div class="col s2 center" style="margin-top: 3.8%;">
+                                    Domingo
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaInicioDomingo" name="horaInicioDomingo"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaInicioDomingo" id="lblHoraInicioDomingo">Hora inicio</label>
+                                </div>
+
+                                <div class="input-field col s5">
+                                    <input id="horaFinalDomingo" name="horaFinalDomingo"
+                                           type="text" class="validate timepicker campoVacio" />
+                                    <label for="horaFinalDomingo" id="lblHoraFinalDomingo">Hora final</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-red btn-flat" id="btnRegresar">Regresar</a>
+                            <input type="submit" name="btnSubmit" class="modal-close waves-effect waves-green btn-flat" id="btnSubmit" value="Guardar" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+        <script type="text/javascript" src="materialize/js/utilities.js"></script>
+        <script>
+            $(document).ready(function(){
+                // Verifica si existe sesión actual, en caso de no existir
+                // redirige a index.html.
+                verificarSesion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Carga el registro del centro de rehabilitación en la página web.
+                $.ajax({
+                    method: "post",
+                    url: "cargaRegistro.do",
+                    data: {name: "GETCNTINF"},
+                    success: function (data, status) {
+                        var respuesta = JSON.parse(data.toString());
+                        var informacionCentro = respuesta[1];
+                        adecuarElementos(respuesta[0].modo);
+
+                        if (!informacionCentro.error){
+                            $('#nombre').val(informacionCentro.nombre);
+                            $('#nombreArchivoSeleccionado').val(informacionCentro.logo);
+                            $('#nombreArchivoInicial').val(informacionCentro.logo);
+                            $('#correo').val(informacionCentro.correo);
+                            $('#direccion').val(informacionCentro.direccion);
+                            $('#horaInicioLunes').val(informacionCentro.horaInicioLunes);
+                            $('#horaFinalLunes').val(informacionCentro.horaFinalLunes);
+                            $('#horaInicioMartes').val(informacionCentro.horaInicioMartes);
+                            $('#horaFinalMartes').val(informacionCentro.horaFinalMartes);
+                            $('#horaInicioMiercoles').val(informacionCentro.horaInicioMiercoles);
+                            $('#horaFinalMiercoles').val(informacionCentro.horaFinalMiercoles);
+                            $('#horaInicioJueves').val(informacionCentro.horaInicioJueves);
+                            $('#horaFinalJueves').val(informacionCentro.horaFinalJueves);
+                            $('#horaInicioViernes').val(informacionCentro.horaInicioViernes);
+                            $('#horaFinalViernes').val(informacionCentro.horaFinalViernes);
+                            $('#horaInicioSabado').val(informacionCentro.horaInicioSabado);
+                            $('#horaFinalSabado').val(informacionCentro.horaFinalSabado);
+                            $('#horaInicioDomingo').val(informacionCentro.horaInicioDomingo);
+                            $('#horaFinalDomingo').val(informacionCentro.horaFinalDomingo);
+                            $('#lblHoraInicioLunes').addClass('active');
+                            $('#lblHoraFinalLunes').addClass('active');    
+                            $('#lblHoraInicioMartes').addClass('active');
+                            $('#lblHoraFinalMartes').addClass('active');
+                            $('#lblHoraInicioMiercoles').addClass('active');
+                            $('#lblHoraFinalMiercoles').addClass('active');
+                            $('#lblHoraInicioJueves').addClass('active');
+                            $('#lblHoraFinalJueves').addClass('active');
+                            $('#lblHoraInicioViernes').addClass('active');
+                            $('#lblHoraFinalViernes').addClass('active');
+                            $('#lblHoraInicioSabado').addClass('active');
+                            $('#lblHoraFinalSabado').addClass('active');
+                            $('#lblHoraInicioDomingo').addClass('active');
+                            $('#lblHoraFinalDomingo').addClass('active');
+                            
+                            if(informacionCentro.codigo > 0){
+                                $('#lblNombre').addClass('active');
+                                $('#lblDireccion').addClass('active');
+                                $('#lblCorreo').addClass('active');
+                                
+                                if(informacionCentro.telefono > 0){
+                                    $('#telefono').val(informacionCentro.telefono);
+                                    $('#lblTelefono').addClass('active');
+                                } else {
+                                    $('#telefono').val('');
+                                    $('#lblTelefono').removeClass('active');
+                                }
+                            } else {
+                                $('#telefono').val('');
+                                $('#lblNombre').removeClass('active');
+                                $('#lblDireccion').removeClass('active');
+                                $('#lblTelefono').removeClass('active');
+                                $('#lblCorreo').removeClass('active');
+                            }
+                            
+                            if(respuesta[0].modo === "mod-v" )
+                                $('#btnRegresar').addClass('right');
+                        } else {
+                            $('#nombre').val('');
+                            $('#lblNombre').removeClass('active');
+                            $('#direccion').val('');
+                            $('#lblDireccion').removeClass('active');
+                            $('#telefono').val('');
+                            $('#lblTelefono').removeClass('active');
+                            $('#correo').val('');
+                            $('#lblCorreo').removeClass('active');
+                                
+                            $('#horaInicioLunes').val('');
+                            $('#horaFinalLunes').val('');
+                            $('#lblHoraInicioLunes').removeClass('active');
+                            $('#lblHoraFinalLunes').removeClass('active');
+
+                            $('#horaInicioMartes').val('');
+                            $('#horaFinalMartes').val('');
+                            $('#lblHoraInicioMartes').removeClass('active');
+                            $('#lblHoraFinalMartes').removeClass('active');
+
+                            $('#horaInicioMiercoles').val('');
+                            $('#horaFinalMiercoles').val('');
+                            $('#lblHoraInicioMiercoles').removeClass('active');
+                            $('#lblHoraFinalMiercoles').removeClass('active');
+
+                            $('#horaInicioJueves').val('');
+                            $('#horaFinalJueves').val('');
+                            $('#lblHoraInicioJueves').removeClass('active');
+                            $('#lblHoraFinalJueves').removeClass('active');
+
+                            $('#horaInicioViernes').val('');
+                            $('#horaFinalViernes').val('');
+                            $('#lblHoraInicioViernes').removeClass('active');
+                            $('#lblHoraFinalViernes').removeClass('active');
+
+                            $('#horaInicioSabado').val('');
+                            $('#horaFinalSabado').val('');
+                            $('#lblHoraInicioSabado').removeClass('active');
+                            $('#lblHoraFinalSabado').removeClass('active');
+
+                            $('#horaInicioDomingo').val('');
+                            $('#horaFinalDomingo').val('');
+                            $('#lblHoraInicioDomingo').removeClass('active');
+                            $('#lblHoraFinalDomingo').removeClass('active');
+
+                            myAlert(informacionCentro.mensaje);
+                        }
+                    }
+                });
+                
+                
+                // Verifica si existen mensajes de retroalimentacion para el usuario.
+                obtenerRetroalimentacion(document.location.href.match(/[^\/]+$/)[0]);
+                
+                
+                // Permite cambiar de modo vista a modo edición.
+                $('#icon').on('click', function(){
+                    adecuarElementos('mod-e');
+                    $('#nombreArchivoSeleccionado').attr('readonly', 'readonly');
+                });
+                
+                
+                // Verifica que los campos de la primera pantalla estén llenos.
+                $(document.body).on("click", "#btnContinuar", function(e){
+                    // Detiene evento submit para presentar pantalla de horario.
+                    e.preventDefault();
+                    var nombre = $('#nombre').val().trim();
+                    var nombreArchivoSeleccionado = $('#nombreArchivoSeleccionado').val().trim();
+                    var telefono = $('#telefono').val().trim();
+                    var correo = $('#correo').val().trim();
+                    var direccion = $('#direccion').val().trim();
+                    
+                    if( nombre.length === 0 )
+                        alert('Debe proporcionar un nombre para el centro de rehabilitación.');
+                    else if( nombreArchivoSeleccionado.length === 0 )
+                        alert('Debe elegir el logotipo del centro de rehabilitación.');
+                    else if( telefono.length === 0 )
+                        alert('El centro de rehabilitación requiere de número de teléfono.');
+                    else if( correo.length === 0 )
+                        alert('Es necesario de un correo electrónico, aunque sea uno de GMAIL.');
+                    else if( direccion.length === 0 )
+                        alert('Favor indicar la ubicación física del centro de rehabilitación.');
+                    else 
+                        $('#modal1').modal('open');
+                });
+                
+                
+                // Configuración de la ventana modal.
+                $('.modal').modal({
+                    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+                    opacity: .5, // Opacity of modal background
+                    inDuration: 300, // Transition in duration
+                    outDuration: 200, // Transition out duration
+                    startingTop: '4%', // Starting top style attribute
+                    endingTop: '10%', // Ending top style attribute
+                    ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                        // alert("Ready");
+                    },
+                    complete: function () {
+                        // alert('Closed');
+                    } // Callback for Modal close
+                });
+                
+                
+                // Configuración inicial para campos de hora.
+                $('.timepicker').timepicker({
+                    twelveHour: false,
+                    i18n: {
+                        done: "OK",
+                        cancel: "Cancelar"
+                    }
+                });
+                
+                
+                // Limita la cantidad de archivos que pueden ser subidos.
+                $("#btnSubmit").click(function(e){
+                    var fileUpload = $("input[type='file']");
+                    var horaInicioLunes = $('#horaInicioLunes').val().trim();
+                    var horaFinalLunes = $('#horaFinalLunes').val().trim();
+                    var horaInicioMartes = $('#horaInicioLunes').val().trim();
+                    var horaFinalMartes = $('#horaFinalLunes').val().trim();
+                    var horaInicioMiercoles = $('#horaInicioLunes').val().trim();
+                    var horaFinalMiercoles = $('#horaFinalLunes').val().trim();
+                    var horaInicioJueves = $('#horaInicioLunes').val().trim();
+                    var horaFinalJueves = $('#horaFinalLunes').val().trim();
+                    var horaInicioViernes = $('#horaInicioLunes').val().trim();
+                    var horaFinalViernes = $('#horaFinalLunes').val().trim();
+                    var horaInicioSabado = $('#horaInicioLunes').val().trim();
+                    var horaFinalSabado = $('#horaFinalLunes').val().trim();
+                    var horaInicioDomingo = $('#horaInicioLunes').val().trim();
+                    var horaFinalDomingo = $('#horaFinalLunes').val().trim();
+                    
+                    if (parseInt(fileUpload.get(0).files.length)>1){
+                        alert("Este formulario permite el envío de solo un archivo.");
+                        e.preventDefault();
+                    } else if(horaInicioLunes.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Lunes.");
+                        e.preventDefault();
+                    } else if(horaFinalLunes.length === 0){
+                        alert("Debe proporcionar una hora final para el día Lunes.");
+                        e.preventDefault();
+                    } else if(horaInicioMartes.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Martes.");
+                        e.preventDefault();
+                    } else if(horaFinalMartes.length === 0){
+                        alert("Debe proporcionar una hora final para el día Martes.");
+                        e.preventDefault();
+                    } else if(horaInicioMiercoles.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Miércoles.");
+                        e.preventDefault();
+                    } else if(horaFinalMiercoles.length === 0){
+                        alert("Debe proporcionar una hora final para el día Miércoles.");
+                        e.preventDefault();
+                    } else if(horaInicioJueves.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Jueves.");
+                        e.preventDefault();
+                    } else if(horaFinalJueves.length === 0){
+                        alert("Debe proporcionar una hora final para el día Jueves.");
+                        e.preventDefault();
+                    } else if(horaInicioViernes.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Viernes.");
+                        e.preventDefault();
+                    } else if(horaFinalViernes.length === 0){
+                        alert("Debe proporcionar una hora final para el día Viernes.");
+                        e.preventDefault();
+                    } else if(horaInicioSabado.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Sábado.");
+                        e.preventDefault();
+                    } else if(horaFinalSabado.length === 0){
+                        alert("Debe proporcionar una hora final para el día Sábado.");
+                        e.preventDefault();
+                    } else if(horaInicioDomingo.length === 0){
+                        alert("Debe proporcionar una hora de inicio para el día Domingo.");
+                        e.preventDefault();
+                    } else if(horaFinalDomingo.length === 0){
+                        alert("Debe proporcionar una hora final para el día Domingo.");
+                        e.preventDefault();
+                    } else {
+                        $('body .container .row form').attr('action', 'centro.do');
+                    }
+                });
+                
+                
+                // Regresa a la página web anterior.
+                $('#btnCancelar').on('click', function(event){
+                    if(confirm("¿Desea salir de este formulario?"))
+                        history.go(-1);
+                    
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>
